@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { uploadUrl } from '../../config';
+import { imageFallback, imageUrl } from '../../config';
 import { useSite } from '../../context/SiteContext';
 import {
   Button,
@@ -292,7 +292,8 @@ export function CategoriesSection({ content, categories }) {
 
         <div ref={reveal} className={cx(s.catGrid, s.xStagger)}>
           {categories.map((category) => {
-            // The category's own photo, or a vehicle from it when none is set.
+            // The category's own photo, a vehicle from it, or - when the
+            // database has neither - the placeholder car from /public.
             const cover = category.image || category.sample_image;
 
             return (
@@ -303,11 +304,14 @@ export function CategoriesSection({ content, categories }) {
                 onMouseMove={spotlight}
               >
                 <span className={s.catMedia}>
-                  {cover ? (
-                    <img src={uploadUrl(cover)} alt="" loading="lazy" width="280" height="170" />
-                  ) : (
-                    <span className={s.catMediaEmpty} aria-hidden="true" />
-                  )}
+                  <img
+                    src={imageUrl(cover)}
+                    onError={imageFallback}
+                    alt=""
+                    loading="lazy"
+                    width="280"
+                    height="170"
+                  />
                   <span className={s.catGuests}>{guestLabel(category)}</span>
                 </span>
 

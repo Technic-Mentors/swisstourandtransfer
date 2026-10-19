@@ -1,4 +1,5 @@
 import { api, adminApi } from './client';
+import stand from './placeholders';
 
 const qs = (params = {}) => {
   const search = new URLSearchParams();
@@ -9,31 +10,86 @@ const qs = (params = {}) => {
   return str ? `?${str}` : '';
 };
 
+/* ----------------------------------------------------------- fallback ---
+   Every public read goes through withFallback. When the API answers with
+   content, that content wins. When it cannot answer - server down, empty
+   database, a table with no rows yet - the matching builder in
+   placeholders.js answers instead, in the same shape. The result: the public
+   site is never blank and never shows an API error to a visitor.
+
+   Admin reads are deliberately NOT wrapped: the panel must always show the
+   real state of the database.                                             */
+
+const emptyValue = (value) => {
+  if (value === null || value === undefined) return true;
+  if (Array.isArray(value)) return value.length === 0;
+  if (typeof value === 'object') return Object.keys(value).length === 0;
+  return false;
+};
+
+/**
+ * @param request  the live call
+ * @param builder  the placeholder builder, given the same arguments
+ * @param keys     response keys that must carry content for it to count as a
+ *                 real answer (e.g. 'vehicles', or ['city', 'vehicles'])
+ */
+function withFallback(request, builder, keys) {
+  const required = Array.isArray(keys) ? keys : [keys];
+
+  return async (...args) => {
+    let data = null;
+
+    try {
+      data = await request(...args);
+    } catch (err) {
+      // An aborted request is a cancelled render, not a failure.
+      if (err?.name === 'AbortError') throw err;
+      const filled = builder(...args);
+      if (filled) return filled;
+      throw err;
+    }
+
+    const thin = !data || required.every((key) => emptyValue(data[key]));
+    if (!thin) return data;
+
+    return builder(...args) || data;
+  };
+}
+
 /* ------------------------------------------------------------- public API */
 
 export const publicApi = {
-  settings: () => api.get('/settings'),
-  home: () => api.get('/content/home'),
-  page: (key) => api.get(`/content/${key}`),
-  faqs: () => api.get('/faqs'),
+  settings: withFallback(() => api.get('/settings'), stand.settings, 'settings'),
+  home: withFallback(() => api.get('/content/home'), stand.home, ['content', 'sections']),
+  page: withFallback((key) => api.get(`/content/${key}`), stand.page, 'content'),
+  faqs: withFallback(() => api.get('/faqs'), stand.faqs, 'faqs'),
 
-  categories: () => api.get('/categories'),
-  category: (slug) => api.get(`/categories/${slug}`),
-  vehicles: (params) => api.get(`/vehicles${qs(params)}`),
-  vehicle: (slug) => api.get(`/vehicles/${slug}`),
+  categories: withFallback(() => api.get('/categories'), stand.categories, 'categories'),
+  category: withFallback((slug) => api.get(`/categories/${slug}`), stand.category, 'category'),
+  vehicles: withFallback((params) => api.get(`/vehicles${qs(params)}`), stand.vehicles, 'vehicles'),
+  vehicle: withFallback((slug) => api.get(`/vehicles/${slug}`), stand.vehicle, 'vehicle'),
 
-  services: (params) => api.get(`/services${qs(params)}`),
-  service: (slug) => api.get(`/services/${slug}`),
+  services: withFallback((params) => api.get(`/services${qs(params)}`), stand.services, 'services'),
+  service: withFallback((slug) => api.get(`/services/${slug}`), stand.service, 'service'),
 
-  cities: () => api.get('/cities'),
-  city: (slug) => api.get(`/cities/${slug}`),
+  cities: withFallback(() => api.get('/cities'), stand.cities, 'cities'),
+  city: withFallback((slug) => api.get(`/cities/${slug}`), stand.city, 'city'),
 
-  albums: () => api.get('/gallery/albums'),
-  photos: (params) => api.get(`/gallery${qs(params)}`),
+  albums: withFallback(() => api.get('/gallery/albums'), stand.albums, 'albums'),
+  photos: withFallback((params) => api.get(`/gallery${qs(params)}`), stand.photos, 'photos'),
 
-  testimonials: (params) => api.get(`/testimonials${qs(params)}`),
-  promotions: (params) => api.get(`/promotions/active${qs(params)}`),
+  testimonials: withFallback(
+    (params) => api.get(`/testimonials${qs(params)}`),
+    stand.testimonials,
+    'testimonials',
+  ),
+  promotions: withFallback(
+    (params) => api.get(`/promotions/active${qs(params)}`),
+    stand.promotions,
+    'promotions',
+  ),
 
+  // Writes have no stand-in - a form must fail loudly if it cannot send.
   createEnquiry: (body) => api.post('/enquiries', body),
   trackWhatsApp: (body) => api.post('/whatsapp-clicks', body),
 };
