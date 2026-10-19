@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { imageFallback, imageUrl } from '../../config';
+import { useCallback } from 'react';
+import { uploadUrl } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -7,75 +7,21 @@ import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, localBusiness } from '../../components/seo/schemas';
 import { PageHead } from '../../components/layout/PublicLayout';
 import { Link } from 'react-router-dom';
-import { Alert, Button, Container, Rating, Section, SectionHeading, Spinner } from '../../components/ui';
+import {
+  Alert,
+  Button,
+  Container,
+  Rating,
+  Section,
+  SectionHeading,
+  Spinner,
+  cx,
+} from '../../components/ui';
 import WhatsAppButton from '../../components/ui/WhatsAppButton';
+import CountUp from '../../components/ui/CountUp';
+import { reveal, spotlight } from '../../components/home/sections';
+import hs from '../../components/home/home.module.css';
 import s from './pages.module.css';
-
-/**
- * Splits "15+", "24/7" or "4.9" into the part that can count up and the text
- * around it, so a label keeps its shape while the number animates.
- */
-function parseStat(raw) {
-  const match = String(raw ?? '').match(/^(\D*?)(\d+(?:[.,]\d+)?)(.*)$/);
-  if (!match) return { prefix: String(raw ?? ''), value: null, suffix: '', decimals: 0 };
-
-  const [, prefix, digits, suffix] = match;
-  const normalised = digits.replace(',', '.');
-  const decimals = normalised.includes('.') ? normalised.split('.')[1].length : 0;
-  return { prefix, value: Number(normalised), suffix, decimals };
-}
-
-/** Counts from zero to the figure once, the first time it is scrolled to. */
-function CountUp({ raw, duration = 1100 }) {
-  const { prefix, value, suffix, decimals } = parseStat(raw);
-  const ref = useRef(null);
-  const [shown, setShown] = useState(value === null ? null : 0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || value === null) return undefined;
-
-    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || !('IntersectionObserver' in window)) {
-      setShown(value);
-      return undefined;
-    }
-
-    let frame = 0;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        io.disconnect();
-
-        const start = performance.now();
-        const tick = (now) => {
-          const t = Math.min((now - start) / duration, 1);
-          // Ease out, so it slows into the final figure instead of stopping dead.
-          setShown(value * (1 - (1 - t) ** 3));
-          if (t < 1) frame = requestAnimationFrame(tick);
-        };
-        frame = requestAnimationFrame(tick);
-      },
-      { threshold: 0.4 },
-    );
-
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(frame);
-    };
-  }, [value, duration]);
-
-  if (value === null) return <span ref={ref}>{prefix}</span>;
-
-  return (
-    <span ref={ref}>
-      {prefix}
-      {shown.toFixed(decimals)}
-      {suffix}
-    </span>
-  );
-}
 
 export default function About() {
   const { settings } = useSite();
@@ -90,18 +36,21 @@ export default function About() {
         publicApi.services(),
         publicApi.cities(),
         publicApi.testimonials({ featured: 1, limit: 3 }),
+        publicApi.faqs(),
       ]),
     [],
   );
   const { data, loading, error } = useFetch(load, []);
 
-  const [about, home, serviceData, cityData, reviewData] = data ?? [];
+  const [about, home, serviceData, cityData, reviewData, faqData] = data ?? [];
   const content = about?.content ?? {};
   const stats = about?.lists?.stat_items ?? [];
   const values = home?.lists?.why_items ?? [];
+  const steps = home?.lists?.how_steps ?? [];
   const services = serviceData?.services ?? [];
   const cities = cityData?.cities ?? [];
   const reviews = reviewData?.testimonials ?? [];
+  const faqs = faqData?.faqs ?? [];
 
   return (
     <>
@@ -130,24 +79,29 @@ export default function About() {
 
           {!loading && !error && (
             <>
-              <img
-                className={s.aboutImage}
-                src={imageUrl(content.image)}
-                onError={imageFallback}
-                alt="Swiss Tour & Transfer chauffeurs and vehicles"
-                width="1200"
-                height="514"
-              />
+              {/* Only the photo the admin actually uploaded - this page says
+                  who we are, so it must not fall back to a stock car. */}
+              {content.image && (
+                <img
+                  className={cx(s.aboutImage, s.aboutImageIn)}
+                  src={uploadUrl(content.image)}
+                  alt="Swiss Tour & Transfer chauffeurs and vehicles"
+                  width="1200"
+                  height="514"
+                />
+              )}
 
               {/* One centred column: the text still reads left to right. */}
-              <div className={s.aboutBody}>
+              <div ref={reveal} className={cx(s.aboutBody, hs.xReveal)}>
                 {(content.body || '').split('\n\n').map((para, i) => (
                   <p key={i}>{para}</p>
                 ))}
               </div>
 
+              {/* The stat cells carry their own staggered entrance, so the
+                  row only needs to fade in as one when it is scrolled to. */}
               {stats.length > 0 && (
-                <div className={s.statRow}>
+                <div ref={reveal} className={cx(s.statRow, hs.xReveal)}>
                   {stats.map(([value, label], index) => (
                     <div
                       className={s.statCell}
@@ -166,11 +120,42 @@ export default function About() {
 
               {values.length > 0 && (
                 <div className={s.aboutBlock}>
-                  <SectionHeading eyebrow="What we stand for" title="The promises behind every journey" center />
-                  <div className={s.valueGrid}>
+                  <div ref={reveal} className={hs.xReveal}>
+                    <SectionHeading eyebrow="What we stand for" title="The promises behind every journey" center />
+                  </div>
+                  <div ref={reveal} className={cx(s.valueGrid, hs.xStagger)}>
                     {values.map(([title, text], i) => (
-                      <div className={s.valueCard} key={title || i}>
+                      <div
+                        className={cx(s.valueCard, hs.xLift, hs.xSpot, hs.xGloss)}
+                        onMouseMove={spotlight}
+                        key={title || i}
+                      >
                         <span className={s.valueNum}>{String(i + 1).padStart(2, '0')}</span>
+                        <h3 className={s.valueTitle}>{title}</h3>
+                        <p className={s.valueText}>{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {steps.length > 0 && (
+                <div className={s.aboutBlock}>
+                  <div ref={reveal} className={hs.xReveal}>
+                    <SectionHeading
+                      eyebrow="How we work"
+                      title="Three steps, one message"
+                      center
+                    />
+                  </div>
+                  <div ref={reveal} className={cx(s.valueGrid, hs.xStagger)}>
+                    {steps.map(([title, text], i) => (
+                      <div
+                        className={cx(s.valueCard, hs.xLift, hs.xSpot, hs.xGloss)}
+                        onMouseMove={spotlight}
+                        key={title || i}
+                      >
+                        <span className={s.valueNum}>STEP {String(i + 1).padStart(2, '0')}</span>
                         <h3 className={s.valueTitle}>{title}</h3>
                         <p className={s.valueText}>{text}</p>
                       </div>
@@ -181,8 +166,10 @@ export default function About() {
 
               {services.length > 0 && (
                 <div className={s.aboutBlock}>
-                  <SectionHeading eyebrow="What we do" title="Every kind of journey" center />
-                  <div className={s.aboutChips}>
+                  <div ref={reveal} className={hs.xReveal}>
+                    <SectionHeading eyebrow="What we do" title="Every kind of journey" center />
+                  </div>
+                  <div ref={reveal} className={cx(s.aboutChips, hs.xStagger)}>
                     {services.map((service) => (
                       <Link key={service.id} to={`/services/${service.slug}`} className={s.aboutChip}>
                         {service.name}
@@ -194,10 +181,17 @@ export default function About() {
 
               {cities.length > 0 && (
                 <div className={s.aboutBlock}>
-                  <SectionHeading eyebrow="Where we drive" title="Across Switzerland" center />
-                  <div className={s.cityGrid}>
+                  <div ref={reveal} className={hs.xReveal}>
+                    <SectionHeading eyebrow="Where we drive" title="Across Switzerland" center />
+                  </div>
+                  <div ref={reveal} className={cx(s.cityGrid, hs.xStagger)}>
                     {cities.map((city) => (
-                      <Link key={city.id} to={`/chauffeur-service/${city.slug}`} className={s.cityCard}>
+                      <Link
+                        key={city.id}
+                        to={`/chauffeur-service/${city.slug}`}
+                        className={cx(s.cityCard, hs.xLift, hs.xSpot, hs.xGloss)}
+                        onMouseMove={spotlight}
+                      >
                         <span className={s.cityName}>{city.name}</span>
                         {city.hub_label && <span className={s.cityNote}>{city.hub_label}</span>}
                       </Link>
@@ -208,11 +202,16 @@ export default function About() {
 
               {reviews.length > 0 && (
                 <div className={s.aboutBlock}>
-                  <SectionHeading eyebrow="In our guests' words" title="Recently, on the road" center />
-                  <div className={s.aboutReviews}>
+                  <div ref={reveal} className={hs.xReveal}>
+                    <SectionHeading eyebrow="In our guests' words" title="Recently, on the road" center />
+                  </div>
+                  <div ref={reveal} className={cx(s.aboutReviews, hs.xStagger)}>
                     {reviews.map((review) => (
-                      <figure className={s.aboutReview} key={review.id}>
-                        <Rating value={review.rating} />
+                      <figure
+                        className={cx(s.aboutReview, hs.xLift, hs.xGloss)}
+                        key={review.id}
+                      >
+                        <Rating value={review.rating} className={hs.xStars} />
                         <blockquote>{review.review_text}</blockquote>
                         <figcaption>
                           {review.customer_name}
@@ -222,15 +221,38 @@ export default function About() {
                     ))}
                   </div>
                   <div className={s.aboutMore}>
-                    <Link to="/reviews" className={s.aboutMoreLink}>
+                    <Link to="/reviews" className={cx(s.aboutMoreLink, hs.xArrow)}>
                       Read all reviews →
                     </Link>
                   </div>
                 </div>
               )}
 
+              {faqs.length > 0 && (
+                <div className={s.aboutBlock}>
+                  <div ref={reveal} className={hs.xReveal}>
+                    <SectionHeading eyebrow="Questions" title="Before you book" center />
+                  </div>
+                  <div ref={reveal} className={cx(hs.faqList, hs.xStagger)}>
+                    {faqs.slice(0, 5).map((faq) => (
+                      <details className={cx(hs.faqItem, hs.xFaq)} key={faq.id}>
+                        <summary className={hs.faqQ}>
+                          {faq.question}
+                          <span className={cx(hs.faqSign, hs.xSign)} aria-hidden="true">
+                            +
+                          </span>
+                        </summary>
+                        <div className={cx(hs.faqA, hs.xAns)}>{faq.answer}</div>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className={s.aboutActions}>
-                <WhatsAppButton pageType="about">Book via WhatsApp</WhatsAppButton>
+                <span className={hs.xCtaPulse}>
+                  <WhatsAppButton pageType="about">Book via WhatsApp</WhatsAppButton>
+                </span>
                 <Button to="/vehicles" variant="outline">
                   View our vehicles
                 </Button>

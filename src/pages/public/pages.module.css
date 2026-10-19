@@ -1555,9 +1555,7 @@
   to { opacity: 1; translate: 0 0; }
 }
 
-.masonryTile,
 .scoreCard,
-.reviewsGrid > *,
 .contactRow,
 .galleryFilters > *,
 .contactFormCard,
@@ -1570,27 +1568,19 @@
   animation: publicContentIn 560ms cubic-bezier(.2, .75, .25, 1) both;
 }
 
-.masonryTile:nth-child(2),
-.reviewsGrid > :nth-child(2),
 .contactList > :nth-child(2),
 .cardGrid2 > :nth-child(2),
 .bookChoice > :nth-child(2),
 .cityGrid > :nth-child(2) { animation-delay: 70ms; }
 
-.masonryTile:nth-child(3),
-.reviewsGrid > :nth-child(3),
 .contactList > :nth-child(3),
 .cardGrid2 > :nth-child(3),
 .cityGrid > :nth-child(3) { animation-delay: 140ms; }
 
-.masonryTile:nth-child(4),
-.reviewsGrid > :nth-child(4),
 .contactList > :nth-child(4),
 .cardGrid2 > :nth-child(4),
 .cityGrid > :nth-child(4) { animation-delay: 210ms; }
 
-.masonryTile:nth-child(n + 5),
-.reviewsGrid > :nth-child(n + 5),
 .cardGrid2 > :nth-child(n + 5),
 .cityGrid > :nth-child(n + 5) { animation-delay: 280ms; }
 
@@ -1677,4 +1667,55 @@
 .serviceShot img {
   height: 100%;
   object-fit: cover;
+}
+
+/* ------------------------------------------------- about: added motion ---
+   Animates opacity, filter and transform only - the About page keeps the
+   spacing it already had. The shared vocabulary (xReveal, xStagger, xGloss,
+   xPhoto) comes from home.module.css; these are the page's own pieces.    */
+
+@keyframes aboutImageIn {
+  from { opacity: 0; filter: blur(16px) saturate(.5); }
+  to   { opacity: 1; filter: blur(0) saturate(1); }
+}
+
+.aboutImageIn {
+  animation: aboutImageIn 1.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+/* The WhatsApp button sits inside the pulse wrapper, which is now the flex
+   child - the button fills it so both actions stay the same width. */
+.aboutActions > span > * {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aboutImageIn {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------- reviews: the bars grow in ---
+   transform only, so the track and the layout stay exactly as they were. */
+
+@keyframes spreadGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.spreadFill {
+  transform-origin: left center;
+  animation: spreadGrow 900ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.spreadRow:nth-child(2) .spreadFill { animation-delay: 90ms; }
+.spreadRow:nth-child(3) .spreadFill { animation-delay: 180ms; }
+.spreadRow:nth-child(4) .spreadFill { animation-delay: 270ms; }
+.spreadRow:nth-child(5) .spreadFill { animation-delay: 360ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spreadFill {
+    animation: none;
+  }
 }

@@ -7,6 +7,9 @@ import { aggregateRatingSchema, breadcrumbSchema, reviewSchema } from '../../com
 import { PageHead } from '../../components/layout/PublicLayout';
 import { Alert, Container, EmptyState, Rating, Section, Spinner, cx } from '../../components/ui';
 import WhatsAppButton from '../../components/ui/WhatsAppButton';
+import CountUp from '../../components/ui/CountUp';
+import { reveal } from '../../components/home/sections';
+import hs from '../../components/home/home.module.css';
 import s from './pages.module.css';
 
 const GoogleMark = () => (
@@ -113,10 +116,12 @@ export default function Reviews() {
           {!loading && !error && (
             <>
               {stats.total > 0 && (
-                <div className={s.scoreCard}>
+                <div ref={reveal} className={cx(s.scoreCard, hs.xStagger)}>
                   <div className={s.scoreMain}>
-                    <span className={s.scoreValue}>{stats.average}</span>
-                    <Rating value={stats.average} />
+                    <span className={s.scoreValue}>
+                      <CountUp raw={stats.average} />
+                    </span>
+                    <Rating value={stats.average} className={hs.xStars} />
                     <span className={s.scoreNote}>
                       {stats.total} published {stats.total === 1 ? 'review' : 'reviews'}
                     </span>
@@ -161,14 +166,14 @@ export default function Reviews() {
               )}
 
               {shown.length ? (
-                <div className={s.reviewsGrid}>
+                <div ref={reveal} className={cx(s.reviewsGrid, hs.xStagger)} key={filter}>
                   {shown.map((review) => (
-                    <article className={s.reviewCard} key={review.id}>
+                    <article className={cx(s.reviewCard, hs.xGloss)} key={review.id}>
                       <span className={s.reviewQuoteMark} aria-hidden="true">
                         <QuoteMark />
                       </span>
 
-                      <Rating value={review.rating} />
+                      <Rating value={review.rating} className={hs.xStars} />
 
                       <blockquote className={s.reviewText}>{review.review_text}</blockquote>
 

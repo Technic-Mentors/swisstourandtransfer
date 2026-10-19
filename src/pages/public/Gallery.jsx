@@ -7,6 +7,8 @@ import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, localBusiness } from '../../components/seo/schemas';
 import { PageHead } from '../../components/layout/PublicLayout';
 import { Alert, Container, EmptyState, Lightbox, Section, Spinner, cx } from '../../components/ui';
+import { reveal } from '../../components/home/sections';
+import hs from '../../components/home/home.module.css';
 import vs from '../../components/vehicles/vehicles.module.css';
 import s from './pages.module.css';
 
@@ -80,12 +82,12 @@ export default function Gallery() {
 
           {!loading && !error && (
             photos.length ? (
-              <div className={s.masonry}>
+              <div ref={reveal} className={cx(s.masonry, hs.xStagger)} key={album}>
                 {photos.map((photo, i) => (
                   <button
                     type="button"
                     key={photo.id}
-                    className={s.masonryTile}
+                    className={cx(s.masonryTile, hs.xClip, hs.xPhoto)}
                     onClick={() => setLightbox(i)}
                     aria-label={photo.caption || `Open photo ${i + 1}`}
                   >

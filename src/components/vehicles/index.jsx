@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { imageFallback, imageUrl } from '../../config';
 import { Button, Card, Lightbox, cx } from '../ui';
+import hs from '../home/home.module.css';
 import WhatsAppButton from '../ui/WhatsAppButton';
 import s from './vehicles.module.css';
 
@@ -48,8 +49,8 @@ export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
   const cover = vehicle.cover_image;
 
   return (
-    <Card hover className={s.card}>
-      <Link to={href} className={s.media} aria-label={vehicle.name}>
+    <Card hover className={cx(s.card, hs.xGloss)}>
+      <Link to={href} className={cx(s.media, hs.xPhoto)} aria-label={vehicle.name}>
         {/* No photo uploaded yet falls back to the placeholder car, so a card
             never shows an empty frame. */}
         <img

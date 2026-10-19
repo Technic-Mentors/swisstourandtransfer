@@ -5,8 +5,10 @@ import { useSite } from '../../context/SiteContext';
 import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, localBusiness } from '../../components/seo/schemas';
 import { PageHead } from '../../components/layout/PublicLayout';
-import { Alert, Container, EmptyState, Pagination, Section, Spinner } from '../../components/ui';
+import { Alert, Container, EmptyState, Pagination, Section, Spinner, cx } from '../../components/ui';
 import { CategoryPills, VehicleGrid } from '../../components/vehicles';
+import { reveal } from '../../components/home/sections';
+import hs from '../../components/home/home.module.css';
 import vehicleStyles from '../../components/vehicles/vehicles.module.css';
 
 /**
@@ -67,15 +69,21 @@ export default function Vehicles() {
 
           {!loading && !error && (
             <>
-              <CategoryPills categories={categories} active={active} onChange={chooseCategory} />
+              <div ref={reveal} className={hs.xReveal}>
+                <CategoryPills categories={categories} active={active} onChange={chooseCategory} />
+              </div>
 
               {filtered.length ? (
                 <>
-                  <VehicleGrid
-                    vehicles={shown}
-                    pageType="vehicles-list"
-                    className={vehicleStyles.pageGrid}
-                  />
+                  {/* The cards arrive one after another as the grid is
+                      scrolled to, the same way the homepage does it. */}
+                  <div ref={reveal} className={hs.xReveal} key={`${active}-${page}-${perPage}`}>
+                    <VehicleGrid
+                      vehicles={shown}
+                      pageType="vehicles-list"
+                      className={cx(vehicleStyles.pageGrid, hs.xStagger)}
+                    />
+                  </div>
                   <Pagination
                     page={page}
                     perPage={perPage}

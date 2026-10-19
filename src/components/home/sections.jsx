@@ -18,8 +18,8 @@ import { VehicleGrid } from '../vehicles';
 import QuickBookingBar from '../forms/QuickBookingBar';
 import s from './home.module.css';
 
-/** Cursor-follow glow for cards (sets --mx / --my). */
-function spotlight(e) {
+/** Cursor-follow glow for cards (sets --mx / --my). Shared with /about. */
+export function spotlight(e) {
   const r = e.currentTarget.getBoundingClientRect();
   e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
   e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
@@ -75,8 +75,11 @@ const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
   size: 2 + (i % 3),
 }));
 
-/** Plain ref callback (not a component): adds "xIn" when element scrolls into view. */
-function reveal(el) {
+/**
+ * Plain ref callback (not a component): adds "xIn" when the element scrolls
+ * into view. Exported so other pages animate with the same vocabulary.
+ */
+export function reveal(el) {
   if (!el) return;
   if (!('IntersectionObserver' in window)) {
     el.classList.add(s.xIn);
@@ -132,12 +135,34 @@ function splitHeadline(text) {
 export function HeroSection({ content, settings }) {
   const [lead, accent] = splitHeadline(content.hero_headline || 'Arrive the Swiss way');
   const leadCount = lead.split(' ').filter(Boolean).length;
+  const aurora = useRef(null);
+
+  /* The glow drifts a few pixels behind the pointer. Only the light layer
+     moves - the headline and the booking bar stay exactly where they are. */
+  const driftAurora = (e) => {
+    const layer = aurora.current;
+    if (!layer) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    layer.style.setProperty('--px', (e.clientX - r.left) / r.width - 0.5);
+    layer.style.setProperty('--py', (e.clientY - r.top) / r.height - 0.5);
+  };
+
+  const restAurora = () => {
+    const layer = aurora.current;
+    if (!layer) return;
+    layer.style.setProperty('--px', 0);
+    layer.style.setProperty('--py', 0);
+  };
 
   return (
-    <div className={cx(s.hero, s.xHeroFull)}>
+    <div
+      className={cx(s.hero, s.xHeroFull)}
+      onMouseMove={driftAurora}
+      onMouseLeave={restAurora}
+    >
       <ScrollProgress />
 
-      <div className={s.xAurora} aria-hidden="true">
+      <div ref={aurora} className={s.xAurora} aria-hidden="true">
         <span className={cx(s.xOrb, s.xOrbA)} />
         <span className={cx(s.xOrb, s.xOrbB)} />
         {PARTICLES.map((p, i) => (
@@ -300,10 +325,10 @@ export function CategoriesSection({ content, categories }) {
               <Link
                 key={category.id}
                 to={`/vehicles/category/${category.slug}`}
-                className={cx(s.catCard, s.xLift, s.xSpot)}
+                className={cx(s.catCard, s.xLift, s.xSpot, s.xGloss)}
                 onMouseMove={spotlight}
               >
-                <span className={s.catMedia}>
+                <span className={cx(s.catMedia, s.xPhoto)}>
                   <img
                     src={imageUrl(cover)}
                     onError={imageFallback}
@@ -371,7 +396,7 @@ export function ServicesSection({ content, services }) {
         <div ref={reveal} className={cx(s.serviceGrid, s.xStagger)}>
           {services.map((service, i) => (
             <article
-              className={cx(s.serviceCell, s.xLift, s.xSpot)}
+              className={cx(s.serviceCell, s.xLift, s.xSpot, s.xGloss)}
               key={service.id}
               onMouseMove={spotlight}
             >
@@ -572,8 +597,8 @@ export function ReviewsSection({ content, testimonials, stats }) {
 
         <div ref={reveal} className={cx(s.reviewGrid, s.xStagger)}>
           {testimonials.slice(0, 3).map((review) => (
-            <Card key={review.id} className={cx(s.review, s.xLift)}>
-              <Rating value={review.rating} />
+            <Card key={review.id} className={cx(s.review, s.xLift, s.xGloss)}>
+              <Rating value={review.rating} className={s.xStars} />
               <blockquote className={cx(s.reviewQuote, s.xQuote)}>“{review.review_text}”</blockquote>
               <div className={s.reviewFoot}>
                 <div>
@@ -620,7 +645,13 @@ export function GallerySection({ content, photos }) {
             <button
               type="button"
               key={photo.id}
-              className={cx(s.galleryTile, s.xZoom, s.xClip, (i === 0 || i === 5) && s.galleryTileWide)}
+              className={cx(
+                s.galleryTile,
+                s.xZoom,
+                s.xClip,
+                s.xPhoto,
+                (i === 0 || i === 5) && s.galleryTileWide,
+              )}
               onClick={() => setLightbox(i)}
               aria-label={`Open photo ${i + 1}`}
             >

@@ -1300,3 +1300,140 @@
   .railItem { opacity: 1; }
   .xStagger.xIn > .xClip { animation: none !important; }
 }
+
+/* ==================================================== added micro-motion ==
+   Everything below animates colour, opacity, filter, a transform or a
+   pseudo-element. No rule touches padding, margin, width or height, so the
+   page keeps exactly the spacing it already had.                          */
+
+@keyframes xDevelop {
+  from { opacity: 0; filter: blur(14px) saturate(.5); }
+  to   { opacity: 1; filter: blur(0) saturate(1); }
+}
+
+@keyframes xGlossSweep {
+  from { left: -70%; opacity: 0; }
+  30%  { opacity: 1; }
+  to   { left: 130%; opacity: 0; }
+}
+
+@keyframes xStarPop {
+  from { opacity: 0; transform: scale(.4) rotate(-25deg); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* photos resolve out of a soft blur instead of snapping in */
+.xPhoto img {
+  animation: xDevelop 1.1s var(--ease) both;
+}
+
+/* one sheen crosses a card as the pointer enters it */
+.xGloss {
+  position: relative;
+  overflow: hidden;
+}
+
+.xGloss::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: -70%;
+  width: 45%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .16), transparent);
+  transform: skewX(-18deg);
+}
+
+.xGloss:hover::before {
+  animation: xGlossSweep .9s var(--ease);
+}
+
+/* hero: the aurora drifts a little with the pointer */
+.xAurora {
+  transform: translate3d(calc(var(--px, 0) * 26px), calc(var(--py, 0) * 18px), 0);
+  transition: transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+
+/* categories: the capacity chip lifts with the card */
+.catGuests {
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.catCard:hover .catGuests {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .35);
+}
+
+/* services: the step number fills with gold under the pointer */
+.serviceNum {
+  transition: background .35s var(--ease), color .35s var(--ease),
+    border-color .35s var(--ease), transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+
+.serviceCell:hover .serviceNum {
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  border-color: transparent;
+  color: var(--gold-on);
+  transform: rotate(-8deg) scale(1.12);
+}
+
+/* reviews: the stars land one after another as the section arrives */
+.xStagger.xIn .xStars > * {
+  animation: xStarPop .5s cubic-bezier(.22, 1, .36, 1) backwards;
+}
+
+.xStagger.xIn .xStars > *:nth-child(2) { animation-delay: .08s; }
+.xStagger.xIn .xStars > *:nth-child(3) { animation-delay: .16s; }
+.xStagger.xIn .xStars > *:nth-child(4) { animation-delay: .24s; }
+.xStagger.xIn .xStars > *:nth-child(5) { animation-delay: .32s; }
+
+/* FAQ: a gold edge grows down the question under the pointer */
+.xFaq {
+  position: relative;
+}
+
+.xFaq::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-bright));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .4s cubic-bezier(.22, 1, .36, 1);
+}
+
+.xFaq:hover::before,
+.xFaq[open]::before {
+  transform: scaleY(1);
+}
+
+.xFaq .faqQ {
+  transition: color .3s var(--ease);
+}
+
+.xFaq:hover .faqQ {
+  color: var(--gold-bright);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xPhoto img,
+  .xGloss:hover::before,
+  .xStagger.xIn .xStars > * {
+    animation: none !important;
+  }
+
+  .xAurora {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .xFaq::before {
+    transition: none !important;
+  }
+}
