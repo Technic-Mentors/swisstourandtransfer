@@ -1,0 +1,366 @@
+/**
+ * Design tokens for Swiss Tour & Transfer.
+ * Colours are taken directly from the brand logo: alpine navy, champagne gold,
+ * snow cream, with the Swiss red reserved for small shield accents only.
+ */
+
+:root {
+  /* ---- Brand surfaces ---- */
+  --navy: #0a121e;
+  --navy-deep: #0d1727;
+  --navy-card: #111d30;
+  --navy-soft: #16243a;
+  --navy-raised: #1b2b43;
+
+  /* ---- Borders ---- */
+  --border: #22324d;
+  --border-light: #2d3f5e;
+  --border-strong: #3a4f74;
+
+  /* ---- Accent ---- */
+  --gold: #d2ad6e;
+  --gold-bright: #e3c288;
+  --gold-dim: #a8884f;
+  --gold-dark: #7a5c25;
+  --gold-on: #1a1305;
+  --gold-wash: rgba(210, 173, 110, 0.12);
+  --gold-line: rgba(210, 173, 110, 0.28);
+
+  /* ---- Text ---- */
+  --cream: #f5f1ea;
+  --white: #ffffff;
+  --text: #f5f1ea;
+  --text-muted: #c9d1de;
+  --text-dim: #a3aec2;
+  --text-faint: #7f8ba3;
+
+  /* ---- Functional ---- */
+  --whatsapp: #25d366;
+  --whatsapp-dark: #1da851;
+  --swiss-red: #d52b1e;
+  --success: #3fb27f;
+  --warning: #e0a33c;
+  --danger: #e2584a;
+
+  /* ---- Admin palette (dark is the default) ---- */
+  --admin-bg: #0d151f;
+  --admin-surface: #141e2b;
+  --admin-surface-2: #182434;
+  --admin-raised: #1d2a3b;
+  --admin-border: #1f2c3c;
+  --admin-border-soft: #182332;
+  --admin-border-strong: #2a3a4e;
+  --admin-text: #e6ecf4;
+  --admin-text-muted: #8c9aad;
+  --admin-text-faint: #8491a5;
+  --admin-heading: #f5f1ea;
+  --admin-link: #d2ad6e;
+  --admin-link-hover: #e3c288;
+
+  /* sidebar */
+  --admin-sidebar: #0a111a;
+  --admin-brand-text: #ffffff;
+  --admin-nav-hover-bg: rgba(255, 255, 255, 0.045);
+  --admin-nav-active-bg: rgba(210, 173, 110, 0.13);
+  --admin-nav-active-hover-bg: rgba(210, 173, 110, 0.17);
+  --admin-nav-active-text: #d2ad6e;
+  --admin-foot-bg: rgba(255, 255, 255, 0.035);
+
+  /* accent used by buttons, tabs, pagination and badges */
+  --admin-accent: #d2ad6e;
+  --admin-accent-hover: #e3c288;
+  --admin-accent-text: #1a1203;
+  --admin-accent-wash: rgba(210, 173, 110, 0.12);
+  --admin-accent-line: rgba(210, 173, 110, 0.3);
+
+  --admin-overlay: rgba(5, 10, 16, 0.7);
+  --admin-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  --admin-shadow-sm: 0 10px 26px rgba(0, 0, 0, 0.42);
+
+  /* status colours */
+  --admin-teal: #4fd1c5;
+  --admin-green: #46c58a;
+  --admin-amber: #e0a33c;
+  --admin-red: #ef6a5c;
+  --admin-red-soft: rgba(239, 106, 92, 0.1);
+  --admin-red-line: rgba(239, 106, 92, 0.32);
+
+  --badge-live-bg: rgba(70, 197, 138, 0.14);
+  --badge-live-fg: #6fdcab;
+  --badge-off-bg: rgba(140, 154, 173, 0.12);
+  --badge-off-fg: #93a1b4;
+  --badge-warn-bg: rgba(224, 163, 60, 0.15);
+  --badge-warn-fg: #e9b968;
+  --badge-info-bg: rgba(79, 209, 197, 0.14);
+  --badge-info-fg: #6fdcd2;
+
+  --admin-scheme: dark;
+
+  /* cards sit flat on the dark shell; the light theme lifts them */
+  --admin-card-shadow: none;
+
+  /* per-stat accent chips */
+  --tone-violet-bg: rgba(139, 124, 246, 0.16);
+  --tone-violet-fg: #a99bff;
+  --tone-rose-bg: rgba(244, 114, 139, 0.16);
+  --tone-rose-fg: #f58aa0;
+  --tone-emerald-bg: rgba(70, 197, 138, 0.16);
+  --tone-emerald-fg: #6fdcab;
+  --tone-blue-bg: rgba(90, 150, 245, 0.16);
+  --tone-blue-fg: #86b2fb;
+  --tone-amber-bg: rgba(224, 163, 60, 0.16);
+  --tone-amber-fg: #e9b968;
+  --tone-cyan-bg: rgba(79, 209, 197, 0.16);
+  --tone-cyan-fg: #6fdcd2;
+
+  /* Gradient pairs: a vivid icon chip, a soft wash behind the tile. */
+  --tone-violet-a: #7c6cf5;
+  --tone-violet-b: #b39dff;
+  --tone-rose-a: #f2506b;
+  --tone-rose-b: #ff93a6;
+  --tone-emerald-a: #16a974;
+  --tone-emerald-b: #63dcaa;
+  --tone-blue-a: #3b7ff0;
+  --tone-blue-b: #84b6fb;
+  --tone-amber-a: #dd9020;
+  --tone-amber-b: #f6ca72;
+  --tone-cyan-a: #0fa99e;
+  --tone-cyan-b: #63dcd3;
+
+  /* How strongly a tile picks up its own colour. */
+  --stat-wash-1: 0.2;
+  --stat-wash-2: 0.03;
+  --stat-orb: 0.26;
+  --stat-rail: 0.9;
+  --chip-glow: 0.34;
+
+  /* chart series */
+  --chart-primary: #d2ad6e;
+  --chart-secondary: #4fd1c5;
+
+  /* ---- Type ---- */
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --tracking-wide: 0.32em;
+  --tracking-mid: 0.18em;
+
+  /* ---- Spacing ---- */
+  --gutter: 24px;
+  --max-width: 1280px;
+   --section-y: 44px;
+  --section-y-sm: 30px;
+
+  /* ---- Radii ---- */
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ---- Shadow ---- */
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.18);
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.38);
+  --shadow-gold: 0 10px 30px rgba(210, 173, 110, 0.18);
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --t-fast: 140ms;
+  --t: 240ms;
+  --t-slow: 420ms;
+
+  /* ---- Layers ---- */
+  --z-sticky-bar: 60;
+  --z-float: 70;
+  --z-header: 80;
+  --z-nav: 90;
+  --z-modal: 100;
+}
+
+/**
+ * Light admin theme. The toggle sets data-admin-theme="light" on <html>;
+ * only the admin surface tokens change, so one stylesheet serves both.
+ */
+:root[data-admin-theme='light'] {
+  --admin-bg: #f4f5fa;
+  --admin-surface: #ffffff;
+  --admin-surface-2: #f8f9fd;
+  --admin-raised: #ffffff;
+  --admin-border: #e9edf7;
+  --admin-border-soft: #f1f4fb;
+  --admin-border-strong: #d3dbec;
+  --admin-text: #1b2559;
+  --admin-text-muted: #6b7794;
+  --admin-text-faint: #5d6782;
+  --admin-heading: #1b2559;
+  --admin-link: #5b4ec7;
+  --admin-link-hover: #4a3fb0;
+
+  --admin-sidebar: #ffffff;
+  --admin-brand-text: #1b2559;
+  --admin-nav-hover-bg: rgba(108, 93, 211, 0.07);
+  --admin-nav-active-bg: rgba(108, 93, 211, 0.12);
+  --admin-nav-active-hover-bg: rgba(108, 93, 211, 0.18);
+  --admin-nav-active-text: #5b4ec7;
+  --admin-foot-bg: #f8f9fd;
+
+  --admin-accent: #6c5dd3;
+  --admin-accent-hover: #5b4ec7;
+  --admin-accent-text: #ffffff;
+  --admin-accent-wash: rgba(108, 93, 211, 0.1);
+  --admin-accent-line: rgba(108, 93, 211, 0.26);
+
+  --admin-overlay: rgba(27, 37, 89, 0.38);
+  --admin-shadow: 0 18px 44px rgba(112, 126, 174, 0.2);
+  --admin-shadow-sm: 0 6px 20px rgba(112, 126, 174, 0.14);
+  --admin-card-shadow: 0 2px 12px rgba(112, 126, 174, 0.1);
+
+  --admin-teal: #0f8a80;
+  --admin-green: #16a34a;
+  --admin-amber: #b45309;
+  --admin-red: #e03e52;
+  --admin-red-soft: #fef2f3;
+  --admin-red-line: #f6ccd2;
+
+  --badge-live-bg: #e4f7ed;
+  --badge-live-fg: #0f7a43;
+  --badge-off-bg: #eef1f8;
+  --badge-off-fg: #5d6782;
+  --badge-warn-bg: #fff3e2;
+  --badge-warn-fg: #9a5b06;
+  --badge-info-bg: #e9eafd;
+  --badge-info-fg: #4a3fb0;
+
+  --tone-violet-bg: #efecfd;
+  --tone-violet-fg: #6c5dd3;
+  --tone-rose-bg: #ffecf0;
+  --tone-rose-fg: #e03e52;
+  --tone-emerald-bg: #e4f7ed;
+  --tone-emerald-fg: #0f7a43;
+  --tone-blue-bg: #e8f0fe;
+  --tone-blue-fg: #2563c9;
+  --tone-amber-bg: #fff3e2;
+  --tone-amber-fg: #9a5b06;
+  --tone-cyan-bg: #e0f6f4;
+  --tone-cyan-fg: #0f8a80;
+
+  /* Same hues as dark, laid on white — so the washes must be lighter. */
+  --tone-violet-a: #6c5dd3;
+  --tone-violet-b: #a394f5;
+  --tone-rose-a: #e8405a;
+  --tone-rose-b: #ff8fa0;
+  --tone-emerald-a: #119c68;
+  --tone-emerald-b: #5fd3a0;
+  --tone-blue-a: #2f74e8;
+  --tone-blue-b: #7eb0f7;
+  --tone-amber-a: #e09419;
+  --tone-amber-b: #f8ce7c;
+  --tone-cyan-a: #0d9c92;
+  --tone-cyan-b: #5fd5cc;
+
+  --stat-wash-1: 0.13;
+  --stat-wash-2: 0.0;
+  --stat-orb: 0.16;
+  --stat-rail: 1;
+  --chip-glow: 0.3;
+
+  --chart-primary: #6c5dd3;
+  --chart-secondary: #ff6b6b;
+
+  --admin-scheme: light;
+}
+
+/* Public dark theme. The admin palette remains independent. */
+body[data-public-theme='dark'] {
+  color-scheme: dark;
+
+  --navy: #1c1d20;
+  --navy-deep: #232428;
+  --navy-card: #2a2b30;
+  --navy-soft: #303238;
+  --navy-raised: #393b42;
+
+  --border: #3b3d43;
+  --border-light: #51545d;
+  --border-strong: #696d77;
+
+  --gold: #dc2626;
+  --gold-bright: #ef4444;
+  --gold-dim: #dc2626;
+  --gold-dark: #b91c1c;
+  --gold-on: #ffffff;
+  --gold-wash: rgba(220, 38, 38, 0.12);
+  --gold-line: rgba(220, 38, 38, 0.32);
+
+  --cream: #f5f5f5;
+  --white: #ffffff;
+  --text: #f5f5f5;
+  --text-muted: #d0d0d3;
+  --text-dim: #b1b2b7;
+  --text-faint: #92949b;
+  --swiss-red: #dc2626;
+
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Public light theme. Scoped to body so it never alters admin palette tokens. */
+body[data-public-theme='light'] {
+  color-scheme: light;
+
+  --navy: #f4f7fc;
+  --navy-deep: #eaf0fa;
+  --navy-card: #ffffff;
+  --navy-soft: #e2eaf7;
+  --navy-raised: #d3def0;
+
+  --border: #d6dfed;
+  --border-light: #bdcbe0;
+  --border-strong: #91a6c8;
+
+  --gold: #dc2626;
+  --gold-bright: #b91c1c;
+  --gold-dim: #b91c1c;
+  --gold-dark: #991b1b;
+  --gold-on: #ffffff;
+  --gold-wash: rgba(220, 38, 38, 0.08);
+  --gold-line: rgba(220, 38, 38, 0.24);
+
+  --cream: #172554;
+  --white: #ffffff;
+  --text: #172554;
+  --text-muted: #33466f;
+  --text-dim: #526487;
+  --text-faint: #68799a;
+  --swiss-red: #dc2626;
+
+  --shadow-sm: 0 2px 10px rgba(23, 37, 84, 0.06);
+  --shadow: 0 12px 34px rgba(23, 37, 84, 0.1);
+  --shadow-lg: 0 24px 60px rgba(23, 37, 84, 0.14);
+}
+
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  :root {
+    --section-y: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --gutter: 20px;
+    --section-y: 38px;
+    --section-y-sm: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --gutter: 16px;
+    --section-y: 48px;
+  }
+}

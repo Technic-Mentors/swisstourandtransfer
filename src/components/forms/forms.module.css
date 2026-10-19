@@ -1,0 +1,389 @@
+/* ================================================================= fields */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.required {
+  color: var(--gold);
+  margin-left: 3px;
+}
+
+.control {
+  width: 100%;
+  padding: 8px 11px;
+  background: var(--navy-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--cream);
+  font-size: 13.5px;
+  line-height: 1.4;
+  transition: border-color var(--t) var(--ease), background var(--t) var(--ease);
+}
+
+.control::placeholder {
+  color: var(--text-faint);
+}
+
+.control:hover {
+  border-color: var(--border-light);
+}
+
+.control:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: var(--navy-card);
+}
+
+.control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+textarea.control {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+select.control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23A3AEC2' d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 11px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* Dark form controls need their native pickers nudged to a light colour */
+input[type='date'].control,
+input[type='datetime-local'].control,
+input[type='time'].control {
+  color-scheme: dark;
+}
+
+.error {
+  border-color: var(--danger);
+}
+
+.errorText {
+  font-size: 12px;
+  color: #ffb3aa;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* =============================================================== checkbox */
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.checkbox input {
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+  flex: none;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+/* =========================================================== enquiry form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.row3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .row2,
+  .row3 {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* Button and note on one line, so the form does not end in a slab. */
+.formActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.formNote {
+  flex: 1;
+  min-width: 190px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-faint);
+  text-align: left;
+}
+
+.success {
+  scroll-margin-top: 100px;
+  padding: 36px 28px;
+  text-align: center;
+  border: 1px solid rgba(63, 178, 127, 0.32);
+  background: rgba(63, 178, 127, 0.08);
+  border-radius: var(--radius-lg);
+}
+
+.successIcon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(63, 178, 127, 0.18);
+  color: #6fdcab;
+  font-size: 25px;
+}
+
+.successTitle {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  color: var(--cream);
+  margin-bottom: 10px;
+}
+
+.successActions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ======================================================= quick booking bar */
+/* Glass, so the hero photo behind still reads through the bar. */
+.quickBar {
+  background: rgba(10, 18, 30, 0.58);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  border: 1px solid rgba(245, 241, 234, 0.14);
+  border-radius: 6px;
+  padding: 15px 16px 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+}
+
+:global(body[data-public-theme='light']) .quickBar {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: var(--border-strong);
+  box-shadow: 0 18px 42px rgba(11, 46, 89, 0.16);
+}
+
+.quickBar .control {
+  background: rgba(8, 14, 24, 0.5);
+  border-color: rgba(245, 241, 234, 0.16);
+}
+
+:global(body[data-public-theme='light']) .quickBar .control {
+  background: #fff;
+  border-color: var(--border-strong);
+  color: var(--cream);
+}
+
+:global(body[data-public-theme='light']) .quickBar .control::placeholder {
+  color: var(--text-dim);
+  opacity: 1;
+}
+
+.quickBar .control:hover,
+.quickBar .control:focus {
+  border-color: var(--gold-line);
+}
+
+:global(body[data-public-theme='light']) .quickBar .control:hover,
+:global(body[data-public-theme='light']) .quickBar .control:focus {
+  background: #fff;
+  border-color: var(--gold);
+}
+
+:global(body[data-public-theme='light']) .quickBar input[type='datetime-local'] {
+  color-scheme: light;
+}
+
+:global(body[data-public-theme='light']) .quickBar .label {
+  color: var(--text);
+}
+
+/* The button is one of the row: same height as every field beside it. */
+.quickSubmit .btn {
+  height: 38px;
+  padding-block: 0;
+  border-radius: var(--radius-sm);
+}
+
+/* Every field in the bar reads from the middle, label included. */
+.quickBar .label {
+  text-align: center;
+}
+
+.quickBar .control {
+  height: 38px;
+  text-align: center;
+  text-align-last: center;
+}
+
+/* The search field's icon would fight centred text, so it sits out of the way. */
+.quickBar .searchIcon {
+  display: none;
+}
+
+.quickBar .searchInput {
+  padding-right: 11px;
+}
+
+/* A native date control needs its inner fields nudged to the middle too. */
+.quickBar input[type='datetime-local'] {
+  justify-content: center;
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.quickHeading {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-mid);
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+:global(body[data-public-theme='light']) .quickHeading {
+  color: var(--gold-dark);
+}
+
+:global(body[data-public-theme='light']) .quickSubmit .btn {
+  color: #0b2e59;
+}
+
+@media (max-width: 1024px) {
+  .quickGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .quickSubmit {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .quickGrid {
+    grid-template-columns: 1fr;
+  }
+  .quickBar {
+    padding: 18px;
+  }
+}
+
+/* ------------------------------------------------- searchable city field */
+.search {
+  position: relative;
+}
+
+.searchInput {
+  padding-right: 38px;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+.searchList {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 30;
+  max-height: 232px;
+  overflow-y: auto;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  border-radius: var(--radius);
+  border: 1px solid var(--gold-line);
+  background: var(--navy-card);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
+}
+
+.searchOption {
+  display: block;
+  width: 100%;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.searchOptionOn {
+  background: var(--gold-wash);
+  color: var(--cream);
+}
+
+:global(body[data-public-theme='light']) .searchOptionOn {
+  background: var(--gold-wash);
+  color: var(--cream);
+}
+
+.searchEmpty {
+  padding: 11px;
+  font-size: 13px;
+  color: var(--text-faint);
+  text-align: center;
+}
