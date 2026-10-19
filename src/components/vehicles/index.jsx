@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { uploadUrl } from '../../config';
+import { imageFallback, imageUrl } from '../../config';
 import { Button, Card, Lightbox, cx } from '../ui';
 import WhatsAppButton from '../ui/WhatsAppButton';
 import s from './vehicles.module.css';
@@ -42,25 +42,6 @@ export function priceLabel(vehicle) {
 
 /* ------------------------------------------------------------ vehicle card */
 
-/** Gold line-art car, used when a vehicle has no photo yet. */
-function CarOutline() {
-  return (
-    <svg viewBox="0 0 240 72" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
-      <path
-        d="M8 50h12m200 0h12M20 50c0-9 7-16 16-16s16 7 16 16m0 0h136m0 0c0-9 7-16 16-16s16 7 16 16"
-        strokeLinecap="round"
-      />
-      <path
-        d="M14 50c-2-10 0-16 6-18l28-6c14-11 26-16 44-16h26c16 0 28 6 40 16l28 6c6 2 8 8 6 18"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="36" cy="50" r="7" />
-      <circle cx="204" cy="50" r="7" />
-    </svg>
-  );
-}
-
 export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
   const href = `/vehicles/${vehicle.slug}`;
   const price = priceLabel(vehicle);
@@ -69,22 +50,16 @@ export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
   return (
     <Card hover className={s.card}>
       <Link to={href} className={s.media} aria-label={vehicle.name}>
-        {cover ? (
-          <img
-            src={uploadUrl(cover)}
-            alt={`${vehicle.name} with chauffeur`}
-            loading="lazy"
-            width="640"
-            height="480"
-          />
-        ) : (
-          <>
-            <span className={s.placeholderArt}>
-              <CarOutline />
-            </span>
-            <span className={s.placeholderLabel}>Vehicle photo</span>
-          </>
-        )}
+        {/* No photo uploaded yet falls back to the placeholder car, so a card
+            never shows an empty frame. */}
+        <img
+          src={imageUrl(cover)}
+          onError={imageFallback}
+          alt={`${vehicle.name} with chauffeur`}
+          loading="lazy"
+          width="640"
+          height="480"
+        />
 
         {vehicle.is_featured ? <span className={s.featuredDot}>Featured</span> : null}
 
@@ -176,20 +151,12 @@ export function VehicleGallery({ photos = [], name = '' }) {
   const [index, setIndex] = useState(0);
   const [lightbox, setLightbox] = useState(false);
 
-  if (!photos.length) {
-    return (
-      <div className={s.galleryMain} style={{ cursor: 'default' }}>
-        <span className={s.placeholderArt}>
-          <CarOutline />
-        </span>
-        <span className={s.placeholderLabel}>Vehicle photo</span>
-      </div>
-    );
-  }
+  // A vehicle with no photos still gets one frame: the placeholder car.
+  const shots = photos.length ? photos : [{ id: 'placeholder', file_path: '', alt_text: name }];
 
-  const current = photos[Math.min(index, photos.length - 1)];
-  const items = photos.map((photo, i) => ({
-    src: uploadUrl(photo.file_path),
+  const current = shots[Math.min(index, shots.length - 1)];
+  const items = shots.map((photo, i) => ({
+    src: imageUrl(photo.file_path),
     alt: photo.alt_text || `${name} - photo ${i + 1}`,
     caption: photo.alt_text || '',
   }));
@@ -203,16 +170,17 @@ export function VehicleGallery({ photos = [], name = '' }) {
         aria-label="Open full size image"
       >
         <img
-          src={uploadUrl(current.file_path)}
+          src={imageUrl(current.file_path)}
+          onError={imageFallback}
           alt={current.alt_text || `${name} with chauffeur`}
           width="960"
           height="600"
         />
       </button>
 
-      {photos.length > 1 && (
+      {shots.length > 1 && (
         <div className={s.thumbs}>
-          {photos.slice(0, 10).map((photo, i) => (
+          {shots.slice(0, 10).map((photo, i) => (
             <button
               key={photo.id}
               type="button"
@@ -221,7 +189,8 @@ export function VehicleGallery({ photos = [], name = '' }) {
               aria-label={`Show photo ${i + 1}`}
             >
               <img
-                src={uploadUrl(photo.file_path)}
+                src={imageUrl(photo.file_path)}
+                onError={imageFallback}
                 alt=""
                 loading="lazy"
                 width="160"

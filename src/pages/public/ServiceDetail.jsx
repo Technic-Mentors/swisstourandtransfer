@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { uploadUrl } from '../../config';
+import { imageFallback, imageUrl } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -45,15 +45,18 @@ export default function ServiceDetail() {
   const { service, otherServices, vehicles, photos = [] } = data;
 
   const lightboxItems = photos.map((photo) => ({
-    src: uploadUrl(photo.file_path),
+    src: imageUrl(photo.file_path),
     alt: photo.alt_text || photo.caption || service.name,
     caption: photo.caption || '',
   }));
 
   // The service's own photos: cover first, the rest as a strip beneath it.
-  const servicePhotos = service.photos || [];
+  // With none uploaded, one placeholder frame keeps the layout intact.
+  const servicePhotos = service.photos?.length
+    ? service.photos
+    : [{ id: 'placeholder', file_path: '', alt_text: service.name }];
   const servicePhotoItems = servicePhotos.map((photo) => ({
-    src: uploadUrl(photo.file_path),
+    src: imageUrl(photo.file_path),
     alt: photo.alt_text || service.name,
     caption: '',
   }));
@@ -97,7 +100,8 @@ export default function ServiceDetail() {
                     aria-label={`View photos of ${service.name}`}
                   >
                     <img
-                      src={uploadUrl(servicePhotos[0].file_path)}
+                      src={imageUrl(servicePhotos[0].file_path)}
+                      onError={imageFallback}
                       alt={servicePhotos[0].alt_text || service.name}
                       width="860"
                       height="480"
@@ -115,7 +119,8 @@ export default function ServiceDetail() {
                           aria-label={`View photo ${i + 2} of ${service.name}`}
                         >
                           <img
-                            src={uploadUrl(photo.file_path)}
+                            src={imageUrl(photo.file_path)}
+                            onError={imageFallback}
                             alt={photo.alt_text || service.name}
                             loading="lazy"
                             width="200"
@@ -230,7 +235,8 @@ export default function ServiceDetail() {
                   aria-label={photo.caption || `Open photo ${i + 1}`}
                 >
                   <img
-                    src={uploadUrl(photo.file_path)}
+                    src={imageUrl(photo.file_path)}
+                    onError={imageFallback}
                     alt={photo.alt_text || photo.caption || ''}
                     loading="lazy"
                     width="500"

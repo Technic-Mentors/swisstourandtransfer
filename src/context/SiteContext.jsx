@@ -1,21 +1,15 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { publicApi } from '../api/resources';
+import { settings as placeholderSettings } from '../api/placeholders';
 
 const SiteContext = createContext(null);
 
-/** Sensible values so the site still renders if the API is briefly unreachable. */
-const FALLBACK = {
-  company_name: 'Swiss Tour & Transfer',
-  tagline: 'Explore · Travel · Arrive',
-  whatsapp_number: '41000000000',
-  whatsapp_template_vehicle: "Hello, I would like to book the {vehicle}.",
-  whatsapp_template_general: 'Hello, I would like to enquire about a chauffeur service.',
-  show_floating_whatsapp: '1',
-  show_sticky_mobile_bar: '1',
-  phone: '',
-  email: '',
-  announcement_enabled: '0',
-};
+/**
+ * The header, footer and every WhatsApp button read these, so they start from
+ * the placeholder settings rather than from nothing - the site is dressed on
+ * the very first paint and the live values replace them when they arrive.
+ */
+const FALLBACK = placeholderSettings;
 
 /**
  * Settings are needed by the header, footer, every WhatsApp button and the

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { uploadUrl } from '../../config';
+import { imageFallback, imageUrl } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -44,17 +44,14 @@ export default function Services() {
                 {services.map((service) => (
                   <Card hover key={service.id} className={s.serviceTile}>
                     <Link to={`/services/${service.slug}`} className={s.serviceTileMedia}>
-                      {service.image ? (
-                        <img
-                          src={uploadUrl(service.image)}
-                          alt={service.name}
-                          loading="lazy"
-                          width="600"
-                          height="338"
-                        />
-                      ) : (
-                        <span className={s.mediaPlaceholder}>{service.name}</span>
-                      )}
+                      <img
+                        src={imageUrl(service.image)}
+                        onError={imageFallback}
+                        alt={service.name}
+                        loading="lazy"
+                        width="600"
+                        height="338"
+                      />
                     </Link>
 
                     <div className={s.serviceTileBody}>

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { uploadUrl } from '../../config';
+import { imageFallback, imageUrl } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -46,21 +46,20 @@ export default function Offers() {
               <div className={s.cardGrid2}>
                 {promotions.map((promo) => (
                   <Card hover key={promo.id} className={s.offerCard}>
-                    {promo.banner_image && (
-                      <img
-                        src={uploadUrl(promo.banner_image)}
-                        alt={promo.title}
-                        loading="lazy"
-                        style={{
-                          width: '100%',
-                          borderRadius: 'var(--radius)',
-                          aspectRatio: '16 / 9',
-                          objectFit: 'cover',
-                        }}
-                        width="600"
-                        height="338"
-                      />
-                    )}
+                    <img
+                      src={imageUrl(promo.banner_image)}
+                      onError={imageFallback}
+                      alt={promo.title}
+                      loading="lazy"
+                      style={{
+                        width: '100%',
+                        borderRadius: 'var(--radius)',
+                        aspectRatio: '16 / 9',
+                        objectFit: 'cover',
+                      }}
+                      width="600"
+                      height="338"
+                    />
 
                     <h2 className={s.offerCardTitle}>{promo.title}</h2>
                     <p className={s.offerCardText}>{promo.description}</p>

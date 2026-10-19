@@ -600,7 +600,7 @@ export function GallerySection({ content, photos }) {
 
   const tiles = photos.slice(0, 6);
   const items = tiles.map((photo) => ({
-    src: uploadUrl(photo.file_path),
+    src: imageUrl(photo.file_path),
     alt: photo.alt_text || photo.caption || 'Swiss Tour & Transfer',
     caption: photo.caption || '',
   }));
@@ -625,7 +625,8 @@ export function GallerySection({ content, photos }) {
               aria-label={`Open photo ${i + 1}`}
             >
               <img
-                src={uploadUrl(photo.file_path)}
+                src={imageUrl(photo.file_path)}
+                onError={imageFallback}
                 alt={photo.alt_text || photo.caption || ''}
                 loading="lazy"
                 width="500"

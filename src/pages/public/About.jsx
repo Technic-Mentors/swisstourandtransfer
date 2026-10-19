@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { uploadUrl } from '../../config';
+import { imageFallback, imageUrl } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -130,15 +130,14 @@ export default function About() {
 
           {!loading && !error && (
             <>
-              {content.image && (
-                <img
-                  className={s.aboutImage}
-                  src={uploadUrl(content.image)}
-                  alt="Swiss Tour & Transfer chauffeurs and vehicles"
-                  width="1200"
-                  height="514"
-                />
-              )}
+              <img
+                className={s.aboutImage}
+                src={imageUrl(content.image)}
+                onError={imageFallback}
+                alt="Swiss Tour & Transfer chauffeurs and vehicles"
+                width="1200"
+                height="514"
+              />
 
               {/* One centred column: the text still reads left to right. */}
               <div className={s.aboutBody}>
