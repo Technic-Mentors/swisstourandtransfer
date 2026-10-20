@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { imageFallback, imageUrl } from '../../config';
+import { imageFallback, imageUrl, vehicleImage } from '../../config';
 import { Button, Card, Lightbox, cx } from '../ui';
 import hs from '../home/home.module.css';
 import WhatsAppButton from '../ui/WhatsAppButton';
@@ -46,7 +46,7 @@ export function priceLabel(vehicle) {
 export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
   const href = `/vehicles/${vehicle.slug}`;
   const price = priceLabel(vehicle);
-  const cover = vehicle.cover_image;
+  const cover = vehicleImage(vehicle);
 
   return (
     <Card hover className={cx(s.card, hs.xGloss)}>
@@ -55,6 +55,7 @@ export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
             never shows an empty frame. */}
         <img
           src={imageUrl(cover)}
+          hidden={!cover}
           onError={imageFallback}
           alt={`${vehicle.name} with chauffeur`}
           loading="lazy"
@@ -172,6 +173,7 @@ export function VehicleGallery({ photos = [], name = '' }) {
       >
         <img
           src={imageUrl(current.file_path)}
+          hidden={!current.file_path}
           onError={imageFallback}
           alt={current.alt_text || `${name} with chauffeur`}
           width="960"
@@ -191,6 +193,7 @@ export function VehicleGallery({ photos = [], name = '' }) {
             >
               <img
                 src={imageUrl(photo.file_path)}
+                hidden={!photo.file_path}
                 onError={imageFallback}
                 alt=""
                 loading="lazy"

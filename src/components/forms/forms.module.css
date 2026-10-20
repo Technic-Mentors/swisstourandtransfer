@@ -387,3 +387,50 @@ input[type='time'].control {
   color: var(--text-faint);
   text-align: center;
 }
+
+/* ------------------------------------------------------ password reveal */
+.passwordWrap {
+  position: relative;
+  display: flex;
+}
+
+/* room for the toggle, so a long value never runs underneath it */
+.passwordControl {
+  padding-right: 40px;
+}
+
+/* Edge draws its own reveal control; without this there are two eyes */
+.passwordControl::-ms-reveal,
+.passwordControl::-ms-clear {
+  display: none;
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: color var(--t) var(--ease), background var(--t) var(--ease);
+}
+
+.passwordToggle:hover {
+  color: var(--gold);
+  background: var(--gold-wash);
+}
+
+.passwordToggle:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+  color: var(--gold);
+}

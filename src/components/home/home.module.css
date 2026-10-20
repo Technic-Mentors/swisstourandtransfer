@@ -90,11 +90,9 @@
 /* scroll progress road (top of page) */
 .xProgress { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 80; pointer-events: none; background: rgba(0, 0, 0, .12); }
 .xProgressBar { height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); }
-.xProgressCar { position: absolute; top: -9px; left: 0; width: 30px; height: 16px; transform: translateX(-100%); }
 
 @media (max-width: 760px) {
   .xPlane { width: 80px; }
-  .xProgressCar { width: 24px; top: -7px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1436,4 +1434,218 @@
   .xFaq::before {
     transition: none !important;
   }
+}
+
+/* ============================================= planes, cars and journeys ==
+   Sky at the top of the page, road as you scroll: jets cross the hero, the
+   car rides the scroll bar, and "how it works" plays the whole handover -
+   the jet flies in and parks, then the car drives the guest onward.
+   All of it is decorative (aria-hidden, no pointer events) and animates
+   only transform, opacity and stroke, so nothing touches layout.          */
+
+@keyframes xJetCross {
+  0%   { transform: translate3d(-34vw, 34px, 0) scale(var(--jet-scale, 1)); opacity: 0; }
+  12%  { opacity: var(--jet-opacity, 1); }
+  84%  { opacity: var(--jet-opacity, 1); }
+  100% { transform: translate3d(124vw, -40px, 0) scale(var(--jet-scale, 1)); opacity: 0; }
+}
+
+/* The jet flies the first 40% of the loop and then waits at the airport;
+   the car leaves at 44% and arrives at 86%. Each vehicle paints its own
+   leg of the route in gold as it goes, and the whole thing fades out at
+   the end so the loop restarts on an empty map. Timing is linear because
+   the keyframes already hold the vehicles still between their legs. */
+@keyframes xTripPlane {
+  0%, 2%   { offset-distance: 0%; opacity: 0; }
+  6%       { opacity: 1; }
+  40%, 92% { offset-distance: 96%; opacity: 1; }
+  100%     { offset-distance: 96%; opacity: 0; }
+}
+
+@keyframes xTripArc {
+  0%, 2%   { stroke-dashoffset: 100; opacity: 1; }
+  40%, 92% { stroke-dashoffset: 0; opacity: 1; }
+  100%     { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes xTripCar {
+  0%, 44%  { offset-distance: 0%; opacity: 0; }
+  48%      { opacity: 1; }
+  86%, 92% { offset-distance: 91%; opacity: 1; }
+  100%     { offset-distance: 91%; opacity: 0; }
+}
+
+@keyframes xTripRoad {
+  0%, 44%  { stroke-dashoffset: 100; opacity: 1; }
+  86%, 92% { stroke-dashoffset: 0; opacity: 1; }
+  100%     { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* featured vehicles pull up one after another and settle on their springs */
+@keyframes xPullUp {
+  0%   { opacity: 0; transform: translateX(-46px); }
+  70%  { opacity: 1; transform: translateX(6px); }
+  88%  { transform: translateX(-2px); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ---- hero sky ---- */
+.xJetSky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+
+.xJet {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  will-change: transform, opacity;
+  animation: xJetCross linear infinite;
+}
+
+.xJetTrail {
+  width: clamp(70px, 15vw, 210px);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold) 38%, transparent));
+}
+
+.xJetIcon {
+  width: 46px;
+  height: auto;
+  margin-left: -1px;
+  fill: color-mix(in srgb, var(--gold-bright) 82%, transparent);
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, .45));
+}
+
+/* ---- the journey, above "how it works" ---- */
+.xTrip { max-width: 520px; margin: 2px auto 30px; }
+.xTripSvg { display: block; width: 100%; height: auto; overflow: visible; }
+.xTripTrack { stroke: color-mix(in srgb, var(--gold) 16%, transparent); stroke-width: 1.5; stroke-dasharray: 5 7; }
+.xTripDraw { stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.xTripDot { fill: var(--gold); }
+.xTripPlaneIcon, .xTripCarIcon { fill: var(--gold-bright); }
+
+.xTripPlane {
+  offset-path: path("M14 96C60 60 76 22 130 22C190 22 228 94 244 96L268 96");
+  offset-rotate: auto;
+  offset-distance: 0%;
+  opacity: 0;
+}
+
+.xTripCar {
+  offset-path: path("M268 96C350 96 410 106 506 106");
+  offset-rotate: auto;
+  offset-distance: 0%;
+  opacity: 0;
+}
+
+.xTrip.xIn .xTripArc { animation: xTripArc 9s linear .35s infinite; }
+.xTrip.xIn .xTripPlane { animation: xTripPlane 9s linear .35s infinite; }
+.xTrip.xIn .xTripRoad { animation: xTripRoad 9s linear .35s infinite; }
+.xTrip.xIn .xTripCar { animation: xTripCar 9s linear .35s infinite; }
+
+/* ---- car riding the scroll progress bar ----
+   The strip is made taller than the rule it draws, because the bar sits
+   flush against the top of the viewport and the car needs headroom above
+   the line or its roof is clipped away. Only the 4px rule is visible. */
+.xProgress { height: 14px; background: transparent; }
+
+.xProgress::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, .12);
+}
+
+.xProgressBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  z-index: 1;
+}
+
+.xProgressCar {
+  position: absolute;
+  right: -3px;
+  bottom: 1px;
+  width: 30px;
+  height: auto;
+  fill: var(--gold-bright);
+  filter: drop-shadow(0 1px 5px rgba(0, 0, 0, .45));
+}
+
+/* ---- featured vehicles arriving ----
+   The shorthand below resets animation-delay, so the stagger that
+   .xReveal.xIn .xStagger sets has to be restated for these cards. */
+.xReveal.xIn .xMotorcade > * {
+  opacity: 1;
+  animation: xPullUp .75s cubic-bezier(.22, 1, .36, 1) backwards;
+}
+
+.xReveal.xIn .xMotorcade > *:nth-child(2) { animation-delay: .11s; }
+.xReveal.xIn .xMotorcade > *:nth-child(3) { animation-delay: .22s; }
+.xReveal.xIn .xMotorcade > *:nth-child(4) { animation-delay: .33s; }
+.xReveal.xIn .xMotorcade > *:nth-child(5) { animation-delay: .44s; }
+.xReveal.xIn .xMotorcade > *:nth-child(6) { animation-delay: .55s; }
+.xReveal.xIn .xMotorcade > *:nth-child(n+7) { animation-delay: .66s; }
+
+@media (max-width: 760px) {
+  .xJetIcon { width: 32px; }
+  .xProgressCar { width: 24px; right: -2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xJetSky, .xProgressCar { display: none !important; }
+
+  .xTrip.xIn .xTripArc,
+  .xTrip.xIn .xTripRoad,
+  .xTrip.xIn .xTripPlane,
+  .xTrip.xIn .xTripCar { animation: none !important; }
+
+  /* the route is shown already travelled, with both vehicles arrived */
+  .xTripDraw { stroke-dashoffset: 0 !important; }
+  .xTripPlane { offset-distance: 96% !important; opacity: 1 !important; }
+  .xTripCar { offset-distance: 91% !important; opacity: 1 !important; }
+  .xTripPin .xPinRing { animation: none !important; }
+
+  .xReveal.xIn .xMotorcade > * { animation: none !important; transform: none !important; }
+}
+
+/* ===================================================== cursor car =========
+   A car that trails the pointer on the home page. Desktop pointers only -
+   the component itself refuses to run on touch or under reduced motion, and
+   the rule below is the belt to that braces.                              */
+
+.cursorCar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 55; /* over the page, under the sticky bar, header and nav */
+  margin: -6px 0 0 -20px; /* centres the 40x11 car on the point it tracks */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+  will-change: transform;
+}
+
+.cursorCarOn { opacity: 1; }
+
+.cursorCarFlip { display: block; }
+
+/* --cream is the text colour, so it inverts with the theme: a pale car
+   on the dark site, a dark one on the light site. The brand red is avoided
+   deliberately - the hero headline is red, and a red car vanishes into it. */
+.cursorCarIcon {
+  display: block;
+  width: 40px;
+  height: auto;
+  fill: var(--cream);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .55)) drop-shadow(0 8px 18px rgba(0, 0, 0, .35));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursorCar { display: none !important; }
 }

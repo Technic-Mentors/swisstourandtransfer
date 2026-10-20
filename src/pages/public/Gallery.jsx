@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { imageFallback, imageUrl } from '../../config';
+import { galleryImage, imageFallback, imageUrl } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -30,8 +30,8 @@ export default function Gallery() {
   const albums = data?.[0]?.albums ?? [];
   const photos = data?.[1]?.photos ?? [];
 
-  const items = photos.map((photo) => ({
-    src: imageUrl(photo.file_path),
+  const items = photos.map((photo, index) => ({
+    src: imageUrl(galleryImage(photo, index)),
     alt: photo.alt_text || photo.caption || 'Swiss Tour & Transfer',
     caption: photo.caption || '',
   }));
@@ -92,7 +92,7 @@ export default function Gallery() {
                     aria-label={photo.caption || `Open photo ${i + 1}`}
                   >
                     <img
-                      src={imageUrl(photo.file_path)}
+                      src={imageUrl(galleryImage(photo, i))}
                       onError={imageFallback}
                       alt={photo.alt_text || photo.caption || ''}
                       loading="lazy"

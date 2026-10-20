@@ -24,12 +24,64 @@ export const API_BASE_URL = URLS[MODE];
 export const API_URL = `${API_BASE_URL}/api`;
 export const SITE_URL = SITE_URLS[MODE];
 
-/**
- * Stand-in photo for anything the database has no image for yet, and the
- * fallback when an uploaded file 404s. Lives in /public so it is served by
- * the frontend itself and never depends on the API being up.
- */
-export const PLACEHOLDER_IMAGE = '/placeholder-car.jpg';
+/** Local public photos used when a vehicle has no uploaded database cover. */
+export function vehicleImage(vehicle) {
+  const identity = `${vehicle?.slug || ''} ${vehicle?.name || ''}`.toLowerCase();
+  const localPhoto = identity.includes('maybach') || identity.includes('s-class-premium')
+    ? '/2027-mercedes-maybach-s-680.jpg'
+    : identity.includes('s-class')
+      ? '/Mercedes-Benz S-Class.jfif'
+      : identity.includes('v-class')
+        ? '/Mercedes-Benz V-Class.jfif'
+        : identity.includes('sprinter')
+          ? '/Mercedes-Benz Sprinter.jpg'
+          : identity.includes('range rover') || identity.includes('range-rover')
+            ? '/Range Rover.jfif'
+            : null;
+
+  // A bundled photo named for the vehicle is the intended cover, even when
+  // the database still has an older uploaded cover for that vehicle.
+  if (localPhoto) return localPhoto;
+
+  const cover = String(vehicle?.cover_image || '').trim();
+  if (cover && !/placeholder-car\.jpg(?:$|[?#])/i.test(cover)) return cover;
+  return '';
+}
+
+/** Best matching bundled vehicle photo for a vehicle category card. */
+export function categoryImage(category) {
+  const identity = `${category?.slug || ''} ${category?.name || ''} ${category?.examples || ''}`.toLowerCase();
+  if (identity.includes('premium') || identity.includes('maybach') || identity.includes('vip')) {
+    return '/2027-mercedes-maybach-s-680.jpg';
+  }
+  if (identity.includes('first-class') || identity.includes('first class') || identity.includes('s-class')) {
+    return '/Mercedes-Benz S-Class.jfif';
+  }
+  if (identity.includes('business') || identity.includes('v-class')) return '/Mercedes-Benz V-Class.jfif';
+  if (identity.includes('range rover') || identity.includes('suv')) return '/Range Rover.jfif';
+  return '';
+}
+
+/** Local gallery photo for captions without a real uploaded gallery image. */
+export function galleryImage(photo, index = 0) {
+  const caption = `${photo?.caption || ''} ${photo?.alt_text || ''}`.toLowerCase();
+  if (caption.includes('maybach')) return '/2027-mercedes-maybach-s-680.jpg';
+  if (caption.includes('s-class')) return '/Mercedes-Benz S-Class.jfif';
+  if (caption.includes('v-class')) return '/Mercedes-Benz V-Class.jfif';
+  if (caption.includes('sprinter')) return '/Mercedes-Benz Sprinter.jpg';
+  if (caption.includes('range rover') || caption.includes('suv')) return '/Range Rover.jfif';
+
+  const existing = String(photo?.file_path || '').trim();
+  if (existing && !/placeholder-car\.jpg(?:$|[?#])/i.test(existing)) return existing;
+  const localPhotos = [
+    '/Mercedes-Benz S-Class.jfif',
+    '/Mercedes-Benz V-Class.jfif',
+    '/2027-mercedes-maybach-s-680.jpg',
+    '/Mercedes-Benz Sprinter.jpg',
+    '/Range Rover.jfif',
+  ];
+  return localPhotos[index % localPhotos.length];
+}
 
 /** Build a full URL for a file stored in the backend uploads folder. */
 export function uploadUrl(path) {
@@ -39,25 +91,18 @@ export function uploadUrl(path) {
 }
 
 /**
- * Public-site image URL: same as uploadUrl, but an empty path gives the
- * placeholder photo instead of an empty src. Use this everywhere a visitor
- * sees a picture so a half-filled database still looks finished.
+ * Public-site image URL. Empty paths stay empty so missing photos never
+ * silently turn into a generic placeholder.
  */
 export function imageUrl(path) {
-  if (!path) return PLACEHOLDER_IMAGE;
-  if (path === PLACEHOLDER_IMAGE || /^(\/|data:)/i.test(path)) return path;
+  if (!path) return '';
+  if (/^(\/|data:)/i.test(path)) return path;
   return uploadUrl(path);
 }
 
-/**
- * <img onError={imageFallback}> - swaps a broken upload for the placeholder.
- * Guarded so a missing placeholder can never loop.
- */
+/** Hide an unavailable photo; do not replace it with a generic image. */
 export function imageFallback(event) {
-  const img = event.currentTarget;
-  if (img.dataset.fallbackApplied) return;
-  img.dataset.fallbackApplied = '1';
-  img.src = PLACEHOLDER_IMAGE;
+  event.currentTarget.hidden = true;
 }
 
 /** Build a canonical URL for the public site. */
@@ -75,7 +120,6 @@ export default {
   API_BASE_URL,
   API_URL,
   SITE_URL,
-  PLACEHOLDER_IMAGE,
   uploadUrl,
   imageUrl,
   imageFallback,

@@ -19,6 +19,65 @@ function Wrapper({ label, required, error, hint, htmlFor, children }) {
   );
 }
 
+const eyeStroke = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.6,
+  strokeLinecap: 'round',
+  strokeLinejoin: 'round',
+};
+
+/** Open eye, or an eye with a stroke through it once the value is showing. */
+function EyeIcon({ off }) {
+  return (
+    <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" {...eyeStroke}>
+      <path d="M2 12s3.7-6.6 10-6.6S22 12 22 12s-3.7 6.6-10 6.6S2 12 2 12z" />
+      <circle cx="12" cy="12" r="2.9" />
+      {off && <path d="M4.3 19.7 19.7 4.3" />}
+    </svg>
+  );
+}
+
+/**
+ * Password input with a reveal toggle.
+ *
+ * The button is type="button" so it never submits the form it sits in, and
+ * it names its action rather than leaving screen readers to guess from an
+ * icon. Focus stays on the field, so revealing mid-typing does not
+ * interrupt the person.
+ */
+export function PasswordField({ label, required, error, hint, id, ...rest }) {
+  const generated = useId();
+  const fieldId = id || generated;
+  const [shown, setShown] = useState(false);
+  const action = shown ? 'Hide password' : 'Show password';
+
+  return (
+    <Wrapper label={label} required={required} error={error} hint={hint} htmlFor={fieldId}>
+      <div className={s.passwordWrap}>
+        <input
+          id={fieldId}
+          type={shown ? 'text' : 'password'}
+          className={cx(s.control, s.passwordControl, error && s.error)}
+          required={required}
+          aria-invalid={error ? 'true' : undefined}
+          {...rest}
+        />
+        <button
+          type="button"
+          className={s.passwordToggle}
+          onClick={() => setShown((value) => !value)}
+          aria-label={action}
+          aria-pressed={shown}
+          title={action}
+        >
+          <EyeIcon off={shown} />
+        </button>
+      </div>
+    </Wrapper>
+  );
+}
+
 export function Field({ label, required, error, hint, type = 'text', id, ...rest }) {
   const generated = useId();
   const fieldId = id || generated;

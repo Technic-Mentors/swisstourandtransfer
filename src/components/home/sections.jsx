@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { imageFallback, imageUrl } from '../../config';
+import { categoryImage, galleryImage, imageFallback, imageUrl } from '../../config';
 import { useSite } from '../../context/SiteContext';
 import {
   Button,
@@ -47,7 +47,9 @@ function ScrollProgress() {
 
   return (
     <div className={s.xProgress} aria-hidden="true">
-      <div ref={bar} className={s.xProgressBar} />
+      <div ref={bar} className={s.xProgressBar}>
+        <CarIcon className={s.xProgressCar} />
+      </div>
     </div>
   );
 }
@@ -74,6 +76,100 @@ const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
   dur: 9 + (i % 5) * 2,
   size: 2 + (i % 3),
 }));
+
+/** Swept-wing jet silhouette, nose pointing right. */
+function JetIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 64 34" aria-hidden="true">
+      <path d="M64 17 54 13.8 36 13.8 20 2 15 2 27 14.4 12 14.4 4 8.5 1.5 8.5 7.5 15.2 1 15.8 1 18.2 7.5 18.8 1.5 25.5 4 25.5 12 19.6 27 19.6 15 32 20 32 36 20.2 54 20.2Z" />
+    </svg>
+  );
+}
+
+/** Long-wheelbase saloon in side view, nose pointing right. */
+export function CarIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 84 24" aria-hidden="true">
+      <path fillRule="evenodd" d="M3 18 3 13.6 6 12.2 22 12 30 4.8 48 4.6 57 11.6 77 12.3 81.5 14.6 81.5 18Z M28.8 11.5 32.6 6.2 43.6 6.1 43.6 11.5Z M45.6 11.5 45.6 6.1 48.4 6.1 54.6 11.5Z" />
+      <circle cx="18" cy="18" r="4.8" />
+      <circle cx="66" cy="18" r="4.8" />
+    </svg>
+  );
+}
+
+/* Two jets at different heights: the far one is smaller, dimmer and slower,
+   and its negative delay means it is already mid-flight on the first paint. */
+const JETS = [
+  { top: '15%', scale: 1, opacity: 1, dur: 26, delay: -4 },
+  { top: '36%', scale: 0.6, opacity: 0.45, dur: 36, delay: -21 },
+];
+
+/** Jets crossing the hero sky, each trailing a gold contrail. */
+function SkyJets() {
+  return (
+    <div className={s.xJetSky} aria-hidden="true">
+      {JETS.map((jet, i) => (
+        <span
+          key={i}
+          className={s.xJet}
+          style={{
+            top: jet.top,
+            '--jet-scale': jet.scale,
+            '--jet-opacity': jet.opacity,
+            animationDuration: `${jet.dur}s`,
+            animationDelay: `${jet.delay}s`,
+          }}
+        >
+          <span className={s.xJetTrail} />
+          <JetIcon className={s.xJetIcon} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The service in one loop: the jet flies in from the left, painting its
+ * route as it goes, and parks at the airport; the car then leaves that
+ * same point and drives the guest on to the pin. The two paths below are
+ * repeated verbatim as offset-path in the stylesheet - edit both together.
+ * Nothing moves until the section has scrolled into view.
+ */
+function JourneyPath() {
+  const flight = 'M14 96C60 60 76 22 130 22C190 22 228 94 244 96L268 96';
+  const road = 'M268 96C350 96 410 106 506 106';
+
+  return (
+    <div ref={reveal} className={cx(s.xTrip, s.xReveal)} aria-hidden="true">
+      <svg className={s.xTripSvg} viewBox="0 0 520 132" fill="none">
+        <path className={s.xTripTrack} d={flight} />
+        <path className={s.xTripTrack} d={road} />
+        <path className={cx(s.xTripDraw, s.xTripArc)} pathLength="100" d={flight} />
+        <path className={cx(s.xTripDraw, s.xTripRoad)} pathLength="100" d={road} />
+
+        <circle className={s.xTripDot} cx="14" cy="96" r="5" />
+        <circle className={s.xTripDot} cx="268" cy="96" r="5" />
+        <g className={s.xTripPin} transform="translate(506 106)">
+          <circle className={s.xPinRing} r="6" />
+          <circle className={s.xPinCore} r="4" />
+        </g>
+
+        <g className={s.xTripPlane}>
+          <path className={s.xTripPlaneIcon} transform="translate(-13.4 -7.1) scale(0.42)" d="M64 17 54 13.8 36 13.8 20 2 15 2 27 14.4 12 14.4 4 8.5 1.5 8.5 7.5 15.2 1 15.8 1 18.2 7.5 18.8 1.5 25.5 4 25.5 12 19.6 27 19.6 15 32 20 32 36 20.2 54 20.2Z" />
+        </g>
+
+        {/* anchored so the wheels sit on the road rather than straddling it */}
+        <g className={s.xTripCar}>
+          <g className={s.xTripCarIcon} transform="translate(-19.3 -10.5) scale(0.46)">
+            <path fillRule="evenodd" d="M3 18 3 13.6 6 12.2 22 12 30 4.8 48 4.6 57 11.6 77 12.3 81.5 14.6 81.5 18Z M28.8 11.5 32.6 6.2 43.6 6.1 43.6 11.5Z M45.6 11.5 45.6 6.1 48.4 6.1 54.6 11.5Z" />
+            <circle cx="18" cy="18" r="4.8" />
+            <circle cx="66" cy="18" r="4.8" />
+          </g>
+        </g>
+      </svg>
+    </div>
+  );
+}
 
 /**
  * Plain ref callback (not a component): adds "xIn" when the element scrolls
@@ -178,6 +274,8 @@ export function HeroSection({ content, settings }) {
             }}
           />
         ))}
+
+        <SkyJets />
       </div>
 
       <Container>
@@ -319,7 +417,7 @@ export function CategoriesSection({ content, categories }) {
           {categories.map((category) => {
             // The category's own photo, a vehicle from it, or - when the
             // database has neither - the placeholder car from /public.
-            const cover = category.image || category.sample_image;
+            const cover = categoryImage(category) || category.image || category.sample_image;
 
             return (
               <Link
@@ -331,6 +429,7 @@ export function CategoriesSection({ content, categories }) {
                 <span className={cx(s.catMedia, s.xPhoto)}>
                   <img
                     src={imageUrl(cover)}
+                    hidden={!cover}
                     onError={imageFallback}
                     alt=""
                     loading="lazy"
@@ -368,7 +467,7 @@ export function FeaturedVehiclesSection({ content, vehicles }) {
           linkLabel="View all vehicles"
         />
         <div ref={reveal} className={s.xReveal}>
-          <VehicleGrid vehicles={vehicles} pageType="home-featured" className={s.xStagger} />
+          <VehicleGrid vehicles={vehicles} pageType="home-featured" className={cx(s.xStagger, s.xMotorcade)} />
         </div>
       </Container>
     </Section>
@@ -531,6 +630,7 @@ export function HowItWorksSection({ content, lists }) {
     <Section alt className={s.howItWorks}>
       <Container>
         <HeadRow eyebrow={content.how_eyebrow} title={content.how_heading} wide center />
+        <JourneyPath />
         <RailList items={steps} />
       </Container>
     </Section>
@@ -624,8 +724,8 @@ export function GallerySection({ content, photos }) {
   if (!photos.length) return null;
 
   const tiles = photos.slice(0, 6);
-  const items = tiles.map((photo) => ({
-    src: imageUrl(photo.file_path),
+  const items = tiles.map((photo, index) => ({
+    src: imageUrl(galleryImage(photo, index)),
     alt: photo.alt_text || photo.caption || 'Swiss Tour & Transfer',
     caption: photo.caption || '',
   }));
@@ -656,7 +756,7 @@ export function GallerySection({ content, photos }) {
               aria-label={`Open photo ${i + 1}`}
             >
               <img
-                src={imageUrl(photo.file_path)}
+                src={imageUrl(galleryImage(photo, i))}
                 onError={imageFallback}
                 alt={photo.alt_text || photo.caption || ''}
                 loading="lazy"

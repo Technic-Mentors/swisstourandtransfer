@@ -14,6 +14,7 @@ import vehicleStyles from '../../components/vehicles/vehicles.module.css';
 import EnquiryForm from '../../components/forms/EnquiryForm';
 import NotFound from './NotFound';
 import s from './pages.module.css';
+import { vehicleImage } from '../../config';
 
 const SpecIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
@@ -50,6 +51,15 @@ export default function VehicleDetail() {
   }
 
   const { vehicle, similar } = data;
+  const preferredImage = vehicleImage(vehicle);
+  const hasLocalVehicleImage = /^\/(?:2027-mercedes|Mercedes-Benz|Range Rover)/i.test(preferredImage);
+  const fallbackPhoto = { file_path: preferredImage, alt_text: vehicle.name };
+  const uploadedPhotos = (vehicle.photos || []).filter(
+    (photo) => !/placeholder-car\.jpg(?:$|[?#])/i.test(String(photo.file_path || '')),
+  );
+  const photos = hasLocalVehicleImage
+    ? [fallbackPhoto]
+    : uploadedPhotos.length ? uploadedPhotos : [fallbackPhoto];
   const price = priceLabel(vehicle);
   const message = buildMessage({ vehicle });
 
@@ -71,7 +81,7 @@ export default function VehicleDetail() {
         title={`${vehicle.name} with Chauffeur`}
         description={description}
         path={`/vehicles/${vehicle.slug}`}
-        image={vehicle.photos?.[0]?.file_path || vehicle.cover_image}
+        image={photos[0]?.file_path || vehicleImage(vehicle)}
         type="product"
         jsonLd={[
           vehicleSchema(vehicle, settings),
@@ -88,7 +98,7 @@ export default function VehicleDetail() {
 
           <div className={s.detailTop}>
             <div className={s.detailMedia}>
-              <VehicleGallery photos={vehicle.photos} name={vehicle.name} />
+              <VehicleGallery photos={photos} name={vehicle.name} />
 
               <div className={s.detailAbout}>
                 <h2 className={s.blockHeading}>About this vehicle</h2>

@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import Seo from '../../components/seo/Seo';
 import { Alert } from '../../components/admin/widgets';
 import { Button } from '../../components/ui';
-import { Field } from '../../components/forms/Fields';
+import { Field, PasswordField } from '../../components/forms/Fields';
 import s from '../../components/admin/admin.module.css';
 
 /**
@@ -59,9 +59,8 @@ export default function Login() {
               autoComplete="username"
               required
             />
-            <Field
+            <PasswordField
               label="Password"
-              type="password"
               value={form.password}
               onChange={set('password')}
               placeholder="••••••••"
