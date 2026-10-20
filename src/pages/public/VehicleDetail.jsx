@@ -52,7 +52,7 @@ export default function VehicleDetail() {
 
   const { vehicle, similar } = data;
   const preferredImage = vehicleImage(vehicle);
-  const hasLocalVehicleImage = /^\/(?:2027-mercedes|Mercedes-Benz|Range Rover)/i.test(preferredImage);
+  const hasLocalVehicleImage = /^\/(?:2027-mercedes|Mercedes-Benz|Range Rover|placeholder-car)/i.test(preferredImage);
   const fallbackPhoto = { file_path: preferredImage, alt_text: vehicle.name };
   const uploadedPhotos = (vehicle.photos || []).filter(
     (photo) => !/placeholder-car\.jpg(?:$|[?#])/i.test(String(photo.file_path || '')),

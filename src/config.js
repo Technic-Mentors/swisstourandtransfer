@@ -37,6 +37,8 @@ export function vehicleImage(vehicle) {
           ? '/Mercedes-Benz Sprinter.jpg'
           : identity.includes('range rover') || identity.includes('range-rover')
             ? '/Range Rover.jfif'
+            : identity.includes('toyota-prius') || identity.includes('e-class')
+              ? '/placeholder-car.jpg'
             : null;
 
   // A bundled photo named for the vehicle is the intended cover, even when
@@ -51,6 +53,7 @@ export function vehicleImage(vehicle) {
 /** Best matching bundled vehicle photo for a vehicle category card. */
 export function categoryImage(category) {
   const identity = `${category?.slug || ''} ${category?.name || ''} ${category?.examples || ''}`.toLowerCase();
+  if (identity.includes('economy') || identity.includes('toyota prius')) return '/placeholder-car.jpg';
   if (identity.includes('premium') || identity.includes('maybach') || identity.includes('vip')) {
     return '/2027-mercedes-maybach-s-680.jpg';
   }
