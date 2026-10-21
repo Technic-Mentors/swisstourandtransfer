@@ -35,7 +35,7 @@ export default function Seo({
   const canonical = `${SITE_URL}${pathname === '/' ? '' : pathname}` || SITE_URL;
   const fullTitle = !title ? BRAND : bare ? title : `${title} | ${BRAND}`;
   const desc = trim(description);
-  const ogImage = image ? uploadUrl(image) : `${SITE_URL}/logo.png`;
+  const ogImage = image ? uploadUrl(image) : `${SITE_URL}/logo-scenic.png`;
 
   // Accept a single schema object or an array; filter out nulls from builders.
   const blocks = (Array.isArray(jsonLd) ? jsonLd.flat() : [jsonLd]).filter(Boolean);

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 const KEY = 'stt_public_theme';
-const DEFAULT = 'dark';
+const DEFAULT = 'light';
 const listeners = new Set();
 
 function read() {

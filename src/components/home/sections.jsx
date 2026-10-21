@@ -14,6 +14,7 @@ import {
   cx,
 } from '../ui';
 import WhatsAppButton from '../ui/WhatsAppButton';
+import CountUp from '../ui/CountUp';
 import { VehicleGrid } from '../vehicles';
 import QuickBookingBar from '../forms/QuickBookingBar';
 import s from './home.module.css';
@@ -21,8 +22,21 @@ import s from './home.module.css';
 /** Cursor-follow glow for cards (sets --mx / --my). Shared with /about. */
 export function spotlight(e) {
   const r = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
-  e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+
+  e.currentTarget.style.setProperty('--mx', `${x}px`);
+  e.currentTarget.style.setProperty('--my', `${y}px`);
+
+  /* ...and the lean, as a fraction of the card either side of centre */
+  e.currentTarget.style.setProperty('--rx', `${(x / r.width - 0.5) * 7}deg`);
+  e.currentTarget.style.setProperty('--ry', `${(0.5 - y / r.height) * 7}deg`);
+}
+
+/** Put a card back to flat when the pointer leaves it. */
+export function unspotlight(e) {
+  e.currentTarget.style.setProperty('--rx', '0deg');
+  e.currentTarget.style.setProperty('--ry', '0deg');
 }
 
 /** Thin gold progress bar at the top of the page. */
@@ -68,6 +82,21 @@ function Words({ text, start = 0, wordClass }) {
         </span>{' '}
       </span>
     ));
+}
+
+/**
+ * Snow through the Swiss ski season, drifting embers the rest of the year.
+ * ?season=winter or ?season=default forces one, so the winter hero can be
+ * checked in July without waiting for December.
+ */
+function heroSeason() {
+  if (typeof window !== 'undefined') {
+    const forced = new URLSearchParams(window.location.search).get('season');
+    if (forced === 'winter' || forced === 'default') return forced;
+  }
+
+  const month = new Date().getMonth();
+  return month >= 10 || month <= 2 ? 'winter' : 'default';
 }
 
 const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
@@ -199,7 +228,9 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
     <div ref={reveal} className={cx(s.headRow, wide && s.headWide, center && s.headCentered, s.xHead, s.xReveal)}>
       <div>
         <Eyebrow className={eyebrowClass}>{eyebrow}</Eyebrow>
-        <Tag>{title}</Tag>
+        {/* Word by word, the same reveal the hero headline uses, but held
+            back until the heading is actually scrolled to. */}
+        <Tag>{title ? <Words text={title} wordClass={s.xHeadWord} /> : null}</Tag>
       </div>
       {link && (
         <Link to={link} className={cx(s.headLink, s.xArrow)}>
@@ -230,8 +261,37 @@ function splitHeadline(text) {
 
 export function HeroSection({ content, settings }) {
   const [lead, accent] = splitHeadline(content.hero_headline || 'Arrive the Swiss way');
+  const season = heroSeason();
   const leadCount = lead.split(' ').filter(Boolean).length;
   const aurora = useRef(null);
+  const copy = useRef(null);
+
+  /* The headline leaves slower than the page does, which gives the hero a
+     little depth. Written straight to the node in a rAF so scrolling never
+     waits on React. */
+  useEffect(() => {
+    const el = copy.current;
+    if (!el) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      const y = Math.min(window.scrollY, 600);
+      el.style.setProperty('--drift', `${y * 0.18}px`);
+      el.style.setProperty('--fade', String(Math.max(0, 1 - y / 520)));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+
+    paint();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   /* The glow drifts a few pixels behind the pointer. Only the light layer
      moves - the headline and the booking bar stay exactly where they are. */
@@ -264,7 +324,7 @@ export function HeroSection({ content, settings }) {
         {PARTICLES.map((p, i) => (
           <span
             key={i}
-            className={s.xSpark}
+            className={cx(s.xSpark, season === 'winter' && s.xSnow)}
             style={{
               left: `${p.left}%`,
               width: p.size,
@@ -279,7 +339,7 @@ export function HeroSection({ content, settings }) {
       </div>
 
       <Container>
-        <div className={s.xHeroContent}>
+        <div ref={copy} className={s.xHeroContent}>
           <span className={cx(s.heroEyebrow, s.xEyebrowIn)}>
             <SwissShield className={s.heroShield} />
             {content.hero_eyebrow || 'Chauffeur & limousine service · Switzerland'}
@@ -423,8 +483,9 @@ export function CategoriesSection({ content, categories }) {
               <Link
                 key={category.id}
                 to={`/vehicles/category/${category.slug}`}
-                className={cx(s.catCard, s.xLift, s.xSpot, s.xGloss)}
+                className={cx(s.catCard, s.xLift, s.xSpot, s.xGloss, s.xTilt)}
                 onMouseMove={spotlight}
+                onMouseLeave={unspotlight}
               >
                 <span className={cx(s.catMedia, s.xPhoto)}>
                   <img
@@ -467,7 +528,11 @@ export function FeaturedVehiclesSection({ content, vehicles }) {
           linkLabel="View all vehicles"
         />
         <div ref={reveal} className={s.xReveal}>
-          <VehicleGrid vehicles={vehicles} pageType="home-featured" className={cx(s.xStagger, s.xMotorcade)} />
+          <VehicleGrid
+            vehicles={vehicles}
+            pageType="home-featured"
+            className={cx(s.xStagger, s.xMotorcade, s.xHomeVehicles)}
+          />
         </div>
       </Container>
     </Section>
@@ -495,9 +560,10 @@ export function ServicesSection({ content, services }) {
         <div ref={reveal} className={cx(s.serviceGrid, s.xStagger)}>
           {services.map((service, i) => (
             <article
-              className={cx(s.serviceCell, s.xLift, s.xSpot, s.xGloss)}
+              className={cx(s.serviceCell, s.xLift, s.xSpot, s.xGloss, s.xTilt)}
               key={service.id}
               onMouseMove={spotlight}
+              onMouseLeave={unspotlight}
             >
               <span className={s.serviceNum}>{String(i + 1).padStart(2, '0')}</span>
               <h3 className={cx(s.serviceName, s.xItemTitle)}>
@@ -694,6 +760,18 @@ export function ReviewsSection({ content, testimonials, stats }) {
           link="/reviews"
           linkLabel="Read all reviews"
         />
+
+        {stats?.total > 0 && (
+          <div ref={reveal} className={cx(s.xScore, s.xReveal)}>
+            <span className={s.xScoreValue}>
+              <CountUp raw={stats.average} />
+            </span>
+            <Rating value={stats.average} className={s.xStars} />
+            <span className={s.xScoreCount}>
+              from <CountUp raw={String(stats.total)} /> guest reviews
+            </span>
+          </div>
+        )}
 
         <div ref={reveal} className={cx(s.reviewGrid, s.xStagger)}>
           {testimonials.slice(0, 3).map((review) => (

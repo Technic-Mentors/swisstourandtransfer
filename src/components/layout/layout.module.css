@@ -106,15 +106,15 @@ body[data-public-theme='light'] .headerScrolled {
 }
 
 .logoMark {
-  width: 82px;
-  height: 48px;
+  width: auto;
+  height: 62px;
   object-fit: contain;
   flex: none;
 }
 
 .logoLight {
-  width: 132px;
-  height: 88px;
+  width: 168px;
+  height: auto;
   object-fit: contain;
   flex: none;
 }
@@ -147,8 +147,8 @@ body[data-public-theme='light'] .headerInner {
 
 @media (max-width: 560px) {
   .logoMark {
-    width: 62px;
-    height: 36px;
+    width: auto;
+    height: 46px;
   }
 
   .logoTop {
@@ -159,7 +159,7 @@ body[data-public-theme='light'] .headerInner {
     font-size: 9px;
   }
   .logoLight {
-    width: 112px;
+    width: 140px;
     height: 76px;
   }
   body[data-public-theme='light'] .headerInner {
@@ -314,8 +314,8 @@ body[data-public-theme='light'] .headerInner {
 
 @media (max-width: 480px) {
   .logoMark {
-    width: 42px;
-    height: 24px;
+    width: auto;
+    height: 34px;
   }
   .logoTop {
     font-size: 16px;
@@ -924,5 +924,81 @@ body[data-public-theme='light'] .pageHeadText {
 
   .pageHeadText {
     font-size: 15px;
+  }
+}
+
+/* ===================================================== logo motion =======
+   The emblem is a raster image, so nothing inside it can move on its own.
+   What it can do is arrive, and respond to the pointer: the cars nudge
+   forward a little, which suits a transfer company better than a plain
+   scale. The footer badge drifts, because it has the room to.            */
+
+@keyframes logoIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes logoDrift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.logo {
+  animation: logoIn .55s var(--ease) both;
+}
+
+.logoMark {
+  transition: transform .4s var(--ease), filter .4s var(--ease);
+}
+
+.logo:hover .logoMark,
+.logo:focus-visible .logoMark {
+  transform: translateX(3px) scale(1.05);
+  filter: drop-shadow(0 7px 16px rgba(0, 0, 0, .4));
+}
+
+/* the typed wordmark opens up a touch as the emblem pulls away from it */
+.logoTop,
+.logoBottom {
+  transition: letter-spacing .4s var(--ease), color var(--t) var(--ease);
+}
+
+.logo:hover .logoBottom,
+.logo:focus-visible .logoBottom {
+  letter-spacing: 0.28em;
+}
+
+/* footer badge: a slow float, and it lifts under the pointer */
+.logoLight {
+  animation: logoDrift 7s ease-in-out infinite;
+  transition: transform .4s var(--ease), filter .4s var(--ease);
+}
+
+.logo:hover .logoLight,
+.logo:focus-visible .logoLight {
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, .35));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .logoLight {
+    animation: none !important;
+  }
+
+  .logoMark,
+  .logoLight,
+  .logoTop,
+  .logoBottom {
+    transition: none !important;
+  }
+
+  .logo:hover .logoMark,
+  .logo:focus-visible .logoMark {
+    transform: none !important;
+  }
+
+  .logo:hover .logoBottom,
+  .logo:focus-visible .logoBottom {
+    letter-spacing: 0.24em;
   }
 }

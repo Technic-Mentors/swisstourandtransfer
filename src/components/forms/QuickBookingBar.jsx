@@ -15,6 +15,13 @@ export default function QuickBookingBar({ heading, vehicles = [], cities = [] })
   const { buildUrl, track } = useWhatsApp();
   const [form, setForm] = useState({ pickup: '', dropoff: '', date: '', vehicle: '' });
 
+  /* Nothing earlier than right now: the local clock shifted into the format
+     datetime-local expects, which is local time with no zone suffix. */
+  const now = new Date();
+  const minDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+    .toISOString()
+    .slice(0, 16);
+
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }));
 
   const cityNames = cities.map((city) => city.name);
@@ -54,7 +61,13 @@ export default function QuickBookingBar({ heading, vehicles = [], cities = [] })
           placeholder="Search a destination"
           options={cityNames}
         />
-        <Field label="Date & time" type="datetime-local" value={form.date} onChange={set('date')} />
+        <Field
+          label="Date & time"
+          type="datetime-local"
+          min={minDateTime}
+          value={form.date}
+          onChange={set('date')}
+        />
         <SearchField
           label="Vehicle"
           value={form.vehicle}

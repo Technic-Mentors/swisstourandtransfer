@@ -20,17 +20,11 @@ const NAV = [
 function Logo({ onClick, lightTheme }) {
   return (
     <Link to="/" className={s.logo} onClick={onClick} aria-label="Swiss Tour & Transfer - home">
-      {lightTheme ? (
-        <img src="/logo-light.png" alt="Swiss Tour & Transfer" className={s.logoLight} width="132" height="88" />
-      ) : (
-        <>
-          <img src="/logo-mark.png" alt="" className={s.logoMark} width="82" height="48" />
-          <span className={s.logoText}>
-            <span className={s.logoTop}>SWISS</span>
-            <span className={s.logoBottom}>TOUR &amp; TRANSFER</span>
-          </span>
-        </>
-      )}
+      <img src="/logo-scenic-mark.png" alt="" className={s.logoMark} width="120" height="62" />
+      <span className={s.logoText}>
+        <span className={s.logoTop}>SWISS</span>
+        <span className={s.logoBottom}>TOUR &amp; TRANSFER</span>
+      </span>
     </Link>
   );
 }

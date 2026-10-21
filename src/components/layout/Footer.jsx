@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useSite } from '../../context/SiteContext';
-import usePublicTheme from '../../hooks/usePublicTheme';
 import { Container } from '../ui';
 import s from './layout.module.css';
 
@@ -71,7 +70,6 @@ function SocialIcon({ name }) {
 
 export default function Footer() {
   const { settings, socials } = useSite();
-  const { isLight } = usePublicTheme();
   const year = new Date().getFullYear();
   const phone = settings.phone;
 
@@ -81,24 +79,15 @@ export default function Footer() {
         <div className={s.footerGrid}>
           <div>
             <Link to="/" className={s.logo} aria-label="Swiss Tour & Transfer - home">
-              {isLight ? (
-                <img
-                  src="/logo-light.png"
-                  alt="Swiss Tour & Transfer"
-                  className={s.logoLight}
-                  width="132"
-                  height="88"
-                  loading="lazy"
-                />
-              ) : (
-                <>
-                  <img src="/logo-mark.png" alt="" className={s.logoMark} width="82" height="48" loading="lazy" />
-                  <span className={s.logoText}>
-                    <span className={s.logoTop}>SWISS</span>
-                    <span className={s.logoBottom}>TOUR &amp; TRANSFER</span>
-                  </span>
-                </>
-              )}
+              {/* The footer has the room for the whole badge, wordmark and all. */}
+              <img
+                src="/logo-scenic.png"
+                alt="Swiss Tour & Transfer"
+                className={s.logoLight}
+                width="168"
+                height="168"
+                loading="lazy"
+              />
             </Link>
 
             <p className={s.footerBrandText}>

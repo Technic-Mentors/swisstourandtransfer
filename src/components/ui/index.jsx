@@ -277,11 +277,11 @@ export function Lightbox({ items = [], index = 0, onClose, onIndexChange }) {
  */
 export function Pagination({
   page = 1,
-  perPage = 10,
+  perPage = 12,
   total = 0,
   onPageChange,
   onPerPageChange,
-  perPageOptions = [10, 20, 50],
+  perPageOptions = [12, 24, 48],
   label = 'Records per page:',
 }) {
   // Nothing to page through: with a short list the control is just clutter, so

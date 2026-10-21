@@ -31,7 +31,7 @@ export function vehicleImage(vehicle) {
     ? '/2027-mercedes-maybach-s-680.jpg'
     : identity.includes('s-class')
       ? '/Mercedes-Benz S-Class.jfif'
-      : identity.includes('v-class')
+      : identity.includes('v-class') || identity.includes('vito') || identity.includes('eqv')
         ? '/Mercedes-Benz V-Class.jfif'
         : identity.includes('sprinter')
           ? '/Mercedes-Benz Sprinter.jpg'
@@ -47,7 +47,9 @@ export function vehicleImage(vehicle) {
 
   const cover = String(vehicle?.cover_image || '').trim();
   if (cover && !/placeholder-car\.jpg(?:$|[?#])/i.test(cover)) return cover;
-  return '';
+  // Never an empty string: an <img src=""> does not fire onError, so the
+  // fallback would not run and the card would show a blank frame.
+  return '/placeholder-car.jpg';
 }
 
 /** Best matching bundled vehicle photo for a vehicle category card. */
@@ -62,7 +64,12 @@ export function categoryImage(category) {
   }
   if (identity.includes('business') || identity.includes('v-class')) return '/Mercedes-Benz V-Class.jfif';
   if (identity.includes('range rover') || identity.includes('suv')) return '/Range Rover.jfif';
-  return '';
+  if (identity.includes('electric') || identity.includes('eqs') || identity.includes('eqv')) {
+    return '/Mercedes-Benz S-Class.jfif';
+  }
+
+  // Same reason as vehicleImage: an empty src never fires onError.
+  return '/placeholder-car.jpg';
 }
 
 /** Local gallery photo for captions without a real uploaded gallery image. */
@@ -76,6 +83,41 @@ export function galleryImage(photo, index = 0) {
 
   const existing = String(photo?.file_path || '').trim();
   if (existing && !/placeholder-car\.jpg(?:$|[?#])/i.test(existing)) return existing;
+  const localPhotos = [
+    '/Mercedes-Benz S-Class.jfif',
+    '/Mercedes-Benz V-Class.jfif',
+    '/2027-mercedes-maybach-s-680.jpg',
+    '/Mercedes-Benz Sprinter.jpg',
+    '/Range Rover.jfif',
+  ];
+  return localPhotos[index % localPhotos.length];
+}
+
+/**
+ * Local public photo for a service with no uploaded image of its own.
+ *
+ * Same bundled photos the vehicle, category and gallery helpers draw on, so
+ * the whole site stays on one set of images while it runs without a backend.
+ * Note the ski test runs before the airport one: "ski transfers" contains
+ * "transfer" too, and would otherwise be matched as an airport job.
+ */
+export function serviceImage(service, index = 0) {
+  const identity = `${service?.slug || ''} ${service?.name || ''}`.toLowerCase();
+
+  if (identity.includes('wedding')) return '/2027-mercedes-maybach-s-680.jpg';
+  if (identity.includes('ski') || identity.includes('winter')) return '/Range Rover.jfif';
+  if (identity.includes('event') || identity.includes('wef') || identity.includes('group')) {
+    return '/Mercedes-Benz Sprinter.jpg';
+  }
+  if (identity.includes('airport') || identity.includes('transfer')) return '/Mercedes-Benz V-Class.jfif';
+  if (identity.includes('business') || identity.includes('hourly') || identity.includes('corporate')) {
+    return '/Mercedes-Benz S-Class.jfif';
+  }
+
+  const existing = String(service?.image || '').trim();
+  if (existing && !/placeholder-car.jpg(?:$|[?#])/i.test(existing)) return existing;
+
+  // Anything unmatched still gets a photo, and a different one each time.
   const localPhotos = [
     '/Mercedes-Benz S-Class.jfif',
     '/Mercedes-Benz V-Class.jfif',
@@ -126,6 +168,7 @@ export default {
   uploadUrl,
   imageUrl,
   imageFallback,
+  serviceImage,
   siteUrl,
   BRAND,
 };

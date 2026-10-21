@@ -232,3 +232,27 @@ body.has-sticky-bar {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ------------------------------------------------------------ car cursor */
+/* The pointer itself is a car on the public site. The hotspot sits on the
+   nose, so the car points at whatever is under it. The attribute selector
+   keeps it off /admin, which never gets a public theme. `auto` is the
+   fallback if a browser refuses the image. */
+body[data-public-theme] {
+  cursor: url('/cursor-car.png') 54 20, auto;
+}
+
+/* Links and controls keep the hand, so clickable things still look clickable. */
+body[data-public-theme] a,
+body[data-public-theme] button,
+body[data-public-theme] [role='button'],
+body[data-public-theme] label,
+body[data-public-theme] summary,
+body[data-public-theme] select {
+  cursor: pointer;
+}
+
+body[data-public-theme] input,
+body[data-public-theme] textarea {
+  cursor: text;
+}

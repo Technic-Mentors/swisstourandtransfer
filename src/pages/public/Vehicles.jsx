@@ -18,7 +18,7 @@ export default function Vehicles() {
   const { settings } = useSite();
   const [active, setActive] = useState('all');
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState(12);
 
   const load = useCallback(() => Promise.all([publicApi.vehicles(), publicApi.categories()]), []);
   const { data, loading, error } = useFetch(load, []);

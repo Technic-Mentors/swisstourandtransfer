@@ -1614,38 +1614,149 @@
   .xReveal.xIn .xMotorcade > * { animation: none !important; transform: none !important; }
 }
 
-/* ===================================================== cursor car =========
-   A car that trails the pointer on the home page. Desktop pointers only -
-   the component itself refuses to run on touch or under reduced motion, and
-   the rule below is the belt to that braces.                              */
+/* ============================================= home: featured vehicles ===
+   Six cars are fetched for this row. The shared grid is four wide, which
+   left a ragged 4 + 2, so the home page uses three across and shows all
+   six as two even rows. The class is doubled to out-weigh .grid from the
+   vehicles module without resorting to !important. */
 
-.cursorCar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 55; /* over the page, under the sticky bar, header and nav */
-  margin: -6px 0 0 -20px; /* centres the 40x11 car on the point it tracks */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .4s ease;
-  will-change: transform;
+.xHomeVehicles.xHomeVehicles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.cursorCarOn { opacity: 1; }
+@media (max-width: 820px) {
+  .xHomeVehicles.xHomeVehicles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
-.cursorCarFlip { display: block; }
+@media (max-width: 460px) {
+  .xHomeVehicles.xHomeVehicles {
+    grid-template-columns: 1fr;
+  }
+}
 
-/* --cream is the text colour, so it inverts with the theme: a pale car
-   on the dark site, a dark one on the light site. The brand red is avoided
-   deliberately - the hero headline is red, and a red car vanishes into it. */
-.cursorCarIcon {
-  display: block;
-  width: 40px;
-  height: auto;
-  fill: var(--cream);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .55)) drop-shadow(0 8px 18px rgba(0, 0, 0, .35));
+/* ================================================ home: added motion ====
+   Two pieces. The hero copy leaves slower than the page scrolls, and the
+   category cards lean towards the pointer rather than only lighting up.  */
+
+.xHeroContent {
+  transform: translate3d(0, var(--drift, 0), 0);
+  opacity: var(--fade, 1);
+  will-change: transform, opacity;
+}
+
+/* The lift rule already claims transform on hover, so this needs to be the
+   heavier selector; the class is doubled rather than marked important. */
+.xTilt.xTilt {
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  transform:
+    perspective(900px)
+    rotateX(var(--ry, 0deg))
+    rotateY(var(--rx, 0deg));
+}
+
+.xTilt.xTilt:hover {
+  transform:
+    perspective(900px)
+    rotateX(var(--ry, 0deg))
+    rotateY(var(--rx, 0deg))
+    translateY(-6px)
+    scale(1.015);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cursorCar { display: none !important; }
+  .xHeroContent {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .xTilt.xTilt,
+  .xTilt.xTilt:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* The booking bar arrives after the headline has settled, so the hero reads
+   top to bottom on load instead of everything appearing at once. */
+@keyframes quickIn {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+
+.quickSection {
+  animation: quickIn .7s var(--ease) .35s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quickSection {
+    animation: none !important;
+  }
+}
+
+/* ---------------------------------------------- hero: winter particles ---
+   The same sparks, falling instead of rising, and white instead of gold.
+   Only the direction, colour and starting edge change. */
+@keyframes xSnowFall {
+  0%   { transform: translateY(0) translateX(0) scale(.65); opacity: 0; }
+  12%  { opacity: .9; }
+  100% { transform: translateY(560px) translateX(22px) scale(1); opacity: 0; }
+}
+
+.xSnow {
+  top: -12px;
+  bottom: auto;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 0 7px 1px rgba(255, 255, 255, .6);
+  animation-name: xSnowFall;
+}
+
+/* ------------------------------------------- reviews: the score, counted */
+.xScore {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: -6px 0 26px;
+}
+
+.xScoreValue {
+  font-family: var(--font-heading);
+  font-size: 44px;
+  line-height: 1;
+  color: var(--gold);
+}
+
+.xScoreCount {
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: var(--text-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xSnow { animation: none !important; opacity: .55; }
+}
+
+/* ------------------------------------------- section headings, word wise -
+   The hero runs its reveal on load. A heading halfway down the page would
+   have finished before anyone saw it, so these wait for .xIn and only then
+   start, each word a beat after the one before it. */
+.xHeadWord {
+  animation: none;
+  transform: translateY(115%);
+}
+
+.xHead.xIn .xHeadWord {
+  animation: xWordUp .8s cubic-bezier(.22, 1, .36, 1) forwards;
+  animation-delay: calc(var(--i) * .07s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xHeadWord,
+  .xHead.xIn .xHeadWord {
+    animation: none !important;
+    transform: none !important;
+  }
 }

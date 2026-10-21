@@ -8,7 +8,7 @@ import { SITE_URL, uploadUrl } from '../../config';
 const abs = (path = '') => `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 
 function imageUrl(path) {
-  if (!path) return abs('/logo.png');
+  if (!path) return abs('/logo-scenic.png');
   return uploadUrl(path);
 }
 
@@ -22,8 +22,8 @@ export function localBusiness(settings = {}, stats = {}) {
     description:
       'Premium private chauffeur and transfer service across Switzerland. Airport transfers, business travel, events, weddings and alpine ski transfers, available 24/7.',
     url: SITE_URL,
-    image: abs('/logo.png'),
-    logo: abs('/logo.png'),
+    image: abs('/logo-scenic.png'),
+    logo: abs('/logo-scenic.png'),
     slogan: settings.tagline || 'Explore · Travel · Arrive',
     priceRange: '$$$',
     areaServed: [

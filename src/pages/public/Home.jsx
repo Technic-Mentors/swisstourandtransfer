@@ -3,7 +3,6 @@ import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
 import Seo from '../../components/seo/Seo';
-import CursorCar from '../../components/home/CursorCar';
 import { faqSchema, localBusiness } from '../../components/seo/schemas';
 import { Alert, Container, Spinner } from '../../components/ui';
 import home_s from '../../components/home/home.module.css';
@@ -105,9 +104,6 @@ export default function Home() {
         path="/"
         jsonLd={[localBusiness(settings, reviews.stats), faqSchema(faqs.faqs)]}
       />
-
-      <CursorCar />
-
       <div className={home_s.flow}>
         {home.sections.map((key) => {
           const render = SECTION_COMPONENTS[key];

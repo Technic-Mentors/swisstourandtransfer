@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { imageFallback, imageUrl } from '../../config';
+import { galleryImage, imageFallback, imageUrl, serviceImage } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -44,8 +44,8 @@ export default function ServiceDetail() {
 
   const { service, otherServices, vehicles, photos = [] } = data;
 
-  const lightboxItems = photos.map((photo) => ({
-    src: imageUrl(photo.file_path),
+  const lightboxItems = photos.map((photo, i) => ({
+    src: imageUrl(galleryImage(photo, i)),
     alt: photo.alt_text || photo.caption || service.name,
     caption: photo.caption || '',
   }));
@@ -55,8 +55,8 @@ export default function ServiceDetail() {
   const servicePhotos = service.photos?.length
     ? service.photos
     : [{ id: 'placeholder', file_path: '', alt_text: service.name }];
-  const servicePhotoItems = servicePhotos.map((photo) => ({
-    src: imageUrl(photo.file_path),
+  const servicePhotoItems = servicePhotos.map((photo, i) => ({
+    src: imageUrl(photo.file_path || serviceImage(service, i)),
     alt: photo.alt_text || service.name,
     caption: '',
   }));
@@ -70,7 +70,7 @@ export default function ServiceDetail() {
           `${service.name} with a professional chauffeur across Switzerland. Fixed prices, 24/7 availability and WhatsApp booking.`
         }
         path={`/services/${service.slug}`}
-        image={service.image}
+        image={serviceImage(service)}
         jsonLd={[
           serviceSchema(service, settings),
           breadcrumbSchema([
@@ -100,7 +100,7 @@ export default function ServiceDetail() {
                     aria-label={`View photos of ${service.name}`}
                   >
                     <img
-                      src={imageUrl(servicePhotos[0].file_path)}
+                      src={imageUrl(servicePhotos[0].file_path || serviceImage(service))}
                       onError={imageFallback}
                       alt={servicePhotos[0].alt_text || service.name}
                       width="860"
@@ -119,7 +119,7 @@ export default function ServiceDetail() {
                           aria-label={`View photo ${i + 2} of ${service.name}`}
                         >
                           <img
-                            src={imageUrl(photo.file_path)}
+                            src={imageUrl(photo.file_path || serviceImage(service, i + 1))}
                             onError={imageFallback}
                             alt={photo.alt_text || service.name}
                             loading="lazy"
@@ -235,7 +235,7 @@ export default function ServiceDetail() {
                   aria-label={photo.caption || `Open photo ${i + 1}`}
                 >
                   <img
-                    src={imageUrl(photo.file_path)}
+                    src={imageUrl(galleryImage(photo, i))}
                     onError={imageFallback}
                     alt={photo.alt_text || photo.caption || ''}
                     loading="lazy"

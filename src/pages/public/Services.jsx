@@ -1,13 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { imageFallback, imageUrl } from '../../config';
+import { imageFallback, imageUrl, serviceImage } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
 import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, localBusiness } from '../../components/seo/schemas';
 import { PageHead } from '../../components/layout/PublicLayout';
-import { Alert, Button, Card, Container, EmptyState, Section, Spinner } from '../../components/ui';
+import { Alert, Button, Card, Container, EmptyState, Pagination, Section, Spinner } from '../../components/ui';
 import s from './pages.module.css';
 
 export default function Services() {
@@ -16,6 +16,14 @@ export default function Services() {
   const load = useCallback(() => publicApi.services(), []);
   const { data, loading, error } = useFetch(load, []);
   const services = data?.services ?? [];
+
+  /* Paged the same way as /vehicles, so both listings behave alike. */
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(12);
+  const shown = useMemo(
+    () => services.slice((page - 1) * perPage, page * perPage),
+    [services, page, perPage],
+  );
 
   return (
     <>
@@ -40,12 +48,13 @@ export default function Services() {
 
           {!loading && !error && (
             services.length ? (
+              <>
               <div className={s.cardGrid2}>
-                {services.map((service) => (
+                {shown.map((service, i) => (
                   <Card hover key={service.id} className={s.serviceTile}>
                     <Link to={`/services/${service.slug}`} className={s.serviceTileMedia}>
                       <img
-                        src={imageUrl(service.image)}
+                        src={imageUrl(serviceImage(service, i))}
                         onError={imageFallback}
                         alt={service.name}
                         loading="lazy"
@@ -71,6 +80,18 @@ export default function Services() {
                   </Card>
                 ))}
               </div>
+
+              <Pagination
+                page={page}
+                perPage={perPage}
+                total={services.length}
+                onPageChange={setPage}
+                onPerPageChange={(n) => {
+                  setPerPage(n);
+                  setPage(1);
+                }}
+              />
+              </>
             ) : (
               <EmptyState title="No services published yet" />
             )

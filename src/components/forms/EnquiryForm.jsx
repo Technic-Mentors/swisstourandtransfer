@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { publicApi } from '../../api/resources';
 import { useSite } from '../../context/SiteContext';
+import useWhatsApp from '../../hooks/useWhatsApp';
 import { Alert, Button, WhatsAppIcon } from '../ui';
 import { Checkbox, Field, Select, TextArea } from './Fields';
 import s from './forms.module.css';
@@ -16,6 +17,39 @@ const SERVICE_TYPES = [
   'Ski transfer',
   'Other',
 ];
+
+/** The same answers the API would receive, written out for a chat message. */
+function enquiryMessage(form, vehicleName) {
+  const when = form.travel_datetime
+    ? new Date(form.travel_datetime).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : '';
+
+  const lines = [
+    ['Service', form.service_type],
+    ['Vehicle', vehicleName],
+    ['Pickup', form.pickup],
+    ['Drop-off', form.dropoff],
+    ['Date & time', when],
+    ['Flight', form.flight_number],
+    ['Passengers', form.passengers],
+    ['Suitcases', form.suitcases],
+    ['Return trip', form.return_trip ? 'Yes' : ''],
+    ['Name', form.full_name],
+    ['Phone', form.phone],
+    ['Email', form.email],
+    ['Message', form.message],
+  ]
+    .filter(([, value]) => String(value ?? '').trim())
+    .map(([label, value]) => `${label}: ${String(value).trim()}`);
+
+  return ['Hello, I would like to book a transfer.', '', ...lines].join('\n');
+}
 
 const EMPTY = {
   service_type: '',
@@ -37,8 +71,10 @@ const EMPTY = {
 /**
  * The booking enquiry form, used on /book, /contact and vehicle pages.
  *
- * On success the API returns a prefilled WhatsApp link built from the same
- * answers, so a guest who would rather chat does not have to retype anything.
+ * Everything is booked over WhatsApp at the moment, so by default the
+ * answers open as a prefilled chat and nothing is posted. This is the one
+ * switch for that: pass sendTo="api" to send an enquiry to the backend
+ * instead, which stores it and returns its own prefilled WhatsApp link.
  */
 export default function EnquiryForm({
   vehicles = [],
@@ -46,9 +82,11 @@ export default function EnquiryForm({
   defaultService = '',
   compact = false,
   title,
+  sendTo = 'whatsapp',
 }) {
   const location = useLocation();
   const { settings } = useSite();
+  const { open: openWhatsApp } = useWhatsApp();
   const now = new Date();
   const minTravelDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
     .toISOString()
@@ -112,6 +150,22 @@ export default function EnquiryForm({
     setFailure('');
     if (!validate()) return;
 
+    const vehicleName =
+      vehicles.find((item) => String(item.id) === String(form.vehicle_id))?.name || '';
+
+    if (sendTo === 'whatsapp') {
+      /* Opened straight from the click, with no await in between, so the
+         browser treats it as user-initiated rather than as a popup. The
+         success panel repeats the link in case it is blocked anyway. */
+      const url = openWhatsApp({
+        custom: enquiryMessage(form, vehicleName),
+        pageType: 'enquiry-form',
+      });
+      window.open(url, '_blank', 'noopener,noreferrer');
+      setResult({ viaWhatsApp: true, whatsappUrl: url });
+      return;
+    }
+
     setSubmitting(true);
     try {
       const payload = { ...form, source_page: location.pathname };
@@ -134,9 +188,13 @@ export default function EnquiryForm({
         <div className={s.successIcon} aria-hidden="true">
           ✓
         </div>
-        <h3 className={s.successTitle}>Thank you</h3>
+        <h3 className={s.successTitle}>
+          {result.viaWhatsApp ? 'Your enquiry is ready' : 'Thank you'}
+        </h3>
         <p>
-          {result.message || `We have received your enquiry and will reply within about ${minutes} minutes.`}
+          {result.viaWhatsApp
+            ? `WhatsApp should have opened with your details filled in - press send there and we will reply within about ${minutes} minutes. If nothing opened, use the button below.`
+            : result.message || `We have received your enquiry and will reply within about ${minutes} minutes.`}
         </p>
         <div className={s.successActions}>
           {result.whatsappUrl && (
@@ -145,7 +203,7 @@ export default function EnquiryForm({
               href={result.whatsappUrl}
               icon={<WhatsAppIcon />}
             >
-              Send it on WhatsApp too
+              {result.viaWhatsApp ? 'Open WhatsApp' : 'Send it on WhatsApp too'}
             </Button>
           )}
           <Button
@@ -324,7 +382,11 @@ export default function EnquiryForm({
           {settings.reply_time_minutes || '10'} minutes, 24/7.
         </p>
         <Button type="submit" disabled={submitting}>
-          {submitting ? 'Sending…' : 'Send enquiry'}
+          {sendTo === 'whatsapp'
+            ? 'Send on WhatsApp'
+            : submitting
+              ? 'Sending…'
+              : 'Send enquiry'}
         </Button>
       </div>
     </form>
