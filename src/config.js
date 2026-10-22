@@ -26,6 +26,7 @@ export const SITE_URL = SITE_URLS[MODE];
 
 /** Local public photos used when a vehicle has no uploaded database cover. */
 export function vehicleImage(vehicle) {
+  if (vehicle?.cover_image?.startsWith('/images/vehicles/')) return vehicle?.cover_image;
   const identity = `${vehicle?.slug || ''} ${vehicle?.name || ''}`.toLowerCase();
   const localPhoto = identity.includes('maybach') || identity.includes('s-class-premium')
     ? '/2027-mercedes-maybach-s-680.jpg'
@@ -54,6 +55,7 @@ export function vehicleImage(vehicle) {
 
 /** Best matching bundled vehicle photo for a vehicle category card. */
 export function categoryImage(category) {
+  if (category?.image?.startsWith('/images/vehicles/')) return category?.image;
   const identity = `${category?.slug || ''} ${category?.name || ''} ${category?.examples || ''}`.toLowerCase();
   if (identity.includes('economy') || identity.includes('toyota prius')) return '/placeholder-car.jpg';
   if (identity.includes('premium') || identity.includes('maybach') || identity.includes('vip')) {
@@ -102,6 +104,7 @@ export function galleryImage(photo, index = 0) {
  * "transfer" too, and would otherwise be matched as an airport job.
  */
 export function serviceImage(service, index = 0) {
+  if (service?.image?.startsWith('/images/vehicles/')) return service?.image;
   const identity = `${service?.slug || ''} ${service?.name || ''}`.toLowerCase();
 
   if (identity.includes('wedding')) return '/2027-mercedes-maybach-s-680.jpg';

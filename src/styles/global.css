@@ -239,7 +239,7 @@ body.has-sticky-bar {
    keeps it off /admin, which never gets a public theme. `auto` is the
    fallback if a browser refuses the image. */
 body[data-public-theme] {
-  cursor: url('/cursor-car.png') 54 20, auto;
+  cursor: url('/cursor-car.png') 34 13, auto;
 }
 
 /* Links and controls keep the hand, so clickable things still look clickable. */
