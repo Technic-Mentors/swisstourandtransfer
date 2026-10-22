@@ -233,15 +233,6 @@ body.has-sticky-bar {
   }
 }
 
-/* ------------------------------------------------------------ car cursor */
-/* The pointer itself is a car on the public site. The hotspot sits on the
-   nose, so the car points at whatever is under it. The attribute selector
-   keeps it off /admin, which never gets a public theme. `auto` is the
-   fallback if a browser refuses the image. */
-body[data-public-theme] {
-  cursor: url('/cursor-car.png') 34 13, auto;
-}
-
 /* Links and controls keep the hand, so clickable things still look clickable. */
 body[data-public-theme] a,
 body[data-public-theme] button,
@@ -255,4 +246,29 @@ body[data-public-theme] select {
 body[data-public-theme] input,
 body[data-public-theme] textarea {
   cursor: text;
+}
+
+/* A local spotlight on public buttons and vehicle cards. */
+body[data-public-theme] .hover-glow {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body[data-public-theme] .hover-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(240px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(255, 223, 160, 0.42) 0%, rgba(210, 173, 110, 0.22) 35%, transparent 72%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  body[data-public-theme] .hover-glow[data-glow-active='true']:hover:not(:disabled):not([aria-disabled='true'])::after {
+    opacity: 1;
+  }
 }

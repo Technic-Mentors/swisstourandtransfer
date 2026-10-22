@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import s from './ui.module.css';
+import { hoverGlowProps } from './hoverGlow';
 
 const cx = (...parts) => parts.filter(Boolean).join(' ');
 
@@ -66,7 +67,7 @@ export function Button({
   icon = null,
   ...rest
 }) {
-  const classes = cx(s.btn, VARIANTS[variant] || s.gold, SIZES[size], full && s.full, className);
+  const classes = cx('hover-glow', s.btn, VARIANTS[variant] || s.gold, SIZES[size], full && s.full, className);
 
   const content = (
     <>
@@ -82,7 +83,7 @@ export function Button({
         className={classes}
         href={href}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        {...rest}
+        {...hoverGlowProps(rest)}
       >
         {content}
       </a>
@@ -91,14 +92,14 @@ export function Button({
 
   if (to) {
     return (
-      <Link className={classes} to={to} {...rest}>
+      <Link className={classes} to={to} {...hoverGlowProps(rest)}>
         {content}
       </Link>
     );
   }
 
   return (
-    <button className={classes} type={type} {...rest}>
+    <button className={classes} type={type} {...hoverGlowProps(rest)}>
       {content}
     </button>
   );

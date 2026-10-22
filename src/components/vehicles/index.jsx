@@ -5,6 +5,7 @@ import { Button, Card, Lightbox, cx } from '../ui';
 import hs from '../home/home.module.css';
 import WhatsAppButton from '../ui/WhatsAppButton';
 import s from './vehicles.module.css';
+import { hoverGlowProps } from '../ui/hoverGlow';
 
 /* ------------------------------------------------------------------ icons */
 
@@ -49,7 +50,7 @@ export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
   const cover = vehicleImage(vehicle);
 
   return (
-    <Card hover className={cx(s.card, hs.xGloss)}>
+    <Card hover className={cx(s.card, hs.xGloss, 'hover-glow')} {...hoverGlowProps()}>
       <Link to={href} className={cx(s.media, hs.xPhoto)} aria-label={vehicle.name}>
         {/* No photo uploaded yet falls back to the placeholder car, so a card
             never shows an empty frame. */}
@@ -169,9 +170,21 @@ export function VehicleGallery({ photos = [], name = '' }) {
         type="button"
         className={s.galleryMain}
         onClick={() => setLightbox(true)}
+        onPointerMove={(event) => {
+          if (event.pointerType !== 'mouse') return;
+          const bounds = event.currentTarget.getBoundingClientRect();
+          event.currentTarget.style.setProperty('--zoom-x', `${((event.clientX - bounds.left) / bounds.width) * 100}%`);
+          event.currentTarget.style.setProperty('--zoom-y', `${((event.clientY - bounds.top) / bounds.height) * 100}%`);
+        }}
+        onPointerLeave={(event) => {
+          event.currentTarget.style.removeProperty('--zoom-x');
+          event.currentTarget.style.removeProperty('--zoom-y');
+        }}
         aria-label="Open full size image"
       >
         <img
+          key={index}
+          className={s.galleryImage}
           src={imageUrl(current.file_path)}
           hidden={!current.file_path}
           onError={imageFallback}
@@ -179,6 +192,11 @@ export function VehicleGallery({ photos = [], name = '' }) {
           width="960"
           height="600"
         />
+        {shots.length > 1 && (
+          <span className={s.galleryCounter} aria-live="polite">
+            {index + 1} / {shots.length}
+          </span>
+        )}
       </button>
 
       {shots.length > 1 && (
@@ -190,6 +208,7 @@ export function VehicleGallery({ photos = [], name = '' }) {
               className={cx(s.thumb, i === index && s.thumbActive)}
               onClick={() => setIndex(i)}
               aria-label={`Show photo ${i + 1}`}
+              aria-pressed={i === index}
             >
               <img
                 src={imageUrl(photo.file_path)}

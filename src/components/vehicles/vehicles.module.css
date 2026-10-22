@@ -349,9 +349,16 @@
 }
 
 .galleryMain img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+}
+
+/* Override the public site's generic button pointer. */
+body[data-public-theme] .galleryMain {
+  cursor: zoom-in;
 }
 
 .thumbs {
@@ -382,6 +389,7 @@
 }
 
 .thumbActive {
+  box-shadow: inset 0 0 0 2px var(--gold), 0 0 0 2px var(--gold);
   border-color: var(--gold);
   opacity: 1;
 }
@@ -427,4 +435,35 @@
   .thumbs {
     grid-template-columns: repeat(4, 1fr);
   }
+}
+
+.galleryCounter {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(10, 18, 30, 0.8);
+  color: #fff;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .galleryImage {
+    animation: galleryReveal 320ms ease-out;
+    transition: transform 450ms ease;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .galleryMain:hover .galleryImage {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes galleryReveal {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
 }
