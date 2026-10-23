@@ -12,11 +12,9 @@ import Services from './pages/public/Services';
 import ServiceDetail from './pages/public/ServiceDetail';
 import CityPage from './pages/public/CityPage';
 import About from './pages/public/About';
-import Gallery from './pages/public/Gallery';
 import Reviews from './pages/public/Reviews';
 import Contact from './pages/public/Contact';
 import Book from './pages/public/Book';
-import Offers from './pages/public/Offers';
 import LegalPage from './pages/public/LegalPage';
 import NotFound from './pages/public/NotFound';
 
@@ -112,11 +110,9 @@ export default function App() {
           <Route path="chauffeur-service/:slug" element={<CityPage />} />
 
           <Route path="about" element={<About />} />
-          <Route path="gallery" element={<Gallery />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="contact" element={<Contact />} />
           <Route path="book" element={<Book />} />
-          <Route path="offers" element={<Offers />} />
 
           <Route path="privacy" element={<LegalPage pageKey="privacy" />} />
           <Route path="terms" element={<LegalPage pageKey="terms" />} />

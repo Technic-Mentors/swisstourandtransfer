@@ -16,9 +16,9 @@ function AnnouncementBar() {
   if (!flag('announcement_enabled') || !settings.announcement_text || dismissed) return null;
 
   const text = settings.announcement_text;
-  // With no destination chosen in admin the bar points at the offers page,
+  // With no destination chosen in admin the bar points at the contact page,
   // which is what an announcement is almost always about.
-  const link = settings.announcement_link || '/offers';
+  const link = settings.announcement_link || '/contact';
   const internal = link.startsWith('/');
 
   return (
@@ -52,9 +52,17 @@ function AnnouncementBar() {
 
 function FloatingWhatsApp() {
   const { flag } = useSite();
+  const location = useLocation();
+  const [pastHero, setPastHero] = useState(false);
+  useEffect(() => {
+    const update = () => setPastHero(window.scrollY >= window.innerHeight - 80);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, [location.pathname]);
   const { buildUrl, track } = useWhatsApp();
 
-  if (!flag('show_floating_whatsapp')) return null;
+  if (!flag('show_floating_whatsapp') || (location.pathname === '/' && !pastHero)) return null;
 
   return (
     <a

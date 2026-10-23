@@ -6,7 +6,6 @@ import useWhatsApp from '../../hooks/useWhatsApp';
 import { useSite } from '../../context/SiteContext';
 import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, vehicleSchema } from '../../components/seo/schemas';
-import { Breadcrumbs } from '../../components/layout/PublicLayout';
 import { Alert, Button, Container, Section, SectionHeading, Spinner } from '../../components/ui';
 import WhatsAppButton from '../../components/ui/WhatsAppButton';
 import { SpecTable, VehicleGallery, VehicleGrid, priceLabel } from '../../components/vehicles';
@@ -63,14 +62,6 @@ export default function VehicleDetail() {
   const price = priceLabel(vehicle);
   const message = buildMessage({ vehicle });
 
-  const trail = [
-    { name: 'Vehicles', path: '/vehicles' },
-    ...(vehicle.category_name
-      ? [{ name: vehicle.category_name, path: `/vehicles/category/${vehicle.category_slug}` }]
-      : []),
-    { name: vehicle.name },
-  ];
-
   const description =
     vehicle.tagline ||
     `Hire the ${vehicle.name} with a professional chauffeur in Switzerland. Seats ${vehicle.passengers}, ${vehicle.suitcases} suitcases. Fixed prices and 24/7 WhatsApp booking.`;
@@ -92,16 +83,15 @@ export default function VehicleDetail() {
         ]}
       />
 
-      <Section tight>
+      <Section tight className={s.vehicleDetailSection}>
         <Container>
-          <Breadcrumbs trail={trail} />
-
-          <div className={s.detailTop}>
-            <div className={s.detailMedia}>
+          <div className={s.serviceDetailLayout}>
+            <main className={`${s.detailMedia} ${s.serviceDetailMain}`}>
               <VehicleGallery photos={photos} name={vehicle.name} />
 
               <div className={s.detailAbout}>
-                <h2 className={s.blockHeading}>About this vehicle</h2>
+                <span className={s.vehicleAboutEyebrow}>About this vehicle</span>
+                <h2 className={s.vehicleAboutTitle}>{vehicle.tagline || 'Comfort, privacy and confidence.'}</h2>
                 <div className={s.prose}>
                   {(vehicle.description || '').split('\n\n').map((para, i) => (
                     <p key={i}>{para}</p>
@@ -143,12 +133,13 @@ export default function VehicleDetail() {
                   </>
                 )}
               </div>
-            </div>
+            </main>
 
-            <div className={s.detailPanel}>
-              {vehicle.category_name && <span className={s.detailCategory}>{vehicle.category_name}</span>}
-              <h1 className={s.detailTitle}>{vehicle.name}</h1>
-              {vehicle.tagline && <p className={s.detailTagline}>{vehicle.tagline}</p>}
+            <aside className={`${s.detailPanel} ${s.vehicleBookingPanel} ${s.sticky}`}>
+              <span className={s.serviceDetailEyebrow}>Book this vehicle</span>
+              <h1 className={s.vehicleBookingTitle}>{vehicle.name}</h1>
+              <p className={s.vehicleBookingPrice}>{price.value}</p>
+              <p className={s.vehicleBookingNote}>{price.note}</p>
 
               <div className={s.capacityRow}>
                 <div className={s.capacityCell}>
@@ -165,14 +156,7 @@ export default function VehicleDetail() {
                 </div>
               </div>
 
-              {/* Price and the booking button share a row so both stay above the fold. */}
-              <div className={s.priceRow}>
-                <div className={s.priceBox}>
-                  {vehicle.price_from ? <span className={s.priceLabel}>From</span> : null}
-                  <div className={s.priceValue}>{price.value}</div>
-                  <div className={s.priceNote}>{price.note}</div>
-                </div>
-
+              <div className={s.vehicleBookingActions}>
                 <div className={s.detailActions}>
                   <WhatsAppButton vehicle={vehicle} pageType="vehicle" full>
                     Book via WhatsApp
@@ -205,7 +189,7 @@ export default function VehicleDetail() {
                 <summary className={s.messagePreviewLabel}>Message preview</summary>
                 <div className={s.messagePreviewText}>{message}</div>
               </details>
-            </div>
+            </aside>
           </div>
         </Container>
       </Section>

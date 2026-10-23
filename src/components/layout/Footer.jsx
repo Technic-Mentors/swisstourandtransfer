@@ -6,10 +6,8 @@ import s from './layout.module.css';
 const COMPANY_LINKS = [
   { to: '/vehicles', label: 'Vehicles' },
   { to: '/services', label: 'Services' },
-  { to: '/gallery', label: 'Gallery' },
   { to: '/reviews', label: 'Reviews' },
   { to: '/about', label: 'About us' },
-  { to: '/offers', label: 'Offers' },
 ];
 
 const CITY_LINKS = [
@@ -68,26 +66,35 @@ function SocialIcon({ name }) {
   );
 }
 
+function ContactIcon({ type }) {
+  const paths = {
+    phone: <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .7-.2 1l-2.3 2.2z" />,
+    email: <path d="M3 5h18v14H3zM3 6l9 7 9-7" />,
+    pin: <><path d="M20 10c0 5.5-8 11-8 11S4 15.5 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></>,
+    hours: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+  };
+  return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[type]}</svg>;
+}
+
 export default function Footer() {
   const { settings, socials } = useSite();
   const year = new Date().getFullYear();
   const phone = settings.phone;
+  const mapUrl = settings.address
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`
+    : '';
 
   return (
     <footer className={s.footer}>
       <Container>
         <div className={s.footerGrid}>
           <div>
-            <Link to="/" className={s.logo} aria-label="Swiss Tour & Transfer - home">
-              {/* The footer has the room for the whole badge, wordmark and all. */}
-              <img
-                src="/logo-scenic.png"
-                alt="Swiss Tour & Transfer"
-                className={s.logoLight}
-                width="168"
-                height="168"
-                loading="lazy"
-              />
+            <Link to="/" className={s.footerLogo} aria-label="Swiss Tour & Transfer - home">
+              <img src="/logo-scenic-mark.png" alt="" className={s.footerLogoMark} width="120" height="62" loading="lazy" />
+              <span className={s.footerLogoText}>
+                <span>SWISS</span>
+                <small>TOUR &amp; TRANSFER</small>
+              </span>
             </Link>
 
             <p className={s.footerBrandText}>
@@ -141,10 +148,10 @@ export default function Footer() {
           <div>
             <h4 className={s.footerTitle}>Contact</h4>
             <address className={s.footerContact} style={{ fontStyle: 'normal' }}>
-              {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>}
-              {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
-              {settings.address && <span>{settings.address}</span>}
-              {settings.opening_hours && <span>{settings.opening_hours}</span>}
+              {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}><ContactIcon type="phone" />{phone}</a>}
+              {settings.email && <a href={`mailto:${settings.email}`}><ContactIcon type="email" />{settings.email}</a>}
+              {settings.address && <a href={mapUrl} target="_blank" rel="noopener noreferrer"><ContactIcon type="pin" />{settings.address}</a>}
+              {settings.opening_hours && <span><ContactIcon type="hours" />{settings.opening_hours}</span>}
             </address>
           </div>
         </div>

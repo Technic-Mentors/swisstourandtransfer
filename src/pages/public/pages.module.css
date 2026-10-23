@@ -1669,6 +1669,159 @@
   object-fit: cover;
 }
 
+/* -------------------------------------------------- service detail page */
+.serviceDetailSection {
+  padding-top: 12px;
+}
+
+.serviceDetailHero {
+  position: relative;
+  min-height: 116px;
+  display: flex;
+  align-items: end;
+  background-position: center;
+  background-size: cover;
+  isolation: isolate;
+}
+.serviceDetailHero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(2, 10, 15, .94) 0%, rgba(2, 10, 15, .64) 48%, rgba(2, 10, 15, .2));
+}
+.serviceDetailHeroContent { padding: 12px 0 13px; }
+.serviceTrail { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 7px; color: var(--text-faint); font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.serviceTrail a:hover { color: var(--gold); }
+.serviceTrail b { color: #f04444; font-weight: 600; }
+.serviceHeroTitle { margin: 5px 0 3px; color: var(--cream); font-size: clamp(27px, 3.2vw, 43px); line-height: 1; }
+.serviceHeroTitle::first-letter { color: var(--gold); }
+.serviceDetailHeroContent > p { margin: 0; max-width: 58ch; color: var(--text); font-size: 11px; line-height: 1.4; }
+
+.vehicleDetailHero {
+  position: relative;
+  min-height: 116px;
+  display: flex;
+  align-items: end;
+  background-position: center;
+  background-size: cover;
+  isolation: isolate;
+}
+.vehicleDetailHero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(2, 10, 15, .94) 0%, rgba(2, 10, 15, .62) 48%, rgba(2, 10, 15, .18));
+}
+.vehicleDetailSection { padding-top: 16px; }
+.vehicleDetailSection .serviceDetailLayout { grid-template-columns: minmax(0, 1.65fr) minmax(290px, .82fr); gap: 18px; }
+.vehicleDetailSection .detailAbout { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--navy-card); }
+.vehicleDetailSection .detailAbout .prose { max-width: none; font-size: 12px; }
+.vehicleAboutEyebrow { display: block; margin-bottom: 6px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.vehicleAboutTitle { margin: 0 0 7px; font-size: clamp(20px, 2.4vw, 29px); line-height: 1.1; color: var(--cream); }
+.vehicleDetailSection .detailAbout .includedList { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--border); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.vehicleDetailSection .detailAbout .includedItem { font-size: 11px; }
+.vehicleBookingPanel {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 48%), var(--navy-card);
+}
+.vehicleBookingTitle { margin: 9px 0 2px; font-family: var(--font-heading); font-size: clamp(24px, 2.5vw, 33px); color: var(--cream); line-height: 1.08; }
+.vehicleBookingPrice { margin: 0; color: var(--cream); font-family: var(--font-heading); font-size: 17px; }
+.vehicleBookingNote { margin: 1px 0 14px; color: var(--text-muted); font-size: 11px; }
+.vehicleBookingPanel .capacityRow { margin-bottom: 13px; }
+.vehicleBookingActions { display: grid; gap: 10px; }
+
+@media (max-width: 560px) {
+  .vehicleDetailHero { min-height: 150px; }
+}
+
+@media (max-width: 1024px) {
+  .vehicleDetailSection .serviceDetailLayout { grid-template-columns: 1fr; }
+  .vehicleDetailSection .sticky { position: static; }
+}
+
+.serviceDetailLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(290px, .82fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.serviceDetailMain { min-width: 0; }
+
+.serviceShots { margin-bottom: 18px; }
+.serviceShotMain { aspect-ratio: 16 / 8.1; border-radius: var(--radius-lg); }
+.serviceShotMain img { height: 100%; object-fit: cover; }
+.serviceShotRow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.serviceShots { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(160px, .9fr); gap: 8px; align-items: stretch; }
+.serviceShotRow { margin-top: 0; grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.serviceShot { aspect-ratio: auto; min-height: 0; }
+.serviceShot { border-color: var(--border); }
+.serviceShot:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.serviceDetailCopy { margin: 2px 0 12px; }
+.serviceDetailEyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.serviceDetailTitle {
+  margin: 6px 0 5px;
+  font-size: clamp(28px, 3.1vw, 42px);
+  line-height: 1.05;
+  color: var(--cream);
+}
+.serviceDetailLead { margin: 0; max-width: 65ch; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
+.serviceDetailMain .prose { max-width: none; font-size: 13px; }
+.serviceIncluded {
+  margin-top: 20px;
+  padding: 15px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--navy-card);
+}
+.serviceIncluded .blockHeading { margin-bottom: 11px; }
+.serviceIncluded .includedList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.serviceIncluded .includedItem { font-size: 11px; }
+
+.serviceBookingCard,
+.otherServicesCard {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 48%), var(--navy-card);
+  padding: 18px;
+}
+.serviceBookingTitle { margin: 10px 0 12px; font-size: 19px; line-height: 1.25; color: var(--cream); }
+.serviceBookingMeta { display: flex; gap: 9px; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text); }
+.serviceBookingMeta svg { width: 18px; height: 18px; color: var(--gold); flex: none; }
+.serviceBookingText { margin: 10px 0 16px; color: var(--text-muted); font-size: 11px; line-height: 1.55; }
+.serviceBookingActions { display: grid; gap: 8px; }
+.otherServicesCard { margin-top: 12px; }
+.otherServicesList { margin-top: 11px; display: grid; gap: 7px; }
+.otherServiceLink { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 10px; color: var(--text); font-size: 12px; }
+.otherServiceLink img { width: 64px; height: 36px; border-radius: 5px; object-fit: cover; }
+.otherServiceLink b { color: var(--gold); font-size: 16px; font-weight: 400; }
+.otherServiceLink:hover span { color: var(--gold); }
+
+@media (max-width: 900px) {
+  .serviceDetailLayout { grid-template-columns: 1fr; }
+  .serviceDetailLayout .sticky { position: static; }
+  .serviceIncluded .includedList { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .serviceDetailHero { min-height: 150px; }
+  .serviceShots { grid-template-columns: 1fr; }
+  .serviceShotRow { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: none; margin-top: 8px; }
+  .serviceShot { aspect-ratio: 4 / 3; }
+  .serviceIncluded .includedList { grid-template-columns: 1fr; }
+}
+
 /* ------------------------------------------------- about: added motion ---
    Animates opacity, filter and transform only - the About page keeps the
    spacing it already had. The shared vocabulary (xReveal, xStagger, xGloss,

@@ -149,8 +149,8 @@
   /* ---- Spacing ---- */
   --gutter: 24px;
   --max-width: 1280px;
-   --section-y: 44px;
-  --section-y-sm: 30px;
+  --section-y: 24px;
+  --section-y-sm: 16px;
 
   /* ---- Radii ---- */
   --radius-sm: 8px;
@@ -353,14 +353,14 @@ body[data-public-theme='light'] {
 @media (max-width: 768px) {
   :root {
     --gutter: 20px;
-    --section-y: 38px;
-    --section-y-sm: 28px;
+    --section-y: 22px;
+    --section-y-sm: 14px;
   }
 }
 
 @media (max-width: 480px) {
   :root {
     --gutter: 16px;
-    --section-y: 48px;
+    --section-y: 22px;
   }
 }

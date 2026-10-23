@@ -259,107 +259,23 @@ function splitHeadline(text) {
   return [value.slice(0, at + 1), value.slice(at + 2)];
 }
 
-export function HeroSection({ content, settings }) {
-  const [lead, accent] = splitHeadline(content.hero_headline || 'Arrive the Swiss way');
-  const season = heroSeason();
-  const leadCount = lead.split(' ').filter(Boolean).length;
-  const aurora = useRef(null);
-  const copy = useRef(null);
-
-  /* The headline leaves slower than the page does, which gives the hero a
-     little depth. Written straight to the node in a rAF so scrolling never
-     waits on React. */
-  useEffect(() => {
-    const el = copy.current;
-    if (!el) return undefined;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-
-    let raf = 0;
-    const paint = () => {
-      raf = 0;
-      const y = Math.min(window.scrollY, 600);
-      el.style.setProperty('--drift', `${y * 0.18}px`);
-      el.style.setProperty('--fade', String(Math.max(0, 1 - y / 520)));
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(paint);
-    };
-
-    paint();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  /* The glow drifts a few pixels behind the pointer. Only the light layer
-     moves - the headline and the booking bar stay exactly where they are. */
-  const driftAurora = (e) => {
-    const layer = aurora.current;
-    if (!layer) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    layer.style.setProperty('--px', (e.clientX - r.left) / r.width - 0.5);
-    layer.style.setProperty('--py', (e.clientY - r.top) / r.height - 0.5);
-  };
-
-  const restAurora = () => {
-    const layer = aurora.current;
-    if (!layer) return;
-    layer.style.setProperty('--px', 0);
-    layer.style.setProperty('--py', 0);
-  };
-
+export function HeroSection({ content, allVehicles = [], cities = [], heroBooking }) {
   return (
-    <div
-      className={cx(s.hero, s.xHeroFull)}
-      onMouseMove={driftAurora}
-      onMouseLeave={restAurora}
-    >
-      <ScrollProgress />
-
-      <div ref={aurora} className={s.xAurora} aria-hidden="true">
-        <span className={cx(s.xOrb, s.xOrbA)} />
-        <span className={cx(s.xOrb, s.xOrbB)} />
-        {PARTICLES.map((p, i) => (
-          <span
-            key={i}
-            className={cx(s.xSpark, season === 'winter' && s.xSnow)}
-            style={{
-              left: `${p.left}%`,
-              width: p.size,
-              height: p.size,
-              animationDelay: `${p.delay}s`,
-              animationDuration: `${p.dur}s`,
-            }}
-          />
-        ))}
-
-        <SkyJets />
-      </div>
-
+    <section className={cx(s.hero, s.referenceHero)} aria-label="Premium chauffeur service">
       <Container>
-        <div ref={copy} className={s.xHeroContent}>
-          <span className={cx(s.heroEyebrow, s.xEyebrowIn)}>
-            <SwissShield className={s.heroShield} />
-            {content.hero_eyebrow || 'Chauffeur & limousine service · Switzerland'}
-          </span>
-
-          <h1 className={cx(s.heroTitle, s.xHeroTitle)}>
-            <Words text={lead} />
-            {accent && (
-              <span className={s.heroTitleAccent}>
-                <Words text={accent} start={leadCount} wordClass={s.xShimmer} />
-              </span>
-            )}
+        <div className={s.referenceCopy}>
+          <span className={s.referenceEyebrow}>Premium chauffeur service</span>
+          <h1 className={s.referenceTitle}>
+            <span>Travel</span><span>in first class</span><span>across</span><span className={s.referenceGold}>Switzerland.</span>
           </h1>
-
-          <p className={cx(s.heroText, s.xHeroText, s.xTextIn)}>{content.hero_text}</p>
-
-          <span className={s.xHeroLine} aria-hidden="true" />
         </div>
       </Container>
-    </div>
+      {heroBooking && (
+        <div className={s.referenceBooking}>
+          <Container><QuickBookingBar heading={content.quick_booking_heading} vehicles={allVehicles} cities={cities} /></Container>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -460,8 +376,48 @@ function guestLabel(category) {
   return `${count} ${count === 1 ? 'vehicle' : 'vehicles'}`;
 }
 
+function CategoryMetaIcon({ type }) {
+  if (type === 'passengers') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="7.5" r="3" />
+        <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="5" y="7" width="14" height="12" rx="1.5" />
+      <path d="M9 7V5h6v2M5 12h14M9 15h.01M15 15h.01" />
+    </svg>
+  );
+}
+
 export function CategoriesSection({ content, categories }) {
   if (!categories.length) return null;
+
+  const cards = [
+    ...categories.slice(0, 4),
+    {
+      id: 's-class',
+      name: 'S Class',
+      image: '/alpine-tarmac-hero.png',
+      examples: 'Mercedes-Benz S-Class',
+      max_passengers: 3,
+      vehicle_count: 1,
+      path: '/vehicles',
+    },
+    {
+      id: 'e-class-business',
+      name: 'E Class Business',
+      image: '/images/vehicles/mercedes-benz-eclass.webp',
+      examples: 'Mercedes-Benz E-Class',
+      max_passengers: 3,
+      vehicle_count: 1,
+      path: '/vehicles',
+    },
+  ];
 
   return (
     <Section id="categories">
@@ -474,7 +430,7 @@ export function CategoriesSection({ content, categories }) {
         />
 
         <div ref={reveal} className={cx(s.catGrid, s.xStagger)}>
-          {categories.map((category) => {
+          {cards.map((category) => {
             // The category's own photo, a vehicle from it, or - when the
             // database has neither - the placeholder car from /public.
             const cover = categoryImage(category) || category.image || category.sample_image;
@@ -482,7 +438,7 @@ export function CategoriesSection({ content, categories }) {
             return (
               <Link
                 key={category.id}
-                to={`/vehicles/category/${category.slug}`}
+                to={category.path || `/vehicles/category/${category.slug}`}
                 className={cx(s.catCard, s.xLift, s.xSpot, s.xGloss, s.xTilt)}
                 onMouseMove={spotlight}
                 onMouseLeave={unspotlight}
@@ -497,12 +453,22 @@ export function CategoriesSection({ content, categories }) {
                     width="280"
                     height="170"
                   />
-                  <span className={s.catGuests}>{guestLabel(category)}</span>
                 </span>
 
                 <span className={s.catBody}>
                   <span className={s.catName}>{category.name}</span>
                   {category.examples && <span className={s.catExamples}>{category.examples}</span>}
+                  <span className={s.catFooter}>
+                    <span className={s.catMeta} title={guestLabel(category)}>
+                      <CategoryMetaIcon type="passengers" />
+                      {category.max_passengers || '—'}
+                    </span>
+                    <span className={s.catMeta} title={`${category.vehicle_count || 0} vehicles`}>
+                      <CategoryMetaIcon type="luggage" />
+                      {category.vehicle_count || '—'}
+                    </span>
+                    <span className={s.catArrow} aria-hidden="true">→</span>
+                  </span>
                 </span>
               </Link>
             );
@@ -541,44 +507,72 @@ export function FeaturedVehiclesSection({ content, vehicles }) {
 
 /* ----------------------------------------- services (light cream section) */
 
+function ServiceIcon({ slug }) {
+  const common = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round', strokeLinejoin: 'round' };
+  const shapes = {
+    'airport-transfers': <path d="M3 14.5 21 9l-7.3 7.8-1.5-3.2-3.2-1.5L3 14.5ZM12 13.6 9 21" />,
+    'hourly-chauffeur': <><circle cx="12" cy="12" r="8.5" /><path d="M12 7v5l3 2" /></>,
+    'city-to-city': <><path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></>,
+    'business-travel': <><rect x="4" y="7" width="16" height="12" rx="1.5" /><path d="M9 7V5h6v2m-11 5h16" /></>,
+    weddings: <><circle cx="9" cy="12" r="4" /><circle cx="15" cy="12" r="4" /><path d="m10.5 11 3 2" /></>,
+    'ski-transfers': <><path d="m5 20 7-15 7 15M3 20h18M9.5 13h5" /></>,
+    events: <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4m8-4v4M4 10h16m-9 4h2m-2 3h2" /></>,
+  };
+  return <svg viewBox="0 0 24 24" {...common} aria-hidden="true">{shapes[slug] || shapes.events}</svg>;
+}
+
 export function ServicesSection({ content, services }) {
   if (!services.length) return null;
 
-  const remainder = services.length % 4;
-  const fillers = remainder === 0 ? 0 : 4 - remainder;
+  const cards = [
+    ...services,
+    {
+      id: 'events',
+      slug: 'events',
+      name: 'Events & WEF',
+      short_description: 'Vehicle coordination for conferences, galas and private events.',
+      image: '/alpine-tarmac-hero.png',
+      path: '/contact',
+    },
+  ];
 
   return (
-    <section id="services" className={s.servicesLight}>
+    <section id="services" className={s.servicesShowcase}>
       <Container>
-        <div ref={reveal} className={cx(s.headRow, s.headWide, s.xHead, s.xReveal)}>
+        <div ref={reveal} className={cx(s.servicesHead, s.xHead, s.xReveal)}>
           <div>
             <Eyebrow className={s.servicesEyebrow}>{content.services_eyebrow}</Eyebrow>
             <h2>{content.services_heading}</h2>
           </div>
+          <p>{content.services_text}</p>
         </div>
 
-        <div ref={reveal} className={cx(s.serviceGrid, s.xStagger)}>
-          {services.map((service, i) => (
-            <article
+        <div ref={reveal} className={cx(s.serviceShowcaseGrid, s.xStagger)}>
+          {cards.map((service, i) => (
+            <Link
+              to={service.path || `/services/${service.slug}`}
               className={cx(s.serviceCell, s.xLift, s.xSpot, s.xGloss, s.xTilt)}
               key={service.id}
               onMouseMove={spotlight}
               onMouseLeave={unspotlight}
             >
+              <span className={s.serviceImage}>
+                <img src={imageUrl(service.image)} onError={imageFallback} alt="" loading="lazy" width="520" height="250" />
+                <span className={s.serviceIcon}><ServiceIcon slug={service.slug} /></span>
+              </span>
+              <span className={s.serviceContent}>
               <span className={s.serviceNum}>{String(i + 1).padStart(2, '0')}</span>
-              <h3 className={cx(s.serviceName, s.xItemTitle)}>
-                <Link to={`/services/${service.slug}`}>{service.name}</Link>
-              </h3>
+              <h3 className={cx(s.serviceName, s.xItemTitle)}>{service.name}</h3>
               <p className={cx(s.serviceDesc, s.xItemText)}>{service.short_description}</p>
-              <Link to={`/services/${service.slug}`} className={cx(s.serviceLink, s.xArrow)}>
+              <span className={s.serviceLink}>
                 Learn more →
-              </Link>
-            </article>
+              </span>
+              <span className={s.serviceArrow} aria-hidden="true">→</span>
+              </span>
+            </Link>
           ))}
 
-          {Array.from({ length: fillers }, (_, i) => (
-            <div className={s.serviceFiller} key={`filler-${i}`} aria-hidden="true" />
-          ))}
+    
         </div>
       </Container>
     </section>
@@ -814,8 +808,6 @@ export function GallerySection({ content, photos }) {
         <HeadRow
           eyebrow={content.gallery_eyebrow}
           title={content.gallery_heading}
-          link="/gallery"
-          linkLabel="Full gallery"
         />
 
         <div ref={reveal} className={cx(s.galleryGrid, s.xStagger)}>

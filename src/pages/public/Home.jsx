@@ -16,7 +16,6 @@ import {
   HowItWorksSection,
   QuickBookingSection,
   ReviewsSection,
-  SeasonalOfferSection,
   ServicesSection,
   TrustStrip,
   WhyChooseUsSection,
@@ -31,7 +30,6 @@ const SECTION_COMPONENTS = {
   services: (p) => <ServicesSection {...p} />,
   why_choose_us: (p) => <WhyChooseUsSection {...p} />,
   how_it_works: (p) => <HowItWorksSection {...p} />,
-  seasonal_offer: (p) => <SeasonalOfferSection {...p} />,
   reviews: (p) => <ReviewsSection {...p} />,
   gallery: (p) => <GallerySection {...p} />,
   faq: (p) => <FaqSection {...p} />,
@@ -46,13 +44,12 @@ export default function Home() {
       Promise.all([
         publicApi.home(),
         publicApi.categories(),
-        publicApi.vehicles({ featured: 1, limit: 6 }),
+        publicApi.vehicles({ featured: 1, limit: 4 }),
         publicApi.vehicles({ limit: 60 }),
         publicApi.services({ homepage: 1 }),
         publicApi.testimonials({ featured: 1, limit: 6 }),
         publicApi.photos({ limit: 6 }),
         publicApi.faqs(),
-        publicApi.promotions({ placement: 'homepage_banner' }),
         publicApi.cities(),
       ]),
     [],
@@ -74,10 +71,11 @@ export default function Home() {
     );
   }
 
-  const [home, cats, featured, allVehicles, services, reviews, gallery, faqs, promos, cities] = data;
+  const [home, cats, featured, allVehicles, services, reviews, gallery, faqs, cities] = data;
 
   const shared = {
     content: home.content,
+    heroBooking: home.sections.includes('quick_booking'),
     lists: home.lists,
     settings,
     categories: cats.categories,
@@ -88,7 +86,6 @@ export default function Home() {
     stats: reviews.stats,
     photos: gallery.photos,
     faqs: faqs.faqs,
-    promotion: promos.promotions[0] || null,
     cities: cities.cities,
   };
 
@@ -106,6 +103,7 @@ export default function Home() {
       />
       <div className={home_s.flow}>
         {home.sections.map((key) => {
+          if (key === 'quick_booking' && home.sections.includes('hero')) return null;
           const render = SECTION_COMPONENTS[key];
           if (!render) return null;
 

@@ -204,6 +204,74 @@
   margin-top: 9px;
 }
 
+/* Premium vehicle row treatment used by the home-page showcase. */
+.card {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 11px;
+  background: linear-gradient(160deg, #0f1c23, #071116 70%);
+}
+
+.media {
+  aspect-ratio: 1.45 / 1;
+  border-radius: 10px;
+}
+
+.media::after {
+  content: '';
+  position: absolute;
+  inset: 47% 0 0;
+  background: linear-gradient(transparent, rgba(4, 10, 14, .72));
+  pointer-events: none;
+}
+
+.mediaBar {
+  left: 8px;
+  right: 8px;
+  bottom: 7px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: rgba(4, 12, 16, .82);
+  font-size: 10px;
+}
+
+.featuredDot {
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: #e2bd7d;
+  color: #13171a;
+}
+
+.body {
+  padding: 12px 13px 13px;
+  gap: 6px;
+}
+
+.name {
+  font-size: 19px;
+}
+
+.tagline {
+  min-height: 36px;
+  font-size: 11px;
+}
+
+.price {
+  margin-top: 3px;
+  padding-top: 0;
+}
+
+.actions {
+  margin-top: 7px;
+}
+
+.actions > * {
+  min-height: 34px;
+  font-size: 10px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
 /* One card per row on a phone: an equal split beats a stretched WhatsApp
    button three times the width of "Details". */
 @media (max-width: 560px) {
@@ -338,7 +406,7 @@
 
 .galleryMain {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 2 / 1;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: linear-gradient(160deg, var(--navy-soft), var(--navy-deep));
@@ -368,7 +436,7 @@ body[data-public-theme] .galleryMain {
 }
 
 .thumb {
-  aspect-ratio: 1;
+  aspect-ratio: 1.55 / 1;
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--border);

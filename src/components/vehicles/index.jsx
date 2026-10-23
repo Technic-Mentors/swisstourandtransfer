@@ -96,7 +96,7 @@ export function VehicleCard({ vehicle, pageType = 'vehicle-card' }) {
           <Button to={href} variant="outline" size="sm">
             Details
           </Button>
-          <WhatsAppButton vehicle={vehicle} pageType={pageType} size="sm">
+          <WhatsAppButton vehicle={vehicle} pageType={pageType} variant="gold" size="sm">
             WhatsApp
           </WhatsAppButton>
         </div>

@@ -828,8 +828,7 @@ body[data-public-theme='light'] .footer {
 }
 
 /* ============================================================== page head */
-/* The same photograph as the homepage hero, behind every page banner. The
-   overlay is heavy enough that the centred title keeps its contrast. */
+/* Shared moonlit retreat photograph behind every public-page banner. */
 .pageHead {
   position: relative;
   border-top: 3px solid var(--gold);
@@ -838,17 +837,14 @@ body[data-public-theme='light'] .footer {
   text-align: center;
   border-bottom: 1px solid var(--border);
   background:
-    linear-gradient(180deg, rgba(8, 14, 24, 0.82) 0%, rgba(8, 14, 24, 0.92) 100%),
-    radial-gradient(900px 420px at 50% -20%, rgba(210, 173, 110, 0.14), transparent 70%),
-    url('/herosection.png') center 32% / cover no-repeat,
-    var(--navy-deep);
+    linear-gradient(180deg, rgba(5, 14, 20, .42), rgba(5, 14, 20, .58)),
+    url('/moonlit-lakeside-header.png') center 52% / cover no-repeat;
 }
 
 body[data-public-theme='dark'] .pageHead {
   background:
-    linear-gradient(180deg, rgba(20, 22, 27, 0.78), rgba(20, 22, 27, 0.9)),
-    url('/herosection.png') center 32% / cover no-repeat,
-    var(--navy-deep);
+    linear-gradient(180deg, rgba(5, 14, 20, .42), rgba(5, 14, 20, .58)),
+    url('/moonlit-lakeside-header.png') center 52% / cover no-repeat;
 }
 
 body[data-public-theme='light'] .pageHead {
@@ -1001,4 +997,193 @@ body[data-public-theme='light'] .pageHeadText {
   .logo:focus-visible .logoBottom {
     letter-spacing: 0.24em;
   }
+}
+.header.heroHeader { margin-bottom:-79px; background:linear-gradient(180deg,rgba(3,17,25,.65),transparent); border-bottom-color:transparent; backdrop-filter:none; }
+.header.heroHeader.headerScrolled { background:rgba(6,20,29,.97); }
+.heroHeader .navLink,.heroHeader .phone,.heroHeader .logo,.heroHeader .logoTop,.heroHeader .logoBottom { color:#f5f1ea; }
+.heroHeader .navLinkActive { color:#edbe70; }
+.heroHeader .themeToggle,.heroHeader .burger { color:#f5f1ea; }
+
+/* Slim transparent homepage navigation with an outlined booking action. */
+.header.heroHeader,
+:global(body[data-public-theme='light']) .header.heroHeader { margin-bottom: -72px; background: linear-gradient(180deg,rgba(0,6,9,.85),rgba(0,6,9,.1)); border: 0; backdrop-filter: none; }
+.heroHeader .headerInner,
+:global(body[data-public-theme='light']) .heroHeader .headerInner { min-height: 72px; gap: 20px; }
+.header.heroHeader.headerScrolled,
+:global(body[data-public-theme='light']) .header.heroHeader.headerScrolled { background: rgba(4,13,18,.97); }
+.heroHeader .logo { gap: 8px; }
+.heroHeader .logoMark { height: 44px; }
+.heroHeader .logoTop { font-size: 25px; font-weight: 400; }
+.heroHeader .logoBottom { font-size: 8px; letter-spacing: .18em; color: #eee; }
+.heroHeader .nav { gap: 25px; }
+.heroHeader .navLink { font-size: 11px; letter-spacing: 0; font-weight: 400; }
+.heroHeader .phone { font-size: 10px; font-weight: 400; }
+.heroHeader .actions { gap: 20px; }
+.heroHeader .headerCta { background: transparent; border: 1px solid #b68e53; color: #dfb675; box-shadow: inset 0 0 10px #d9ae6520,0 0 8px #d9ae6515; border-radius: 4px; font-size: 10px; padding: 9px 12px; min-height: 34px; text-transform: uppercase; }
+.heroHeader .headerCta:hover { background: #cba16a22; border-color: #e4bb7e; }
+.heroHeader .themeToggle { width: 29px; height: 29px; border-radius: 50%; border-color: #ffffff26; background: #0003; }
+.heroHeader .themeToggle svg { width: 16px; height: 16px; }
+@media (min-width: 1025px) and (max-width: 1200px) { .heroHeader .nav { gap: 16px; } .heroHeader .headerInner { gap: 14px; } .heroHeader .actions { gap: 12px; } }
+@media (max-width: 560px) { .heroHeader .headerCta { font-size: 8px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoMark { height: 32px; } .heroHeader .logoTop { font-size: 20px; } .heroHeader .logoBottom { font-size: 6px; } .heroHeader .headerInner { gap: 8px; } }
+@media (min-width: 960px) and (max-width: 1024px) {
+  .heroHeader .nav { display: flex; gap: 17px; }
+  .heroHeader .phone { display: flex; }
+  .heroHeader .burger { display: none; }
+  .heroHeader .headerInner { gap: 14px; }
+  .heroHeader .actions { gap: 12px; }
+  .heroHeader .logoTop { font-size: 22px; }
+  .heroHeader .logoMark { height: 38px; }
+}
+@media (min-width: 960px) {
+  .heroHeader > div { max-width: none; padding-inline: 3.6vw; }
+  .heroHeader .navLink { font-size: clamp(10px,.95vw,15px); }
+  .heroHeader .phone { font-size: clamp(9px,.9vw,14px); }
+  .heroHeader .headerCta { font-size: clamp(9px,.92vw,14px); font-weight: 400; letter-spacing: 0; }
+  .heroHeader .logoMark { width: 64px; height: 46px; }
+  .heroHeader .logoTop { font-family: Georgia,serif; font-size: 27px; letter-spacing: .04em; }
+  .heroHeader .logoBottom { font-weight: 400; }
+}
+
+/* Footer: compact four-column information layout. */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding-top: 34px;
+  border-top-color: rgba(255, 255, 255, .14);
+  background:
+    linear-gradient(90deg, rgba(4, 11, 16, .97) 0%, rgba(4, 11, 16, .91) 56%, rgba(4, 11, 16, .68) 100%),
+    url('/moonlit-lakeside-header.png') center / cover no-repeat;
+}
+
+.footerGrid {
+  grid-template-columns: 1.55fr .8fr .8fr 1.55fr;
+  gap: 0;
+  padding-bottom: 29px;
+}
+
+.footerGrid > * {
+  min-width: 0;
+  padding: 0 42px;
+}
+
+.footerGrid > :first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.footerLogo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f2eee8;
+}
+
+.footerLogoMark {
+  width: 82px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.footerLogoText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  font-family: Georgia, serif;
+  font-size: 25px;
+  letter-spacing: .04em;
+}
+
+.footerLogoText small {
+  margin-top: 4px;
+  color: #e8e5df;
+  font-family: var(--font-body);
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: .2em;
+}
+
+.footerBrandText {
+  max-width: 300px;
+  margin-top: 9px;
+  color: #c1c5c6;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.footerTagline { display: none; }
+
+.footerTitle {
+  margin-bottom: 12px;
+  color: #f0ece5;
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .25em;
+}
+
+.footerList { gap: 7px; }
+.footerList a { color: #c6caca; font-size: 11px; }
+
+.footerContact { gap: 8px; }
+.footerContact a,
+.footerContact span {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  color: #c6caca;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.footerContact svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  fill: none;
+  stroke: #e21d2c;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.footerSocials { margin-top: 13px; gap: 10px; }
+.socialLink { width: 35px; height: 35px; border-color: rgba(255, 255, 255, .18); }
+
+.footerBar {
+  padding-block: 13px;
+  border-top-color: rgba(255, 255, 255, .1);
+  background: rgba(1, 7, 10, .42);
+  font-size: 10px;
+}
+
+.footerBar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.footerAttribution,
+.footerLegal {
+  justify-content: flex-start;
+  margin: 0;
+  font-size: 10px;
+}
+
+.footerLegal { gap: 14px; }
+.footerLegal a + a { padding-left: 14px; }
+
+@media (max-width: 1024px) {
+  .footerGrid { grid-template-columns: 1.4fr 1fr 1fr; }
+  .footerGrid > * { padding: 0 24px; }
+  .footerGrid > :last-child { grid-column: 2 / -1; margin-top: 26px; }
+}
+
+@media (max-width: 620px) {
+  .footer { padding-top: 28px; }
+  .footerGrid { grid-template-columns: 1fr 1fr; gap: 24px 0; }
+  .footerGrid > * { padding: 0 14px; border-left: 0; }
+  .footerGrid > :first-child { grid-column: 1 / -1; padding: 0; }
+  .footerGrid > :last-child { grid-column: 1 / -1; margin-top: 0; padding: 0; }
+  .footerBar .container { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
