@@ -24,7 +24,11 @@ body {
   background: var(--navy);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+main {
+  font-family: var(--font-heading);
 }
 
 img,

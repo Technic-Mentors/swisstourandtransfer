@@ -6,6 +6,7 @@ import useWhatsApp from '../../hooks/useWhatsApp';
 import { useSite } from '../../context/SiteContext';
 import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, vehicleSchema } from '../../components/seo/schemas';
+import { PageHead } from '../../components/layout/PublicLayout';
 import { Alert, Button, Container, Section, SectionHeading, Spinner } from '../../components/ui';
 import WhatsAppButton from '../../components/ui/WhatsAppButton';
 import { SpecTable, VehicleGallery, VehicleGrid, priceLabel } from '../../components/vehicles';
@@ -28,6 +29,10 @@ const CheckIcon = () => (
     <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+const PassengerIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="12" cy="7" r="3" /><path d="M5 21v-2a7 7 0 0 1 14 0v2M8 13l-2 2m10-2 2 2" strokeLinecap="round" /></svg>;
+const SuitcaseIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="4" y="7" width="16" height="14" rx="2" /><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M8 11v6m8-6v6" strokeLinecap="round" /></svg>;
+const HandBagIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M4 9h16l-1 12H5L4 9Z" strokeLinejoin="round" /><path d="M9 9V6a3 3 0 0 1 6 0v3" strokeLinecap="round" /></svg>;
 
 export default function VehicleDetail() {
   const { slug } = useParams();
@@ -81,6 +86,13 @@ export default function VehicleDetail() {
             { name: vehicle.name, path: `/vehicles/${vehicle.slug}` },
           ]),
         ]}
+      />
+
+      <PageHead
+        trail={[{ name: 'Vehicles', path: '/vehicles' }, { name: vehicle.name }]}
+        eyebrow="Chauffeur vehicle"
+        title={vehicle.name}
+        text={vehicle.tagline || description}
       />
 
       <Section tight className={s.vehicleDetailSection}>
@@ -144,15 +156,15 @@ export default function VehicleDetail() {
               <div className={s.capacityRow}>
                 <div className={s.capacityCell}>
                   <span className={s.capacityValue}>{vehicle.passengers}</span>
-                  <span className={s.capacityLabel}>Passengers</span>
+                  <span className={s.capacityLabel}><PassengerIcon />Passengers</span>
                 </div>
                 <div className={s.capacityCell}>
                   <span className={s.capacityValue}>{vehicle.suitcases}</span>
-                  <span className={s.capacityLabel}>Suitcases</span>
+                  <span className={s.capacityLabel}><SuitcaseIcon />Suitcases</span>
                 </div>
                 <div className={s.capacityCell}>
                   <span className={s.capacityValue}>{vehicle.hand_bags}</span>
-                  <span className={s.capacityLabel}>Hand bags</span>
+                  <span className={s.capacityLabel}><HandBagIcon />Hand bags</span>
                 </div>
               </div>
 

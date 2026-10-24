@@ -404,6 +404,17 @@
   gap: 14px;
 }
 
+.gallery.serviceShots {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(160px, .9fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.gallery.serviceShots .serviceShotMain {
+  position: relative;
+}
+
 .galleryMain {
   position: relative;
   aspect-ratio: 2 / 1;

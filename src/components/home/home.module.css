@@ -2092,44 +2092,103 @@
     transform: none !important;
   }
 }
-/* Keep the image, headline and booking panel in one viewport composition. */
-.referenceHero {
-  position: relative;
-  height: 100svh;
-  min-height: 540px;
-  max-height: 1080px;
-  background: linear-gradient(90deg,rgba(0,5,8,.63),rgba(0,5,8,.08) 41%,transparent 66%), url('/alpine-tarmac-hero.png') center / 100% 100% no-repeat;
-  overflow: visible;
+/* The Home wrapper stays overflow-visible so the pinned stage can track the viewport. */
+.homeFlow { overflow: visible; }
+
+/* Four-angle, scroll-driven home showcase. */
+.scrollWrap { position: relative; height: 400vh; background: #050506; }
+.heroStage { position: sticky; z-index: 1; top: 0; height: 100vh; height: 100svh; overflow: visible; isolation: isolate; background: #050506; color: #fff; }
+.heroSlides, .heroScrim { position: absolute; inset: 0; }
+.heroSlides { z-index: -2; overflow: hidden; background: #050506; }
+.heroSlide { position: absolute; inset: 0; opacity: 0; transform: scale(1.07); background-position: 90% center; background-size: cover; background-repeat: no-repeat; transition: opacity .9s ease, transform 1.6s cubic-bezier(.22,1,.36,1); }
+.heroSlideActive { opacity: .9; transform: scale(1); }
+.heroScrim { z-index: -1; pointer-events: none; background: linear-gradient(90deg, rgba(5,5,6,.95) 0%, rgba(5,5,6,.7) 30%, transparent 55%), linear-gradient(0deg, rgba(5,5,6,.86) 0%, transparent 48%); }
+.heroContent { position: absolute; z-index: 2; top: 17%; left: 7vw; width: min(520px, 40vw); }
+.showcaseEyebrow { display: inline-flex; align-items: center; gap: 10px; color: #c9a96a; font-size: 10px; font-weight: 600; letter-spacing: .25em; line-height: 1.3; text-transform: uppercase; }
+.showcaseEyebrow::before { content: ''; width: 30px; height: 1px; background: #c9a96a; }
+.heroCopyStack { position: relative; min-height: 190px; margin-top: 16px; }
+.heroCopy { position: absolute; inset: 0 auto auto 0; width: 100%; transition: transform .7s cubic-bezier(.22,1,.36,1); }
+.heroCopyActive { transform: translateY(0); }
+.heroCopyOut { transform: translateY(-110%); pointer-events: none; }
+.heroCopyWaiting { transform: translateY(110%); pointer-events: none; }
+.showcaseTitle { margin: 0; color: #fff; font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif; font-size: clamp(2.2rem, 4.4vw, 4rem); font-weight: 500; line-height: 1.05; letter-spacing: 0; text-transform: none; }
+.heroLineMask { display: block; overflow: hidden; }
+.heroLine { display: block; transform: translateY(110%); transition: transform .7s cubic-bezier(.22,1,.36,1); }
+.heroCopyActive .heroLine { transform: translateY(0); }
+.heroCopyActive .heroLineMask:nth-child(2) .heroLine { transition-delay: .12s; }
+.heroAccent { color: #d9b873; }
+.heroSubtext { max-width: 390px; margin-top: 15px; color: rgba(255,255,255,.86); font-size: 14px; line-height: 1.55; opacity: 0; transform: translateY(12px); transition: opacity .55s ease .3s, transform .55s ease .3s; }
+.heroCopyActive .heroSubtext { opacity: 1; transform: translateY(0); }
+.showcaseActions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.heroBookButton, .heroFleetButton { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; padding: 0 22px; border: 1px solid #c9a96a; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; transition: transform .22s ease, box-shadow .22s ease, color .22s ease, background .22s ease; }
+.heroBookButton { color: #111; background: linear-gradient(110deg,#d9b873,#c9a96a); }
+.heroBookButton:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(201,169,106,.28); color: #111; }
+.heroFleetButton { color: #fff; background: transparent; }
+.heroFleetButton:hover { color: #050506; background: #fff; border-color: #fff; }
+.heroBooking { position: absolute; z-index: 3; right: 6vw; bottom: 4.4%; left: 6vw; }
+.heroBooking > div { position: relative; }
+.heroBooking > div > div { border: 1px solid rgba(201,169,106,.5); border-radius: 4px; padding: 8px; background: rgba(5,5,6,.72); color: #fff; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 14px 36px rgba(0,0,0,.24); }
+.heroBooking > div > div > div { grid-template-columns: repeat(4,minmax(0,1fr)) 132px; gap: 0; align-items: stretch; }
+.heroBooking > div > div > div > div:not(:last-child) { min-width: 0; padding: 5px 12px; border: 0; border-right: 1px solid rgba(217,184,115,.22); border-radius: 0; background: transparent; }
+.heroBooking > div > div > div > div:last-child { display: flex; align-items: center; padding-left: 9px; }
+.heroBooking label { color: #d9b873 !important; font-size: 9px !important; font-weight: 600 !important; letter-spacing: .12em !important; text-align: left !important; text-transform: uppercase; }
+.heroBooking input, .heroBooking select { width: 100%; height: 25px !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; color: #fff !important; background: transparent !important; font-size: 11px !important; text-align: left !important; }
+.heroBooking input::placeholder { color: rgba(255,255,255,.72) !important; }
+.heroBooking input[type='datetime-local'] { color-scheme: dark; }
+.heroBooking > div > div > div > div:last-child > a { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: center; border: 0; border-radius: 3px; color: #111; background: linear-gradient(110deg,#d9b873,#c9a96a); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.heroBooking > div > div > div > div:last-child > a:hover { box-shadow: 0 8px 22px rgba(201,169,106,.25); }
+.heroBooking.heroBooking ul { max-height: min(48vh, 420px); overflow-y: auto; z-index: 1000; }
+.heroBooking > div > div > div > div:focus-within { position: relative; z-index: 100; }
+
+@media (min-width: 900px) and (max-width: 1300px) {
+  .heroContent { width: 46vw; }
+  .showcaseTitle { font-size: clamp(2rem, 4vw, 3.2rem); }
+  .heroBooking { right: 5vw; left: 5vw; }
 }
-.referenceHero > * { width: 100%; }
-.referenceHero > div > div { max-width: none; width: 100%; padding-inline: 3.6vw; }
-.referenceCopy { padding-top: 20.5svh; }
-.referenceEyebrow { color: #cda970; font-size: clamp(9px,.95vw,14px); font-weight: 500; letter-spacing: .32em; text-transform: uppercase; }
-.referenceTitle { margin: 10px 0 0; color: #f3f3f1; font-family: 'Segoe UI', 'Helvetica Neue', sans-serif; font-size: clamp(36px,4.15vw,76px); font-weight: 200; line-height: 1.04; letter-spacing: .005em; text-transform: uppercase; }
-.referenceTitle > span { display: block; white-space: nowrap; }
-.referenceTitle .referenceGold { color: #c9a36c; }
-.referenceBooking { position: absolute; left: 0; right: 0; bottom: 4.4%; z-index: 3; }
-.referenceBooking > div { max-width: none; padding-inline: 3vw; }
-@media (max-width: 959px) {
-  .referenceHero { min-height: 620px; }
-  .referenceCopy { padding-top: 115px; }
-  .referenceTitle { font-size: clamp(32px,4.15vw,40px); }
-  .referenceBooking { bottom: 22px; }
+
+@media (max-width: 899px) {
+  .heroScrim { background: linear-gradient(0deg, #050506 0%, rgba(5,5,6,.96) 38%, rgba(5,5,6,.36) 62%, transparent 78%); }
+  .heroSlide { background-position: 70% 20%; background-size: auto 55%; }
+  .heroContent { top: 47%; left: 6vw; width: 82vw; }
+  .heroCopyStack { min-height: 145px; margin-top: 10px; }
+  .showcaseTitle { font-size: clamp(2rem, 5vw, 3rem); }
+  .heroSubtext { max-width: 460px; margin-top: 8px; font-size: 12px; }
+  .showcaseActions { gap: 8px; margin-top: 12px; }
+  .heroBookButton, .heroFleetButton { min-height: 38px; padding-inline: 16px; font-size: 9px; }
+  .heroBooking { right: 4vw; bottom: 2%; left: 4vw; }
+  .heroBooking > div > div > div { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0; }
+  .heroBooking > div > div > div > div:not(:last-child) { padding: 3px 8px; border-bottom: 1px solid rgba(217,184,115,.18); }
+  .heroBooking > div > div > div > div:nth-child(2) { border-right: 0; }
+  .heroBooking > div > div > div > div:last-child { grid-column: 1 / -1; padding: 6px 2px 0; }
 }
+
 @media (max-width: 560px) {
-  .referenceHero { height: auto; min-height: 0; max-height: none; padding-top: 95px; background-size: auto 540px; background-position: center top; background-color: #071016; }
-  .referenceHero > div > div { padding-inline: 20px; }
-  .referenceCopy { padding-top: 12px; min-height: 425px; }
-  .referenceEyebrow { font-size: 8px; }
-  .referenceTitle { font-size: 32px; }
-  .referenceBooking { position: relative; bottom: auto; padding-bottom: 18px; }
-  .referenceBooking > div { padding-inline: 16px; }
+  .heroStage { height: 100svh; }
+  .scrollWrap { height: 400vh; }
+  .heroSlide { background-size: auto 47%; background-position: 70% 10%; }
+  .heroScrim { background: linear-gradient(0deg, #050506 0%, rgba(5,5,6,.98) 46%, rgba(5,5,6,.48) 67%, transparent 82%); }
+  .heroContent { top: 39%; left: 6vw; width: 88vw; }
+  .showcaseEyebrow { font-size: 8px; letter-spacing: .19em; }
+  .showcaseTitle { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+  .heroCopyStack { min-height: 125px; }
+  .heroSubtext { max-width: 320px; font-size: 11px; }
+  .showcaseActions { margin-top: 8px; }
+  .heroBooking { right: 4vw; bottom: 1.5%; left: 4vw; }
+  .heroBooking > div > div { padding: 6px; }
+  .heroBooking > div > div > div { grid-template-columns: 1fr; }
+  .heroBooking > div > div > div > div:not(:last-child) { min-height: 39px; padding: 2px 8px; border-right: 0; }
+  .heroBooking > div > div > div > div:last-child { grid-column: auto; padding-top: 5px; }
+  .heroBooking > div > div > div > div:last-child > a { min-height: 38px; }
 }
-.referenceHero > div:first-child { max-width: none; padding-inline: 3.6vw; }
-.referenceHero > div:first-child > div { padding-inline: 0; }
-.referenceHero .referenceBooking > div { padding-inline: 3vw; }
-@media (max-width: 560px) { .referenceHero > div:first-child { padding-inline: 20px; } .referenceHero .referenceBooking > div { padding-inline: 16px; } }
-.referenceCopy { padding-top: 17.5svh; }
-.referenceTitle { transform: scaleX(1.12); transform-origin: left top; }
-@media (max-width: 959px) { .referenceCopy { padding-top: 115px; } }
-@media (max-width: 560px) { .referenceCopy { padding-top: 12px; } .referenceTitle { transform: none; } }
+
+@media (max-height: 820px) and (min-width: 900px) {
+  .heroContent { top: 13%; }
+  .heroCopyStack { min-height: 160px; margin-top: 10px; }
+  .showcaseActions { margin-top: 14px; }
+  .heroBooking { bottom: 2%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroSlide, .heroCopy, .heroLine, .heroSubtext, .heroBookButton, .heroFleetButton { transition: none !important; }
+  .heroSlide { transform: none; }
+}

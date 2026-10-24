@@ -243,38 +243,94 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 
 /* ------------------------------------------------------------------- hero */
 
-function SwissShield({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 14 17" aria-hidden="true">
-      <path d="M7 0 14 2v6.9C14 12.7 11.1 15.6 7 17 2.9 15.6 0 12.7 0 8.9V2z" fill="#D52B1E" />
-      <path d="M5.9 3.7h2.2v2.5h2.5v2.2H8.1v2.5H5.9V8.4H3.4V6.2h2.5z" fill="#fff" />
-    </svg>
-  );
-}
-
-function splitHeadline(text) {
-  const value = String(text || '').trim();
-  const at = value.lastIndexOf(', ');
-  if (at === -1) return [value, ''];
-  return [value.slice(0, at + 1), value.slice(at + 2)];
-}
+const HERO_ANGLES = [
+  { name: 'Front', image: '/car-1.png', headline: 'Travel in first class', accent: 'across Switzerland.', text: 'Private drivers. Premium fleet. Fixed prices.' },
+  { name: 'Profile', image: '/car-2.png', headline: 'Quiet comfort,', accent: 'mile after mile.', text: 'Spacious, spotless cabins for airport and city transfers.' },
+  { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.' },
+  { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.' },
+];
 
 export function HeroSection({ content, allVehicles = [], cities = [], heroBooking }) {
+  const scrollWrapRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    HERO_ANGLES.forEach(({ image }) => {
+      const preload = new window.Image();
+      preload.src = image;
+    });
+
+    let frame = 0;
+    const update = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const wrapper = scrollWrapRef.current;
+        if (!wrapper) return;
+
+        const bounds = wrapper.getBoundingClientRect();
+        const travel = Math.max(bounds.height - window.innerHeight, 1);
+        const progress = Math.min(1, Math.max(0, -bounds.top / travel));
+        const activeIndex = Math.min(HERO_ANGLES.length - 1, Math.floor(progress * HERO_ANGLES.length));
+        setActiveIndex((previous) => previous === activeIndex ? previous : activeIndex);
+      });
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
-    <section className={cx(s.hero, s.referenceHero)} aria-label="Premium chauffeur service">
-      <Container>
-        <div className={s.referenceCopy}>
-          <span className={s.referenceEyebrow}>Premium chauffeur service</span>
-          <h1 className={s.referenceTitle}>
-            <span>Travel</span><span>in first class</span><span>across</span><span className={s.referenceGold}>Switzerland.</span>
-          </h1>
+    <section ref={scrollWrapRef} className={s.scrollWrap} aria-label="Premium chauffeur service">
+      <div className={s.heroStage}>
+        <div className={s.heroSlides} aria-hidden="true">
+          {HERO_ANGLES.map((angle, index) => (
+            <div
+              key={angle.name}
+              className={cx(s.heroSlide, index === activeIndex && s.heroSlideActive)}
+              style={{ backgroundImage: `url("${angle.image}")` }}
+            />
+          ))}
         </div>
-      </Container>
-      {heroBooking && (
-        <div className={s.referenceBooking}>
-          <Container><QuickBookingBar heading={content.quick_booking_heading} vehicles={allVehicles} cities={cities} /></Container>
+        <div className={s.heroScrim} aria-hidden="true" />
+
+        <div className={s.heroContent}>
+          <span className={s.showcaseEyebrow}>Premium chauffeur service</span>
+          <div className={s.heroCopyStack}>
+            {HERO_ANGLES.map((angle, index) => {
+              const Headline = index === 0 ? 'h1' : 'h2';
+              const stateClass = index === activeIndex
+                ? s.heroCopyActive
+                : index < activeIndex ? s.heroCopyOut : s.heroCopyWaiting;
+              return (
+                <div key={angle.name} className={cx(s.heroCopy, stateClass)} aria-hidden={index !== activeIndex}>
+                  <Headline className={s.showcaseTitle}>
+                    <span className={s.heroLineMask}><span className={s.heroLine}>{angle.headline}</span></span>
+                    <span className={s.heroLineMask}><span className={cx(s.heroLine, s.heroAccent)}>{angle.accent}</span></span>
+                  </Headline>
+                  <p className={s.heroSubtext}>{angle.text}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className={s.showcaseActions}>
+            <a className={s.heroBookButton} href={heroBooking ? '#booking' : '/book'}>Book your ride</a>
+            <Link className={s.heroFleetButton} to="/vehicles">View fleet</Link>
+          </div>
         </div>
-      )}
+
+        {heroBooking && (
+          <div className={s.heroBooking} id="booking">
+            <QuickBookingBar heading={content.quick_booking_heading} vehicles={allVehicles} cities={cities} />
+          </div>
+        )}
+      </div>
     </section>
   );
 }

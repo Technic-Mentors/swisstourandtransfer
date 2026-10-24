@@ -101,7 +101,7 @@ export default function Home() {
         path="/"
         jsonLd={[localBusiness(settings, reviews.stats), faqSchema(faqs.faqs)]}
       />
-      <div className={home_s.flow}>
+      <div className={home_s.homeFlow}>
         {home.sections.map((key) => {
           if (key === 'quick_booking' && home.sections.includes('hero')) return null;
           const render = SECTION_COMPONENTS[key];

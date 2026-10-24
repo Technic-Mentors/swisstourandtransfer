@@ -599,7 +599,7 @@ body[data-public-theme='light'] .footer {
 .footerCredit svg {
   width: 13px;
   height: 13px;
-  fill: #ff5263;
+  fill: var(--gold);
 }
 
 .footerCredit a {
@@ -1040,7 +1040,7 @@ body[data-public-theme='light'] .pageHeadText {
   .heroHeader .phone { font-size: clamp(9px,.9vw,14px); }
   .heroHeader .headerCta { font-size: clamp(9px,.92vw,14px); font-weight: 400; letter-spacing: 0; }
   .heroHeader .logoMark { width: 64px; height: 46px; }
-  .heroHeader .logoTop { font-family: Georgia,serif; font-size: 27px; letter-spacing: .04em; }
+  .heroHeader .logoTop { font-family: Georgia, serif; font-size: 27px; letter-spacing: .04em; }
   .heroHeader .logoBottom { font-weight: 400; }
 }
 

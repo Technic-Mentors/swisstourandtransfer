@@ -5,6 +5,7 @@ import { Button, Card, Lightbox, cx } from '../ui';
 import hs from '../home/home.module.css';
 import WhatsAppButton from '../ui/WhatsAppButton';
 import s from './vehicles.module.css';
+import detailStyles from '../../pages/public/pages.module.css';
 import { hoverGlowProps } from '../ui/hoverGlow';
 
 /* ------------------------------------------------------------------ icons */
@@ -154,8 +155,13 @@ export function VehicleGallery({ photos = [], name = '' }) {
   const [index, setIndex] = useState(0);
   const [lightbox, setLightbox] = useState(false);
 
-  // A vehicle with no photos still gets one frame: the placeholder car.
-  const shots = photos.length ? photos : [{ id: 'placeholder', file_path: '', alt_text: name }];
+  // Match the service gallery: one lead image and four supporting slots.
+  // Repeat the available photos when a vehicle has fewer than five images.
+  const availablePhotos = photos.length ? photos : [{ id: 'placeholder', file_path: '', alt_text: name }];
+  const shots = Array.from(
+    { length: Math.max(5, availablePhotos.length) },
+    (_, i) => availablePhotos[i % availablePhotos.length],
+  );
 
   const current = shots[Math.min(index, shots.length - 1)];
   const items = shots.map((photo, i) => ({
@@ -165,10 +171,10 @@ export function VehicleGallery({ photos = [], name = '' }) {
   }));
 
   return (
-    <div className={s.gallery}>
+    <div className={`${s.gallery} ${detailStyles.serviceShots}`}>
       <button
         type="button"
-        className={s.galleryMain}
+        className={detailStyles.serviceShotMain}
         onClick={() => setLightbox(true)}
         onPointerMove={(event) => {
           if (event.pointerType !== 'mouse') return;
@@ -200,12 +206,14 @@ export function VehicleGallery({ photos = [], name = '' }) {
       </button>
 
       {shots.length > 1 && (
-        <div className={s.thumbs}>
-          {shots.slice(0, 10).map((photo, i) => (
+        <div className={detailStyles.serviceShotRow}>
+          {shots.slice(1, 5).map((photo, offset) => {
+            const i = offset + 1;
+            return (
             <button
-              key={photo.id}
+              key={`${photo.id}-${i}`}
               type="button"
-              className={cx(s.thumb, i === index && s.thumbActive)}
+              className={detailStyles.serviceShot}
               onClick={() => setIndex(i)}
               aria-label={`Show photo ${i + 1}`}
               aria-pressed={i === index}
@@ -216,11 +224,12 @@ export function VehicleGallery({ photos = [], name = '' }) {
                 onError={imageFallback}
                 alt=""
                 loading="lazy"
-                width="160"
-                height="160"
+                width="200"
+                height="140"
               />
             </button>
-          ))}
+            );
+          })}
         </div>
       )}
 

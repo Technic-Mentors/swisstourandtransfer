@@ -151,13 +151,23 @@
 }
 
 .capacityLabel {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   margin-top: 4px;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-faint);
+}
+
+.capacityLabel svg {
+  width: 12px;
+  height: 12px;
+  color: var(--gold);
+  flex: none;
 }
 
 /* Price beside the buttons rather than stacked above them. */
@@ -893,7 +903,7 @@
 .avatar_blue { background: linear-gradient(140deg, #3b7ff0, #84b6fb); }
 .avatar_emerald { background: linear-gradient(140deg, #16a974, #63dcaa); }
 .avatar_amber { background: linear-gradient(140deg, #dd9020, #f6ca72); }
-.avatar_rose { background: linear-gradient(140deg, #f2506b, #ff93a6); }
+.avatar_rose { background: linear-gradient(140deg, #a8884f, #e3c288); }
 .avatar_cyan { background: linear-gradient(140deg, #0fa99e, #63dcd3); }
 
 .reviewWho {
@@ -1231,13 +1241,13 @@
   --border: #3b3d43;
   --border-light: #51545d;
   --border-strong: #696d77;
-  --gold: #dc2626;
-  --gold-bright: #ef4444;
-  --gold-dim: #dc2626;
-  --gold-dark: #b91c1c;
-  --gold-on: #ffffff;
-  --gold-wash: rgba(220, 38, 38, 0.12);
-  --gold-line: rgba(220, 38, 38, 0.32);
+  --gold: #d2ad6e;
+  --gold-bright: #e3c288;
+  --gold-dim: #a8884f;
+  --gold-dark: #7a5c25;
+  --gold-on: #1a1305;
+  --gold-wash: rgba(210, 173, 110, 0.12);
+  --gold-line: rgba(210, 173, 110, 0.32);
   --cream: #f5f5f5;
   --text: #f5f5f5;
   --text-muted: #d0d0d3;
@@ -1693,7 +1703,7 @@
 .serviceDetailHeroContent { padding: 12px 0 13px; }
 .serviceTrail { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 7px; color: var(--text-faint); font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
 .serviceTrail a:hover { color: var(--gold); }
-.serviceTrail b { color: #f04444; font-weight: 600; }
+.serviceTrail b { color: var(--gold); font-weight: 600; }
 .serviceHeroTitle { margin: 5px 0 3px; color: var(--cream); font-size: clamp(27px, 3.2vw, 43px); line-height: 1; }
 .serviceHeroTitle::first-letter { color: var(--gold); }
 .serviceDetailHeroContent > p { margin: 0; max-width: 58ch; color: var(--text); font-size: 11px; line-height: 1.4; }
@@ -1715,7 +1725,7 @@
   background: linear-gradient(90deg, rgba(2, 10, 15, .94) 0%, rgba(2, 10, 15, .62) 48%, rgba(2, 10, 15, .18));
 }
 .vehicleDetailSection { padding-top: 16px; }
-.vehicleDetailSection .serviceDetailLayout { grid-template-columns: minmax(0, 1.65fr) minmax(290px, .82fr); gap: 18px; }
+.vehicleDetailSection .serviceDetailLayout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
 .vehicleDetailSection .detailAbout { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--navy-card); }
 .vehicleDetailSection .detailAbout .prose { max-width: none; font-size: 12px; }
 .vehicleAboutEyebrow { display: block; margin-bottom: 6px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
@@ -1723,15 +1733,18 @@
 .vehicleDetailSection .detailAbout .includedList { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--border); grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .vehicleDetailSection .detailAbout .includedItem { font-size: 11px; }
 .vehicleBookingPanel {
-  padding: 18px;
+  padding: 15px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 48%), var(--navy-card);
 }
-.vehicleBookingTitle { margin: 9px 0 2px; font-family: var(--font-heading); font-size: clamp(24px, 2.5vw, 33px); color: var(--cream); line-height: 1.08; }
+.vehicleBookingTitle { margin: 7px 0 3px; font-family: var(--font-heading); font-size: clamp(22px, 2.2vw, 30px); color: var(--cream); line-height: 1.08; }
 .vehicleBookingPrice { margin: 0; color: var(--cream); font-family: var(--font-heading); font-size: 17px; }
 .vehicleBookingNote { margin: 1px 0 14px; color: var(--text-muted); font-size: 11px; }
 .vehicleBookingPanel .capacityRow { margin-bottom: 13px; }
+.vehicleBookingPanel .capacityCell { padding: 9px 6px; }
+.vehicleBookingPanel .capacityValue { font-size: 19px; }
+.vehicleBookingPanel .capacityLabel { font-size: 8px; letter-spacing: .1em; }
 .vehicleBookingActions { display: grid; gap: 10px; }
 
 @media (max-width: 560px) {
