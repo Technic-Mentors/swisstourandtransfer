@@ -244,14 +244,26 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 /* ------------------------------------------------------------------- hero */
 
 const HERO_ANGLES = [
-  { name: 'Front', image: '/car-1.png', headline: 'Travel in first class', accent: 'across Switzerland.', text: 'Private drivers. Premium fleet. Fixed prices.' },
-  { name: 'Profile', image: '/car-2.png', headline: 'Quiet comfort,', accent: 'mile after mile.', text: 'Spacious, spotless cabins for airport and city transfers.' },
-  { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.' },
-  { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.' },
+  { name: 'Front', image: '/car-1.png', headline: 'Travel in first class', accent: 'across Switzerland.', text: 'Private drivers. Premium fleet. Fixed prices.', callouts: [
+    { x: 56.5, y: 49, dx: 140, dy: 70, title: 'Adaptive LED headlights', text: 'Sharp visibility on night Alpine roads.' },
+  ] },
+  { name: 'Profile', image: '/car-2.png', headline: 'Quiet comfort,', accent: 'mile after mile.', text: 'Spacious, spotless cabins for airport and city transfers.', callouts: [
+    { x: 70.6, y: 31.6, dx: 60, dy: -165, title: 'Room to stretch', text: 'Generous rear legroom on long transfers.' },
+    { x: 37.7, y: 63.3, dx: -80, dy: 120, title: 'Winter-ready', text: 'Alpine-grade tyres for mountain routes.' },
+  ] },
+  { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.', callouts: [
+    { x: 67.6, y: 38.4, dx: 60, dy: -250, title: 'LED signature lights', text: 'Unmistakable on every road, day or night.' },
+    { x: 79.5, y: 50, dx: -170, dy: 60, title: 'Generous boot', text: 'Skis, golf bags and suitcases fit easily.' },
+  ] },
+  { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.', callouts: [
+    { x: 45.5, y: 43.8, dx: -170, dy: 150, title: 'Adaptive LED headlights', text: 'Sharp visibility on night Alpine roads.' },
+    { x: 88.8, y: 36.9, dx: -150, dy: 90, title: 'Hand-picked fleet', text: 'Every vehicle inspected before each ride.' },
+  ] },
 ];
 
 export function HeroSection({ content, allVehicles = [], cities = [], heroBooking }) {
   const scrollWrapRef = useRef(null);
+  const heroSlidesRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -272,6 +284,8 @@ export function HeroSection({ content, allVehicles = [], cities = [], heroBookin
         const travel = Math.max(bounds.height - window.innerHeight, 1);
         const progress = Math.min(1, Math.max(0, -bounds.top / travel));
         const activeIndex = Math.min(HERO_ANGLES.length - 1, Math.floor(progress * HERO_ANGLES.length));
+        heroSlidesRef.current?.style.setProperty('--hero-parallax', `${progress * -88}px`);
+        heroSlidesRef.current?.style.setProperty('--hero-zoom', `${1.04 + progress * 0.06}`);
         setActiveIndex((previous) => previous === activeIndex ? previous : activeIndex);
       });
     };
@@ -289,7 +303,7 @@ export function HeroSection({ content, allVehicles = [], cities = [], heroBookin
   return (
     <section ref={scrollWrapRef} className={s.scrollWrap} aria-label="Premium chauffeur service">
       <div className={s.heroStage}>
-        <div className={s.heroSlides} aria-hidden="true">
+        <div ref={heroSlidesRef} className={s.heroSlides} aria-hidden="true">
           {HERO_ANGLES.map((angle, index) => (
             <div
               key={angle.name}
@@ -299,6 +313,37 @@ export function HeroSection({ content, allVehicles = [], cities = [], heroBookin
           ))}
         </div>
         <div className={s.heroScrim} aria-hidden="true" />
+
+        <div className={s.orbitClip} aria-hidden="true">
+          <div className={s.orbit} style={{ '--turn': `${activeIndex * 90}deg` }} />
+        </div>
+
+        <div className={s.heroCallouts} aria-hidden="true">
+          {HERO_ANGLES.map((angle, index) => angle.callouts.map((callout, calloutIndex) => {
+            const direction = callout.dx >= 0 ? 1 : -1;
+            const endX = callout.dx + direction * 36;
+            return (
+              <div
+                key={`${angle.name}-${calloutIndex}`}
+                className={cx(s.callout, index === activeIndex && s.calloutOn)}
+                style={{ left: `${callout.x}%`, top: `${callout.y}%` }}
+              >
+                <svg className={s.calloutSvg} width="1" height="1" aria-hidden="true">
+                  <polyline pathLength="1" points={`0,0 ${callout.dx},${callout.dy} ${endX},${callout.dy}`} />
+                </svg>
+                <div
+                  className={cx(s.calloutLabel, direction < 0 && s.calloutLabelLeft)}
+                  style={direction > 0
+                    ? { left: endX + 10, top: callout.dy - 11 }
+                    : { right: -endX + 10, top: callout.dy - 11 }}
+                >
+                  <strong>{callout.title}</strong>
+                  <span>{callout.text}</span>
+                </div>
+              </div>
+            );
+          }))}
+        </div>
 
         <div className={s.heroContent}>
           <span className={s.showcaseEyebrow}>Premium chauffeur service</span>
@@ -853,7 +898,9 @@ export function GallerySection({ content, photos }) {
 
   const tiles = photos.slice(0, 6);
   const items = tiles.map((photo, index) => ({
-    src: imageUrl(galleryImage(photo, index)),
+    src: (index === 0 || index === 5)
+      ? HERO_ANGLES[0].image
+      : imageUrl(galleryImage(photo, index)),
     alt: photo.alt_text || photo.caption || 'Swiss Tour & Transfer',
     caption: photo.caption || '',
   }));
@@ -882,7 +929,9 @@ export function GallerySection({ content, photos }) {
               aria-label={`Open photo ${i + 1}`}
             >
               <img
-                src={imageUrl(galleryImage(photo, i))}
+                src={(i === 0 || i === 5)
+                  ? HERO_ANGLES[0].image
+                  : imageUrl(galleryImage(photo, i))}
                 onError={imageFallback}
                 alt={photo.alt_text || photo.caption || ''}
                 loading="lazy"

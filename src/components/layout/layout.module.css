@@ -106,10 +106,80 @@ body[data-public-theme='light'] .headerScrolled {
 }
 
 .logoMark {
-  width: auto;
-  height: 62px;
-  object-fit: contain;
+  position: relative;
+  display: block;
+  width: 104px;
+  height: 78px;
   flex: none;
+  overflow: hidden;
+}
+
+.logoArtwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.logoWordmark,
+.footerLogoWordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 164px;
+  height: 78px;
+  flex: none;
+  line-height: 1;
+}
+
+.wordSwiss {
+  display: flex;
+  align-items: baseline;
+  color: #fff;
+  font-family: 'Arial Black', Impact, Arial, sans-serif;
+  font-size: 31px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -.075em;
+  line-height: .82;
+}
+
+.wordSwissI {
+  position: relative;
+  display: inline-block;
+  width: .38em;
+  text-align: center;
+}
+
+.wordSwissI svg {
+  position: absolute;
+  top: -.28em;
+  left: 50%;
+  width: .4em;
+  height: .4em;
+  transform: translateX(-50%);
+  fill: #d1ad67;
+}
+
+.wordTransfer {
+  margin-top: 4px;
+  color: #d1ad67;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .015em;
+  white-space: nowrap;
+}
+
+.wordTagline {
+  margin-top: 4px;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 5px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  white-space: nowrap;
 }
 
 .logoLight {
@@ -147,8 +217,21 @@ body[data-public-theme='light'] .headerInner {
 
 @media (max-width: 560px) {
   .logoMark {
-    width: auto;
-    height: 46px;
+    width: 68px;
+    height: 52px;
+  }
+
+  .logoWordmark {
+    width: 108px;
+    height: 52px;
+  }
+
+  .logoWordmark .wordSwiss { font-size: 20px; }
+  .logoWordmark .wordTransfer { font-size: 6.5px; letter-spacing: 0; }
+  .logoWordmark .wordTagline { font-size: 3px; letter-spacing: .08em; }
+
+  .logo {
+    gap: 6px;
   }
 
   .logoTop {
@@ -313,10 +396,6 @@ body[data-public-theme='light'] .headerInner {
 }
 
 @media (max-width: 480px) {
-  .logoMark {
-    width: auto;
-    height: 34px;
-  }
   .logoTop {
     font-size: 16px;
   }
@@ -442,7 +521,7 @@ body[data-public-theme='light'] .headerInner {
 }
 
 body[data-public-theme='light'] .footer {
-  background: #fff;
+  background: linear-gradient(transparent 62%, #fff 62% 77%, transparent 77%);
 }
 
 .footerGrid {
@@ -1006,25 +1085,26 @@ body[data-public-theme='light'] .pageHeadText {
 
 /* Slim transparent homepage navigation with an outlined booking action. */
 .header.heroHeader,
-:global(body[data-public-theme='light']) .header.heroHeader { margin-bottom: -72px; background: linear-gradient(180deg,rgba(0,6,9,.85),rgba(0,6,9,.1)); border: 0; backdrop-filter: none; }
+:global(body[data-public-theme='light']) .header.heroHeader { margin-bottom: -92px; background: linear-gradient(180deg,rgba(0,6,9,.85),rgba(0,6,9,.1)); border: 0; backdrop-filter: none; }
 .heroHeader .headerInner,
-:global(body[data-public-theme='light']) .heroHeader .headerInner { min-height: 72px; gap: 20px; }
+:global(body[data-public-theme='light']) .heroHeader .headerInner { min-height: 92px; gap: 20px; }
 .header.heroHeader.headerScrolled,
 :global(body[data-public-theme='light']) .header.heroHeader.headerScrolled { background: rgba(4,13,18,.97); }
-.heroHeader .logo { gap: 8px; }
-.heroHeader .logoMark { height: 44px; }
-.heroHeader .logoTop { font-size: 25px; font-weight: 400; }
-.heroHeader .logoBottom { font-size: 8px; letter-spacing: .18em; color: #eee; }
+.heroHeader .logo { gap: 10px; }
+.heroHeader .logoMark { width: 104px; height: 78px; }
+.heroHeader .logoWordmark { width: 164px; height: 78px; }
+.heroHeader .logoTop { font-size: 31px; font-weight: 400; }
+.heroHeader .logoBottom { font-size: 9px; letter-spacing: .18em; color: #eee; }
 .heroHeader .nav { gap: 25px; }
 .heroHeader .navLink { font-size: 11px; letter-spacing: 0; font-weight: 400; }
 .heroHeader .phone { font-size: 10px; font-weight: 400; }
 .heroHeader .actions { gap: 20px; }
-.heroHeader .headerCta { background: transparent; border: 1px solid #b68e53; color: #dfb675; box-shadow: inset 0 0 10px #d9ae6520,0 0 8px #d9ae6515; border-radius: 4px; font-size: 10px; padding: 9px 12px; min-height: 34px; text-transform: uppercase; }
-.heroHeader .headerCta:hover { background: #cba16a22; border-color: #e4bb7e; }
+.heroHeader .headerCta { background: linear-gradient(110deg, #25d366, #0fb36a); border: 1px solid #25d366; color: #062314; box-shadow: 0 5px 16px rgba(37,211,102,.2); border-radius: 4px; font-size: 10px; padding: 9px 12px; min-height: 34px; text-transform: uppercase; }
+.heroHeader .headerCta:hover { background: linear-gradient(110deg, #2be174, #0ca961); border-color: #2be174; color: #041b0e; box-shadow: 0 7px 20px rgba(37,211,102,.3); }
 .heroHeader .themeToggle { width: 29px; height: 29px; border-radius: 50%; border-color: #ffffff26; background: #0003; }
 .heroHeader .themeToggle svg { width: 16px; height: 16px; }
-@media (min-width: 1025px) and (max-width: 1200px) { .heroHeader .nav { gap: 16px; } .heroHeader .headerInner { gap: 14px; } .heroHeader .actions { gap: 12px; } }
-@media (max-width: 560px) { .heroHeader .headerCta { font-size: 8px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoMark { height: 32px; } .heroHeader .logoTop { font-size: 20px; } .heroHeader .logoBottom { font-size: 6px; } .heroHeader .headerInner { gap: 8px; } }
+@media (min-width: 960px) and (max-width: 1200px) { .heroHeader .nav { gap: 16px; } .heroHeader .headerInner { gap: 14px; } .heroHeader .actions { gap: 12px; } .heroHeader .logoMark { width: 84px; height: 64px; } .heroHeader .logoWordmark { width: 138px; height: 64px; } }
+@media (max-width: 560px) { .heroHeader .headerCta { font-size: 8px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoMark { width: 60px; height: 46px; } .heroHeader .logoWordmark { width: 94px; height: 46px; } .heroHeader .logo { gap: 5px; } .heroHeader .headerInner { min-height: 72px; gap: 8px; } }
 @media (min-width: 960px) and (max-width: 1024px) {
   .heroHeader .nav { display: flex; gap: 17px; }
   .heroHeader .phone { display: flex; }
@@ -1032,14 +1112,12 @@ body[data-public-theme='light'] .pageHeadText {
   .heroHeader .headerInner { gap: 14px; }
   .heroHeader .actions { gap: 12px; }
   .heroHeader .logoTop { font-size: 22px; }
-  .heroHeader .logoMark { height: 38px; }
 }
 @media (min-width: 960px) {
   .heroHeader > div { max-width: none; padding-inline: 3.6vw; }
   .heroHeader .navLink { font-size: clamp(10px,.95vw,15px); }
   .heroHeader .phone { font-size: clamp(9px,.9vw,14px); }
   .heroHeader .headerCta { font-size: clamp(9px,.92vw,14px); font-weight: 400; letter-spacing: 0; }
-  .heroHeader .logoMark { width: 64px; height: 46px; }
   .heroHeader .logoTop { font-family: Georgia, serif; font-size: 27px; letter-spacing: .04em; }
   .heroHeader .logoBottom { font-weight: 400; }
 }
@@ -1074,14 +1152,32 @@ body[data-public-theme='light'] .pageHeadText {
 .footerLogo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: #f2eee8;
 }
 
 .footerLogoMark {
-  width: 82px;
-  height: 50px;
-  object-fit: contain;
+  display: block;
+  width: 116px;
+  height: 84px;
+  flex: none;
+  overflow: hidden;
+}
+
+.footerLogoWordmark {
+  width: 190px;
+  height: 84px;
+}
+
+.footerLogoWordmark .wordSwiss { font-size: 35px; }
+.footerLogoWordmark .wordTransfer { font-size: 11.5px; letter-spacing: .025em; }
+.footerLogoWordmark .wordTagline { font-size: 5.5px; }
+
+.footerLogoArtwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .footerLogoText {

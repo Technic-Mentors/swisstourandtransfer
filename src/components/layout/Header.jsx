@@ -18,10 +18,17 @@ const NAV = [
 function Logo({ onClick }) {
   return (
     <Link to="/" className={s.logo} onClick={onClick} aria-label="Swiss Tour & Transfer - home">
-      <img src="/logo-scenic-mark.png" alt="" className={s.logoMark} width="120" height="62" />
-      <span className={s.logoText}>
-        <span className={s.logoTop}>SWISS</span>
-        <span className={s.logoBottom}>TOUR &amp; TRANSFER</span>
+      <span className={s.logoMark} aria-hidden="true">
+        <img src="/brand-logo.png" alt="" className={s.logoArtwork} />
+      </span>
+      <span className={s.logoWordmark} aria-hidden="true">
+        <strong className={s.wordSwiss}>
+          <span>SW</span>
+          <span className={s.wordSwissI}>I<svg viewBox="0 0 24 24"><path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7z" /></svg></span>
+          <span>SS</span>
+        </strong>
+        <span className={s.wordTransfer}>TOUR &amp; TRANSFER</span>
+        <small className={s.wordTagline}>EXPLORE · TRAVEL · EXPERIENCE</small>
       </span>
     </Link>
   );

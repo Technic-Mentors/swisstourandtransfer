@@ -90,10 +90,17 @@ export default function Footer() {
         <div className={s.footerGrid}>
           <div>
             <Link to="/" className={s.footerLogo} aria-label="Swiss Tour & Transfer - home">
-              <img src="/logo-scenic-mark.png" alt="" className={s.footerLogoMark} width="120" height="62" loading="lazy" />
-              <span className={s.footerLogoText}>
-                <span>SWISS</span>
-                <small>TOUR &amp; TRANSFER</small>
+              <span className={s.footerLogoMark} aria-hidden="true">
+                <img src="/brand-logo.png" alt="" className={s.footerLogoArtwork} loading="lazy" />
+              </span>
+              <span className={s.footerLogoWordmark} aria-hidden="true">
+                <strong className={s.wordSwiss}>
+                  <span>SW</span>
+                  <span className={s.wordSwissI}>I<svg viewBox="0 0 24 24"><path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7z" /></svg></span>
+                  <span>SS</span>
+                </strong>
+                <span className={s.wordTransfer}>TOUR &amp; TRANSFER</span>
+                <small className={s.wordTagline}>EXPLORE · TRAVEL · EXPERIENCE</small>
               </span>
             </Link>
 
