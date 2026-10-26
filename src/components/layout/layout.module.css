@@ -96,7 +96,6 @@ body[data-public-theme='light'] .headerScrolled {
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
   flex: none;
   color: var(--cream);
 }
@@ -105,81 +104,13 @@ body[data-public-theme='light'] .headerScrolled {
   color: var(--cream);
 }
 
-.logoMark {
-  position: relative;
-  display: block;
-  width: 104px;
-  height: 78px;
-  flex: none;
-  overflow: hidden;
-}
-
 .logoArtwork {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-}
-
-.logoWordmark,
-.footerLogoWordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  width: 164px;
-  height: 78px;
+  display: block;
+  width: 184px;
+  height: 72px;
   flex: none;
-  line-height: 1;
-}
-
-.wordSwiss {
-  display: flex;
-  align-items: baseline;
-  color: #fff;
-  font-family: 'Arial Black', Impact, Arial, sans-serif;
-  font-size: 31px;
-  font-style: italic;
-  font-weight: 900;
-  letter-spacing: -.075em;
-  line-height: .82;
-}
-
-.wordSwissI {
-  position: relative;
-  display: inline-block;
-  width: .38em;
-  text-align: center;
-}
-
-.wordSwissI svg {
-  position: absolute;
-  top: -.28em;
-  left: 50%;
-  width: .4em;
-  height: .4em;
-  transform: translateX(-50%);
-  fill: #d1ad67;
-}
-
-.wordTransfer {
-  margin-top: 4px;
-  color: #d1ad67;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 10px;
-  font-weight: 900;
-  letter-spacing: .015em;
-  white-space: nowrap;
-}
-
-.wordTagline {
-  margin-top: 4px;
-  color: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 5px;
-  font-weight: 700;
-  letter-spacing: .13em;
-  white-space: nowrap;
+  object-fit: cover;
+  object-position: center;
 }
 
 .logoLight {
@@ -193,54 +124,16 @@ body[data-public-theme='light'] .headerInner {
   min-height: 88px;
 }
 
-.logoText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-
-.logoTop {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--cream);
-}
-
-.logoBottom {
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  color: var(--gold);
-  margin-top: 4px;
-}
-
 @media (max-width: 560px) {
-  .logoMark {
-    width: 68px;
+  .logoArtwork {
+    width: 132px;
     height: 52px;
   }
-
-  .logoWordmark {
-    width: 108px;
-    height: 52px;
-  }
-
-  .logoWordmark .wordSwiss { font-size: 20px; }
-  .logoWordmark .wordTransfer { font-size: 6.5px; letter-spacing: 0; }
-  .logoWordmark .wordTagline { font-size: 3px; letter-spacing: .08em; }
 
   .logo {
-    gap: 6px;
+    gap: 0;
   }
 
-  .logoTop {
-    font-size: 19px;
-  }
-
-  .logoBottom {
-    font-size: 9px;
-  }
   .logoLight {
     width: 140px;
     height: 76px;
@@ -1032,17 +925,6 @@ body[data-public-theme='light'] .pageHeadText {
   filter: drop-shadow(0 7px 16px rgba(0, 0, 0, .4));
 }
 
-/* the typed wordmark opens up a touch as the emblem pulls away from it */
-.logoTop,
-.logoBottom {
-  transition: letter-spacing .4s var(--ease), color var(--t) var(--ease);
-}
-
-.logo:hover .logoBottom,
-.logo:focus-visible .logoBottom {
-  letter-spacing: 0.28em;
-}
-
 /* footer badge: a slow float, and it lifts under the pointer */
 .logoLight {
   animation: logoDrift 7s ease-in-out infinite;
@@ -1060,26 +942,14 @@ body[data-public-theme='light'] .pageHeadText {
     animation: none !important;
   }
 
-  .logoMark,
-  .logoLight,
-  .logoTop,
-  .logoBottom {
+  .logoLight {
     transition: none !important;
   }
 
-  .logo:hover .logoMark,
-  .logo:focus-visible .logoMark {
-    transform: none !important;
-  }
-
-  .logo:hover .logoBottom,
-  .logo:focus-visible .logoBottom {
-    letter-spacing: 0.24em;
-  }
 }
 .header.heroHeader { margin-bottom:-79px; background:linear-gradient(180deg,rgba(3,17,25,.65),transparent); border-bottom-color:transparent; backdrop-filter:none; }
 .header.heroHeader.headerScrolled { background:rgba(6,20,29,.97); }
-.heroHeader .navLink,.heroHeader .phone,.heroHeader .logo,.heroHeader .logoTop,.heroHeader .logoBottom { color:#f5f1ea; }
+.heroHeader .navLink,.heroHeader .phone,.heroHeader .logo { color:#f5f1ea; }
 .heroHeader .navLinkActive { color:#edbe70; }
 .heroHeader .themeToggle,.heroHeader .burger { color:#f5f1ea; }
 
@@ -1090,11 +960,7 @@ body[data-public-theme='light'] .pageHeadText {
 :global(body[data-public-theme='light']) .heroHeader .headerInner { min-height: 92px; gap: 20px; }
 .header.heroHeader.headerScrolled,
 :global(body[data-public-theme='light']) .header.heroHeader.headerScrolled { background: rgba(4,13,18,.97); }
-.heroHeader .logo { gap: 10px; }
-.heroHeader .logoMark { width: 104px; height: 78px; }
-.heroHeader .logoWordmark { width: 164px; height: 78px; }
-.heroHeader .logoTop { font-size: 31px; font-weight: 400; }
-.heroHeader .logoBottom { font-size: 9px; letter-spacing: .18em; color: #eee; }
+.heroHeader .logoArtwork { width: 184px; height: 72px; }
 .heroHeader .nav { gap: 25px; }
 .heroHeader .navLink { font-size: 11px; letter-spacing: 0; font-weight: 400; }
 .heroHeader .phone { font-size: 10px; font-weight: 400; }
@@ -1103,23 +969,20 @@ body[data-public-theme='light'] .pageHeadText {
 .heroHeader .headerCta:hover { background: linear-gradient(110deg, #2be174, #0ca961); border-color: #2be174; color: #041b0e; box-shadow: 0 7px 20px rgba(37,211,102,.3); }
 .heroHeader .themeToggle { width: 29px; height: 29px; border-radius: 50%; border-color: #ffffff26; background: #0003; }
 .heroHeader .themeToggle svg { width: 16px; height: 16px; }
-@media (min-width: 960px) and (max-width: 1200px) { .heroHeader .nav { gap: 16px; } .heroHeader .headerInner { gap: 14px; } .heroHeader .actions { gap: 12px; } .heroHeader .logoMark { width: 84px; height: 64px; } .heroHeader .logoWordmark { width: 138px; height: 64px; } }
-@media (max-width: 560px) { .heroHeader .headerCta { font-size: 8px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoMark { width: 60px; height: 46px; } .heroHeader .logoWordmark { width: 94px; height: 46px; } .heroHeader .logo { gap: 5px; } .heroHeader .headerInner { min-height: 72px; gap: 8px; } }
+@media (min-width: 960px) and (max-width: 1200px) { .heroHeader .nav { gap: 16px; } .heroHeader .headerInner { gap: 14px; } .heroHeader .actions { gap: 12px; } }
+@media (max-width: 560px) { .heroHeader .headerCta { font-size: 8px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoArtwork { width: 132px; height: 52px; } .heroHeader .logo { gap: 0; } .heroHeader .headerInner { min-height: 72px; gap: 8px; } }
 @media (min-width: 960px) and (max-width: 1024px) {
   .heroHeader .nav { display: flex; gap: 17px; }
   .heroHeader .phone { display: flex; }
   .heroHeader .burger { display: none; }
   .heroHeader .headerInner { gap: 14px; }
   .heroHeader .actions { gap: 12px; }
-  .heroHeader .logoTop { font-size: 22px; }
 }
 @media (min-width: 960px) {
   .heroHeader > div { max-width: none; padding-inline: 3.6vw; }
   .heroHeader .navLink { font-size: clamp(10px,.95vw,15px); }
   .heroHeader .phone { font-size: clamp(9px,.9vw,14px); }
   .heroHeader .headerCta { font-size: clamp(9px,.92vw,14px); font-weight: 400; letter-spacing: 0; }
-  .heroHeader .logoTop { font-family: Georgia, serif; font-size: 27px; letter-spacing: .04em; }
-  .heroHeader .logoBottom { font-weight: 400; }
 }
 
 /* Footer: compact four-column information layout. */
@@ -1150,52 +1013,17 @@ body[data-public-theme='light'] .pageHeadText {
 }
 
 .footerLogo {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
+  display: inline-block;
   color: #f2eee8;
 }
 
-.footerLogoMark {
-  display: block;
-  width: 116px;
-  height: 84px;
-  flex: none;
-  overflow: hidden;
-}
-
-.footerLogoWordmark {
-  width: 190px;
-  height: 84px;
-}
-
-.footerLogoWordmark .wordSwiss { font-size: 35px; }
-.footerLogoWordmark .wordTransfer { font-size: 11.5px; letter-spacing: .025em; }
-.footerLogoWordmark .wordTagline { font-size: 5.5px; }
-
 .footerLogoArtwork {
-  width: 100%;
-  height: 100%;
+  display: block;
+  width: 200px;
+  height: 76px;
+  flex: none;
   object-fit: cover;
-  object-position: center top;
-}
-
-.footerLogoText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-  font-family: Georgia, serif;
-  font-size: 25px;
-  letter-spacing: .04em;
-}
-
-.footerLogoText small {
-  margin-top: 4px;
-  color: #e8e5df;
-  font-family: var(--font-body);
-  font-size: 7px;
-  font-weight: 600;
-  letter-spacing: .2em;
+  object-position: center;
 }
 
 .footerBrandText {
