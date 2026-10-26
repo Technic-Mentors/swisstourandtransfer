@@ -244,115 +244,73 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 /* ------------------------------------------------------------------- hero */
 
 const HERO_ANGLES = [
-  { name: 'Front', image: '/car-1.png', headline: 'Travel in first class', accent: 'across Switzerland.', text: 'Private drivers. Premium fleet. Fixed prices.', callouts: [
-    { x: 56.5, y: 49, dx: 140, dy: 70, title: 'Adaptive LED headlights', text: 'Sharp visibility on night Alpine roads.' },
-  ] },
-  { name: 'Profile', image: '/car-2.png', headline: 'Quiet comfort,', accent: 'mile after mile.', text: 'Spacious, spotless cabins for airport and city transfers.', callouts: [
-    { x: 70.6, y: 31.6, dx: 60, dy: -165, title: 'Room to stretch', text: 'Generous rear legroom on long transfers.' },
-    { x: 37.7, y: 63.3, dx: -80, dy: 120, title: 'Winter-ready', text: 'Alpine-grade tyres for mountain routes.' },
-  ] },
-  { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.', callouts: [
-    { x: 67.6, y: 38.4, dx: 60, dy: -250, title: 'LED signature lights', text: 'Unmistakable on every road, day or night.' },
-    { x: 79.5, y: 50, dx: -170, dy: 60, title: 'Generous boot', text: 'Skis, golf bags and suitcases fit easily.' },
-  ] },
-  { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.', callouts: [
-    { x: 45.5, y: 43.8, dx: -170, dy: 150, title: 'Adaptive LED headlights', text: 'Sharp visibility on night Alpine roads.' },
-    { x: 88.8, y: 36.9, dx: -150, dy: 90, title: 'Hand-picked fleet', text: 'Every vehicle inspected before each ride.' },
-  ] },
+  { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.' },
+  { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.' },
 ];
 
-export function HeroSection({ content, allVehicles = [], cities = [], heroBooking }) {
-  const scrollWrapRef = useRef(null);
-  const heroSlidesRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+/** The hero advances on its own; one angle every three seconds. */
+const HERO_INTERVAL = 3000;
+
+export function HeroSection({ content, allVehicles = [], cities = [], lists = {}, settings = {}, stats = {} }) {
+  /* `leaving` is the slide on its way out, so only that one animates to the
+     left. Every other slide waits off-screen right with no transition, which
+     is what lets the last angle wrap back to the first without a rewind. */
+  const [slide, setSlide] = useState({ index: 0, leaving: -1 });
+  const activeIndex = slide.index;
 
   useEffect(() => {
     HERO_ANGLES.forEach(({ image }) => {
       const preload = new window.Image();
       preload.src = image;
     });
-
-    let frame = 0;
-    const update = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        const wrapper = scrollWrapRef.current;
-        if (!wrapper) return;
-
-        const bounds = wrapper.getBoundingClientRect();
-        const travel = Math.max(bounds.height - window.innerHeight, 1);
-        const progress = Math.min(1, Math.max(0, -bounds.top / travel));
-        const activeIndex = Math.min(HERO_ANGLES.length - 1, Math.floor(progress * HERO_ANGLES.length));
-        heroSlidesRef.current?.style.setProperty('--hero-parallax', `${progress * -88}px`);
-        heroSlidesRef.current?.style.setProperty('--hero-zoom', `${1.04 + progress * 0.06}`);
-        setActiveIndex((previous) => previous === activeIndex ? previous : activeIndex);
-      });
-    };
-
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
-    return () => {
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
   }, []);
 
+  /* Keyed on the active slide, so picking an angle by hand also buys it a
+     full three seconds before the hero moves on. */
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setSlide((current) => ({
+        index: (current.index + 1) % HERO_ANGLES.length,
+        leaving: current.index,
+      }));
+    }, HERO_INTERVAL);
+    return () => window.clearTimeout(timer);
+  }, [slide.index]);
+
+  /* Figures the page already holds, so the column says something concrete
+     without a second source of truth to keep up to date. Anything that comes
+     back empty drops out rather than showing a zero. */
+  const heroStats = [
+    [allVehicles.length, 'Vehicles in the fleet'],
+    [cities.length, 'Swiss cities served'],
+    /* The same rating the trust strip prints, so the two never disagree on
+       screen; the review average stands in only if the setting is unset. */
+    [settings.google_rating || stats.average, 'Average guest rating'],
+  ].filter(([value]) => Number(value) > 0);
+
+  /* The same admin-editable list the trust strip runs on, trimmed to the three
+     that fit beside the booking bar. */
+  const heroTrust = (lists.trust_items || [])
+    .map((group) => group[0])
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((text) =>
+      text
+        .replace('{rating}', settings.google_rating || '4.9')
+        .replace('{count}', settings.google_review_count || 'our'),
+    );
+
   return (
-    <section ref={scrollWrapRef} className={s.scrollWrap} aria-label="Premium chauffeur service">
+    <section className={s.heroSection} aria-label="Premium chauffeur service">
       <div className={s.heroStage}>
-        <div ref={heroSlidesRef} className={s.heroSlides} aria-hidden="true">
-          {HERO_ANGLES.map((angle, index) => (
-            <div
-              key={angle.name}
-              className={cx(s.heroSlide, index === activeIndex && s.heroSlideActive)}
-              style={{ backgroundImage: `url("${angle.image}")` }}
-            />
-          ))}
-        </div>
-        <div className={s.heroScrim} aria-hidden="true" />
-
-        <div className={s.orbitClip} aria-hidden="true">
-          <div className={s.orbit} style={{ '--turn': `${activeIndex * 90}deg` }} />
-        </div>
-
-        <div className={s.heroCallouts} aria-hidden="true">
-          {HERO_ANGLES.map((angle, index) => angle.callouts.map((callout, calloutIndex) => {
-            const direction = callout.dx >= 0 ? 1 : -1;
-            const endX = callout.dx + direction * 36;
-            return (
-              <div
-                key={`${angle.name}-${calloutIndex}`}
-                className={cx(s.callout, index === activeIndex && s.calloutOn)}
-                style={{ left: `${callout.x}%`, top: `${callout.y}%` }}
-              >
-                <svg className={s.calloutSvg} width="1" height="1" aria-hidden="true">
-                  <polyline pathLength="1" points={`0,0 ${callout.dx},${callout.dy} ${endX},${callout.dy}`} />
-                </svg>
-                <div
-                  className={cx(s.calloutLabel, direction < 0 && s.calloutLabelLeft)}
-                  style={direction > 0
-                    ? { left: endX + 10, top: callout.dy - 11 }
-                    : { right: -endX + 10, top: callout.dy - 11 }}
-                >
-                  <strong>{callout.title}</strong>
-                  <span>{callout.text}</span>
-                </div>
-              </div>
-            );
-          }))}
-        </div>
-
-        <div className={s.heroContent}>
+        <div className={cx(s.heroContent, s.heroEnter)}>
           <span className={s.showcaseEyebrow}>Premium chauffeur service</span>
           <div className={s.heroCopyStack}>
             {HERO_ANGLES.map((angle, index) => {
               const Headline = index === 0 ? 'h1' : 'h2';
               const stateClass = index === activeIndex
                 ? s.heroCopyActive
-                : index < activeIndex ? s.heroCopyOut : s.heroCopyWaiting;
+                : index === slide.leaving ? s.heroCopyOut : null;
               return (
                 <div key={angle.name} className={cx(s.heroCopy, stateClass)} aria-hidden={index !== activeIndex}>
                   <Headline className={s.showcaseTitle}>
@@ -364,17 +322,50 @@ export function HeroSection({ content, allVehicles = [], cities = [], heroBookin
               );
             })}
           </div>
+          {content.hero_text && <p className={s.heroLede}>{content.hero_text}</p>}
+
           <div className={s.showcaseActions}>
-            <a className={s.heroBookButton} href={heroBooking ? '#booking' : '/book'}>Book your ride</a>
+            <Link className={s.heroBookButton} to="/book">Book your ride</Link>
             <Link className={s.heroFleetButton} to="/vehicles">View fleet</Link>
           </div>
+
+          {heroStats.length > 0 && (
+            <dl className={s.heroStats}>
+              {heroStats.map(([value, label], index) => (
+                <div className={s.heroStat} key={label} style={{ '--stat-index': index }}>
+                  <dt className={s.heroStatValue}><CountUp raw={String(value)} /></dt>
+                  <dd className={s.heroStatLabel}>{label}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          {heroTrust.length > 0 && (
+            <ul className={s.heroTrust}>
+              {heroTrust.map((text, index) => (
+                <li className={s.heroTrustItem} key={text} style={{ '--trust-index': index }}>
+                  <span className={s.heroTrustIcon}>{iconFor(text)}</span>
+                  {text}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
-        {heroBooking && (
-          <div className={s.heroBooking} id="booking">
-            <QuickBookingBar heading={content.quick_booking_heading} vehicles={allVehicles} cities={cities} />
-          </div>
-        )}
+        <div className={s.heroSlides} aria-hidden="true">
+          {HERO_ANGLES.map((angle, index) => (
+            <div
+              key={angle.name}
+              className={cx(
+                s.heroSlide,
+                index === activeIndex && s.heroSlideActive,
+                index === slide.leaving && s.heroSlideOut,
+              )}
+              style={{ backgroundImage: `url("${angle.image}")` }}
+            />
+          ))}
+        </div>
+
       </div>
     </section>
   );
@@ -384,7 +375,7 @@ export function HeroSection({ content, allVehicles = [], cities = [], heroBookin
 
 export function QuickBookingSection({ content, vehicles, cities }) {
   return (
-    <div className={s.quickSection}>
+    <div className={s.quickSection} id="booking">
       <Container>
         <QuickBookingBar heading={content.quick_booking_heading} vehicles={vehicles} cities={cities} />
       </Container>

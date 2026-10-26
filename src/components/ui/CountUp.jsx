@@ -41,7 +41,7 @@ export default function CountUp({ raw, duration = 1100 }) {
 
         const start = performance.now();
         const tick = (now) => {
-          const t = Math.min((now - start) / duration, 1);
+          const t = Math.min(Math.max((now - start) / duration, 0), 1);
           // Ease out, so it slows into the final figure instead of stopping dead.
           setShown(value * (1 - (1 - t) ** 3));
           if (t < 1) frame = requestAnimationFrame(tick);

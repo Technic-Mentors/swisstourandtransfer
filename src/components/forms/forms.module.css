@@ -6,7 +6,7 @@
 }
 
 .label {
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -25,7 +25,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--cream);
-  font-size: 13.5px;
+  font-size: 16px;
   line-height: 1.4;
   transition: border-color var(--t) var(--ease), background var(--t) var(--ease);
 }
@@ -77,12 +77,12 @@ input[type='time'].control {
 }
 
 .errorText {
-  font-size: 12px;
+  font-size: 14px;
   color: #ffb3aa;
 }
 
 .hint {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-faint);
 }
 
@@ -92,14 +92,14 @@ input[type='time'].control {
   align-items: flex-start;
   gap: 9px;
   cursor: pointer;
-  font-size: 12.5px;
+  font-size: 15px;
   color: var(--text-muted);
   line-height: 1.45;
 }
 
 .checkbox input {
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   margin-top: 1px;
   flex: none;
   accent-color: var(--gold);
@@ -148,7 +148,7 @@ input[type='time'].control {
 .formNote {
   flex: 1;
   min-width: 190px;
-  font-size: 11.5px;
+  font-size: 14px;
   line-height: 1.45;
   color: var(--text-faint);
   text-align: left;
@@ -285,7 +285,7 @@ input[type='time'].control {
 }
 
 .quickHeading {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: var(--tracking-mid);
   text-transform: uppercase;
@@ -365,7 +365,7 @@ input[type='time'].control {
   border-radius: 8px;
   background: transparent;
   font: inherit;
-  font-size: 14px;
+  font-size: 16px;
   text-align: left;
   color: var(--text-muted);
   cursor: pointer;
@@ -383,7 +383,7 @@ input[type='time'].control {
 
 .searchEmpty {
   padding: 11px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-faint);
   text-align: center;
 }
@@ -435,16 +435,16 @@ input[type='time'].control {
   color: var(--gold);
 }
 .quickBar,:global(body[data-public-theme='light']) .quickBar { background:rgba(5,19,24,.92); border:1px solid #ffffff33; border-radius:9px; padding:16px; backdrop-filter:blur(14px); }
-.quickHeading,:global(body[data-public-theme='light']) .quickHeading { text-align:left; color:#e6bb73; font-size:10px; letter-spacing:.17em; margin-bottom:12px; }
+.quickHeading,:global(body[data-public-theme='light']) .quickHeading { text-align:left; color:#e6bb73; font-size:12px; letter-spacing:.17em; margin-bottom:12px; }
 .quickGrid { grid-template-columns:repeat(4,minmax(0,1fr)) 145px; gap:12px; align-items:stretch; }
 .quickGrid > :not(.quickSubmit) { min-width:0; padding:10px 12px; border:1px solid #ffffff20; border-radius:6px; background:#ffffff03; }
-.quickBar .label,:global(body[data-public-theme='light']) .quickBar .label { color:#c3c8ca; text-align:left; font-weight:400; text-transform:none; letter-spacing:0; font-size:11px; }
-.quickBar .control,:global(body[data-public-theme='light']) .quickBar .control { padding:0; height:27px; color:#fff; background:transparent; border:0; border-radius:0; text-align:left; text-align-last:left; font-size:12px; }
+.quickBar .label,:global(body[data-public-theme='light']) .quickBar .label { color:#c3c8ca; text-align:left; font-weight:400; text-transform:none; letter-spacing:0; font-size:13px; }
+.quickBar .control,:global(body[data-public-theme='light']) .quickBar .control { padding:0; height:27px; color:#fff; background:transparent; border:0; border-radius:0; text-align:left; text-align-last:left; font-size:14px; }
 .quickBar .control::placeholder,:global(body[data-public-theme='light']) .quickBar .control::placeholder { color:#e0e2e3; }
 .quickBar .control:focus { outline:1px solid #e6bb73; outline-offset:4px; }
 .quickBar input[type='datetime-local'],:global(body[data-public-theme='light']) .quickBar input[type='datetime-local'] { color-scheme:dark; }
 .quickSubmit { display:flex; align-items:stretch; }
-.quickSubmit > a { min-height:65px; width:100%; border-radius:6px; background:linear-gradient(110deg,#f1ce8d,#dcb56e); color:#18150e; text-transform:uppercase; font-size:11px; }
+.quickSubmit > a { min-height:65px; width:100%; border-radius:6px; background:linear-gradient(110deg,#f1ce8d,#dcb56e); color:#18150e; text-transform:uppercase; font-size:13px; }
 @media(max-width:1024px) { .quickGrid { grid-template-columns:repeat(2,minmax(0,1fr)); } .quickSubmit > a { min-height:48px; } }
 @media(max-width:560px) { .quickGrid { grid-template-columns:1fr; gap:10px; } .quickBar { padding:14px; } }
 
@@ -453,13 +453,13 @@ input[type='time'].control {
 .quickHeading { display: none; }
 .quickGrid > :not(.quickSubmit) { padding: 7px 12px; }
 .quickSubmit > a { min-height: 51px; }
-.quickBar .label,:global(body[data-public-theme='light']) .quickBar .label { font-size: 10px; }
-.quickBar .control,:global(body[data-public-theme='light']) .quickBar .control { font-size: 11px; height: 24px; }
+.quickBar .label,:global(body[data-public-theme='light']) .quickBar .label { font-size: 12px; }
+.quickBar .control,:global(body[data-public-theme='light']) .quickBar .control { font-size: 13px; height: 24px; }
 @media (max-width: 560px) { .quickBar,:global(body[data-public-theme='light']) .quickBar { padding: 12px; } }
 /* Reference panel icons and working journey tabs. */
 .bookingPanel { position: relative; }
 .tripTabs { display: flex; width: max-content; margin-left: 10px; background: #090d10ed; border-radius: 7px 7px 0 0; overflow: hidden; }
-.tripTabs button { min-width: 80px; height: 34px; padding: 0 18px; color: #d6d6d5; font-size: 9px; text-transform: uppercase; border-right: 1px solid #ffffff0b; }
+.tripTabs button { min-width: 80px; height: 34px; padding: 0 18px; color: #d6d6d5; font-size: 12px; text-transform: uppercase; border-right: 1px solid #ffffff0b; }
 .tripTabs .tripActive { background: linear-gradient(110deg,#d7b985,#c79e65); color: #171717; border-radius: 6px 6px 0 0; }
 .quickBar,:global(body[data-public-theme='light']) .quickBar { border-radius: 6px; border-color: #ffffff21; box-shadow: 0 8px 20px #0006; }
 .quickGrid { grid-template-columns: 1.02fr 1fr 1fr .95fr .75fr; gap: 10px; }
@@ -468,7 +468,7 @@ input[type='time'].control {
 .quickFieldIcon svg { width: 100%; height: 100%; }
 .quickSubmit > a { background: linear-gradient(110deg,#d7b985,#c79e65); color: #111; font-weight: 500; letter-spacing: 0; gap: 18px; }
 .quickBar .searchList { min-width: 180px; }
-@media (min-width: 960px) { .quickBar .label,:global(body[data-public-theme='light']) .quickBar .label { font-size: clamp(8px,.7vw,12px); } .quickBar .control,:global(body[data-public-theme='light']) .quickBar .control { font-size: clamp(10px,.9vw,14px); } }
+@media (min-width: 960px) { .quickBar .label,:global(body[data-public-theme='light']) .quickBar .label { font-size: clamp(12px,.7vw,14px); } .quickBar .control,:global(body[data-public-theme='light']) .quickBar .control { font-size: clamp(12px,.9vw,16px); } }
 @media (min-width: 561px) and (max-width: 959px) { .quickGrid { grid-template-columns: repeat(2,minmax(0,1fr)); } .quickSubmit { grid-column: 1 / -1; } }
 @media (min-width: 960px) { .quickSubmit { grid-column: auto; } }
 @media (max-width: 560px) { .quickGrid { grid-template-columns: 1fr; } }
@@ -513,13 +513,13 @@ input[type='time'].control {
 }
 
 .bookingPanel .quickBar .label {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.1;
 }
 
 .bookingPanel .quickBar .control {
   height: 21px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .bookingPanel .quickSubmit > a {
@@ -537,7 +537,7 @@ input[type='time'].control {
 :global(body[data-public-theme='light']) .bookingPanel .searchOption {
   padding: 8px 10px;
   color: #f6f1e8;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
 }
 
@@ -556,4 +556,121 @@ input[type='time'].control {
   .bookingPanel .quickGrid > .quickField {
     min-height: 52px;
   }
+}
+
+/* ------------------------------------------------- readable form sizing */
+/* Controls sit at 16px so a phone never zooms the page on focus, and every
+   row is tall enough for the larger text to breathe. */
+.control {
+  padding: 11px 13px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.quickGrid > :not(.quickSubmit) {
+  padding: 9px 12px;
+}
+
+.quickBar .label,
+:global(body[data-public-theme='light']) .quickBar .label {
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.quickBar .control,
+:global(body[data-public-theme='light']) .quickBar .control {
+  height: 28px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.bookingPanel .quickGrid > .quickField {
+  min-height: 60px;
+  padding: 8px 10px 8px 38px;
+}
+
+.bookingPanel .quickBar .label {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.bookingPanel .quickBar .control {
+  height: 26px;
+  font-size: 15px;
+}
+
+.bookingPanel .quickSubmit > a,
+.quickSubmit > a {
+  min-height: 60px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bookingPanel .searchOption,
+:global(body[data-public-theme='light']) .bookingPanel .searchOption {
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.tripTabs button {
+  min-width: 92px;
+  height: 38px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+@media (min-width: 960px) {
+  .quickBar .label,
+  :global(body[data-public-theme='light']) .quickBar .label {
+    font-size: 12px;
+  }
+  .quickBar .control,
+  :global(body[data-public-theme='light']) .quickBar .control {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 560px) {
+  .bookingPanel .quickGrid > .quickField {
+    min-height: 62px;
+  }
+  .bookingPanel .quickSubmit > a,
+  .quickSubmit > a {
+    min-height: 52px;
+  }
+}
+
+
+/* ================= fields on the light theme ================= */
+/* The dark theme fills a field with a shade darker than its card; on paper
+   that reads as grey, so here a field is white inside a white card and the
+   border carries the shape instead. */
+:global(body[data-public-theme='light']) .control {
+  background: var(--navy-card);
+  border-color: var(--border-light);
+}
+
+:global(body[data-public-theme='light']) .control:hover {
+  border-color: var(--border-strong);
+}
+
+:global(body[data-public-theme='light']) .control:focus {
+  border-color: var(--gold);
+  background: var(--navy-card);
+}
+
+:global(body[data-public-theme='light']) .control::placeholder {
+  color: var(--text-faint);
+}
+
+:global(body[data-public-theme='light']) input[type='date'].control,
+:global(body[data-public-theme='light']) input[type='datetime-local'].control,
+:global(body[data-public-theme='light']) input[type='time'].control {
+  color-scheme: light;
 }

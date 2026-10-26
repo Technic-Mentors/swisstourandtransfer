@@ -50,7 +50,7 @@
   position: absolute;
   right: 14px;
   bottom: 12px;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -71,7 +71,7 @@
   border-radius: 8px;
   background: rgba(8, 14, 24, 0.82);
   backdrop-filter: blur(6px);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--cream);
 }
@@ -93,7 +93,7 @@
 
 .mediaCat {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -111,7 +111,7 @@
   padding: 4px 9px;
   border-radius: 6px;
   background: var(--gold);
-  font-size: 8.5px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -142,7 +142,7 @@
 }
 
 .tagline {
-  font-size: 12.5px;
+  font-size: 15px;
   color: var(--text-dim);
   line-height: 1.45;
   display: -webkit-box;
@@ -165,7 +165,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -183,13 +183,13 @@
   flex-wrap: wrap;
   margin-top: auto;
   padding-top: 9px;
-  font-size: 11.5px;
+  font-size: 14px;
 }
 
 .priceValue {
   color: var(--gold);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 15px;
   font-variant-numeric: lining-nums;
 }
 
@@ -232,7 +232,7 @@
   padding: 5px 8px;
   border-radius: 6px;
   background: rgba(4, 12, 16, .82);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .featuredDot {
@@ -253,7 +253,7 @@
 
 .tagline {
   min-height: 36px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .price {
@@ -267,7 +267,7 @@
 
 .actions > * {
   min-height: 34px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: .04em;
   text-transform: uppercase;
 }
@@ -281,7 +281,7 @@
 
   .actions > * {
     padding-inline: 10px;
-    font-size: 10.5px;
+    font-size: 12px;
   }
 }
 
@@ -339,7 +339,7 @@
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: transparent;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -492,7 +492,7 @@ body[data-public-theme] .galleryMain {
 }
 
 .specLabel {
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -500,7 +500,7 @@ body[data-public-theme] .galleryMain {
 }
 
 .specValue {
-  font-size: 13.5px;
+  font-size: 16px;
   line-height: 1.35;
   color: var(--cream);
   font-weight: 500;
@@ -524,7 +524,7 @@ body[data-public-theme] .galleryMain {
   border-radius: var(--radius-pill);
   background: rgba(10, 18, 30, 0.8);
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
@@ -546,3 +546,33 @@ body[data-public-theme] .galleryMain {
   from { opacity: 0.35; }
   to { opacity: 1; }
 }
+
+
+/* ================== vehicle cards on the light theme ================== */
+body[data-public-theme='light'] .card {
+  border-color: var(--border);
+  background: var(--navy-card);
+  box-shadow: var(--shadow-sm);
+}
+
+body[data-public-theme='light'] .card:hover { box-shadow: var(--shadow); }
+
+/* The bar sits on the photograph, so it stays dark in both themes. */
+body[data-public-theme='light'] .mediaBar { background: rgba(21, 23, 28, .78); }
+body[data-public-theme='light'] .mediaFact { color: #fff; }
+body[data-public-theme='light'] .media::after {
+  background: linear-gradient(0deg, rgba(21, 23, 28, .6), transparent 62%);
+}
+
+body[data-public-theme='light'] .featuredDot {
+  color: var(--gold-on);
+  background: var(--gold);
+}
+
+body[data-public-theme='light'] .name { color: var(--cream); }
+body[data-public-theme='light'] .tagline { color: var(--text-muted); }
+body[data-public-theme='light'] .spec { color: var(--text-muted); }
+body[data-public-theme='light'] .specLabel { color: var(--text-dim); }
+body[data-public-theme='light'] .specValue { color: var(--cream); }
+body[data-public-theme='light'] .priceValue { color: var(--gold); }
+body[data-public-theme='light'] .galleryCounter { background: rgba(21, 23, 28, .78); }

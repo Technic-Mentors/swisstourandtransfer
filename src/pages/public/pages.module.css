@@ -1,7 +1,7 @@
 /* ============================================================ shared bits */
 .prose {
   max-width: 760px;
-  font-size: 14.5px;
+  font-size: 16px;
   line-height: 1.62;
   color: var(--text-muted);
 }
@@ -104,7 +104,7 @@
 }
 
 .detailCategory {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: var(--tracking-mid);
   text-transform: uppercase;
@@ -118,7 +118,7 @@
 }
 
 .detailTagline {
-  font-size: 14.5px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--text-muted);
   margin-bottom: 14px;
@@ -156,7 +156,7 @@
   justify-content: center;
   gap: 4px;
   margin-top: 4px;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -196,7 +196,7 @@
 }
 
 .priceLabel {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -214,7 +214,7 @@
 }
 
 .priceNote {
-  font-size: 11.5px;
+  font-size: 14px;
   color: var(--text-dim);
   margin-top: 2px;
 }
@@ -245,7 +245,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: var(--tracking-mid);
   text-transform: uppercase;
@@ -276,7 +276,7 @@
 
 .enquiryEyebrow {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
@@ -293,7 +293,7 @@
 
 .enquiryText {
   margin-top: 12px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--text-muted);
   max-width: 44ch;
@@ -312,7 +312,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 13.5px;
+  font-size: 16px;
   line-height: 1.45;
   color: var(--text-muted);
 }
@@ -333,7 +333,7 @@
 
 .enquiryAsideLabel {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -399,7 +399,7 @@
 }
 
 .messagePreviewLabel {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -408,7 +408,7 @@
 }
 
 .messagePreviewText {
-  font-size: 13.5px;
+  font-size: 16px;
   color: var(--text-muted);
   white-space: pre-wrap;
   line-height: 1.6;
@@ -424,7 +424,7 @@
   padding: 5px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
@@ -442,7 +442,7 @@
 
 /* ================================================================ blocks */
 .blockHeading {
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: var(--tracking-mid);
   text-transform: uppercase;
@@ -462,7 +462,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 13.5px;
+  font-size: 16px;
   line-height: 1.4;
   color: var(--text-muted);
 }
@@ -594,7 +594,7 @@
 }
 
 .serviceTileText {
-  font-size: 12.5px;
+  font-size: 15px;
   line-height: 1.45;
   color: var(--text-dim);
   display: -webkit-box;
@@ -611,7 +611,7 @@
 }
 
 .mediaPlaceholder {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -642,7 +642,7 @@
 }
 
 .cityHub {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -650,7 +650,7 @@
 }
 
 .cityIntro {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-dim);
   margin-top: 6px;
 }
@@ -698,7 +698,7 @@
   bottom: 0;
   padding: 24px 16px 12px;
   background: linear-gradient(transparent, rgba(10, 18, 30, 0.92));
-  font-size: 13px;
+  font-size: 15px;
   color: var(--cream);
   text-align: left;
   opacity: 0;
@@ -744,7 +744,7 @@
 }
 
 .scoreNote {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-faint);
 }
 
@@ -761,7 +761,7 @@
   grid-template-columns: 34px minmax(0, 1fr) 20px;
   align-items: center;
   gap: 10px;
-  font-size: 11.5px;
+  font-size: 14px;
   color: var(--text-faint);
   font-variant-numeric: lining-nums;
 }
@@ -792,7 +792,7 @@
 }
 
 .scoreCtaText {
-  font-size: 12.5px;
+  font-size: 15px;
   color: var(--text-dim);
 }
 
@@ -809,7 +809,7 @@
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: transparent;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-dim);
   cursor: pointer;
@@ -874,7 +874,7 @@
 .reviewText {
   flex: 1;
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--text-muted);
 }
@@ -895,7 +895,7 @@
   place-items: center;
   border-radius: 50%;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -914,13 +914,13 @@
 }
 
 .reviewPerson {
-  font-size: 13.5px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--cream);
 }
 
 .reviewPlace {
-  font-size: 11.5px;
+  font-size: 14px;
   color: var(--text-faint);
   white-space: nowrap;
   overflow: hidden;
@@ -1031,7 +1031,7 @@
 }
 
 .contactLabel {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1040,7 +1040,7 @@
 }
 
 .contactValue {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
   color: var(--cream);
   overflow-wrap: anywhere;
@@ -1056,7 +1056,7 @@
 }
 
 .contactSocials {
-  font-size: 12.5px;
+  font-size: 15px;
   color: var(--text-dim);
 }
 
@@ -1092,7 +1092,7 @@
 
 .contactFormEyebrow {
   display: block;
-  font-size: 9.5px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1128,7 +1128,16 @@
   width: 100%;
   height: 100%;
   border: 0;
+  /* Google serves light tiles; the dark theme inverts them to fit. */
   filter: grayscale(0.4) invert(0.9) hue-rotate(180deg) contrast(0.9);
+}
+
+body[data-public-theme='light'] .map iframe {
+  filter: none;
+}
+
+body[data-public-theme='light'] .map {
+  border-color: var(--border);
 }
 
 @media (max-width: 1024px) {
@@ -1155,12 +1164,12 @@
 
 .offerCardText {
   color: var(--text-dim);
-  font-size: 15px;
+  font-size: 16px;
   flex: 1;
 }
 
 .offerDates {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-faint);
 }
 
@@ -1187,7 +1196,7 @@
 
 .bookOptionText {
   color: var(--text-dim);
-  font-size: 15px;
+  font-size: 16px;
   flex: 1;
 }
 
@@ -1275,7 +1284,7 @@
 .aboutBody {
   max-width: 740px;
   margin-inline: auto;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--text-muted);
 }
@@ -1335,20 +1344,20 @@
   display: inline-block;
   font-family: var(--font-heading);
   font-variant-numeric: lining-nums;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--gold-dim);
   margin-bottom: 6px;
 }
 
 .valueTitle {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--cream);
   margin-bottom: 5px;
 }
 
 .valueText {
-  font-size: 13.5px;
+  font-size: 16px;
   line-height: 1.55;
   color: var(--text-dim);
 }
@@ -1366,7 +1375,7 @@
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   background: var(--navy-card);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   transition: border-color var(--t) var(--ease), color var(--t) var(--ease);
 }
@@ -1402,12 +1411,12 @@
 }
 
 .cityName {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .cityNote {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-faint);
   white-space: nowrap;
   overflow: hidden;
@@ -1431,13 +1440,13 @@
 
 .aboutReview blockquote {
   margin: 10px 0 12px;
-  font-size: 13.5px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--text-muted);
 }
 
 .aboutReview figcaption {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-faint);
 }
 
@@ -1447,7 +1456,7 @@
 }
 
 .aboutMoreLink {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1541,7 +1550,7 @@
 .statLabel {
   display: block;
   margin-top: 7px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.4;
   color: var(--text-dim);
 }
@@ -1701,12 +1710,12 @@
   background: linear-gradient(90deg, rgba(2, 10, 15, .94) 0%, rgba(2, 10, 15, .64) 48%, rgba(2, 10, 15, .2));
 }
 .serviceDetailHeroContent { padding: 12px 0 13px; }
-.serviceTrail { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 7px; color: var(--text-faint); font-size: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.serviceTrail { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 7px; color: var(--text-faint); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
 .serviceTrail a:hover { color: var(--gold); }
 .serviceTrail b { color: var(--gold); font-weight: 600; }
 .serviceHeroTitle { margin: 5px 0 3px; color: var(--cream); font-size: clamp(27px, 3.2vw, 43px); line-height: 1; }
 .serviceHeroTitle::first-letter { color: var(--gold); }
-.serviceDetailHeroContent > p { margin: 0; max-width: 58ch; color: var(--text); font-size: 11px; line-height: 1.4; }
+.serviceDetailHeroContent > p { margin: 0; max-width: 58ch; color: var(--text); font-size: 13px; line-height: 1.4; }
 
 .vehicleDetailHero {
   position: relative;
@@ -1727,11 +1736,11 @@
 .vehicleDetailSection { padding-top: 16px; }
 .vehicleDetailSection .serviceDetailLayout { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
 .vehicleDetailSection .detailAbout { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--navy-card); }
-.vehicleDetailSection .detailAbout .prose { max-width: none; font-size: 12px; }
-.vehicleAboutEyebrow { display: block; margin-bottom: 6px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.vehicleDetailSection .detailAbout .prose { max-width: none; font-size: 14px; }
+.vehicleAboutEyebrow { display: block; margin-bottom: 6px; color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
 .vehicleAboutTitle { margin: 0 0 7px; font-size: clamp(20px, 2.4vw, 29px); line-height: 1.1; color: var(--cream); }
 .vehicleDetailSection .detailAbout .includedList { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--border); grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.vehicleDetailSection .detailAbout .includedItem { font-size: 11px; }
+.vehicleDetailSection .detailAbout .includedItem { font-size: 13px; }
 .vehicleBookingPanel {
   padding: 15px;
   border: 1px solid var(--border);
@@ -1740,11 +1749,11 @@
 }
 .vehicleBookingTitle { margin: 7px 0 3px; font-family: var(--font-heading); font-size: clamp(22px, 2.2vw, 30px); color: var(--cream); line-height: 1.08; }
 .vehicleBookingPrice { margin: 0; color: var(--cream); font-family: var(--font-heading); font-size: 17px; }
-.vehicleBookingNote { margin: 1px 0 14px; color: var(--text-muted); font-size: 11px; }
+.vehicleBookingNote { margin: 1px 0 14px; color: var(--text-muted); font-size: 13px; }
 .vehicleBookingPanel .capacityRow { margin-bottom: 13px; }
 .vehicleBookingPanel .capacityCell { padding: 9px 6px; }
 .vehicleBookingPanel .capacityValue { font-size: 19px; }
-.vehicleBookingPanel .capacityLabel { font-size: 8px; letter-spacing: .1em; }
+.vehicleBookingPanel .capacityLabel { font-size: 12px; letter-spacing: .1em; }
 .vehicleBookingActions { display: grid; gap: 10px; }
 
 @media (max-width: 560px) {
@@ -1778,7 +1787,7 @@
 .serviceDetailCopy { margin: 2px 0 12px; }
 .serviceDetailEyebrow {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .28em;
   text-transform: uppercase;
@@ -1790,8 +1799,8 @@
   line-height: 1.05;
   color: var(--cream);
 }
-.serviceDetailLead { margin: 0; max-width: 65ch; color: var(--text-muted); font-size: 14px; line-height: 1.55; }
-.serviceDetailMain .prose { max-width: none; font-size: 13px; }
+.serviceDetailLead { margin: 0; max-width: 65ch; color: var(--text-muted); font-size: 16px; line-height: 1.55; }
+.serviceDetailMain .prose { max-width: none; font-size: 15px; }
 .serviceIncluded {
   margin-top: 20px;
   padding: 15px 16px;
@@ -1801,7 +1810,7 @@
 }
 .serviceIncluded .blockHeading { margin-bottom: 11px; }
 .serviceIncluded .includedList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.serviceIncluded .includedItem { font-size: 11px; }
+.serviceIncluded .includedItem { font-size: 13px; }
 
 .serviceBookingCard,
 .otherServicesCard {
@@ -1811,13 +1820,13 @@
   padding: 18px;
 }
 .serviceBookingTitle { margin: 10px 0 12px; font-size: 19px; line-height: 1.25; color: var(--cream); }
-.serviceBookingMeta { display: flex; gap: 9px; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text); }
+.serviceBookingMeta { display: flex; gap: 9px; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text); }
 .serviceBookingMeta svg { width: 18px; height: 18px; color: var(--gold); flex: none; }
-.serviceBookingText { margin: 10px 0 16px; color: var(--text-muted); font-size: 11px; line-height: 1.55; }
+.serviceBookingText { margin: 10px 0 16px; color: var(--text-muted); font-size: 13px; line-height: 1.55; }
 .serviceBookingActions { display: grid; gap: 8px; }
 .otherServicesCard { margin-top: 12px; }
 .otherServicesList { margin-top: 11px; display: grid; gap: 7px; }
-.otherServiceLink { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 10px; color: var(--text); font-size: 12px; }
+.otherServiceLink { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 10px; color: var(--text); font-size: 14px; }
 .otherServiceLink img { width: 64px; height: 36px; border-radius: 5px; object-fit: cover; }
 .otherServiceLink b { color: var(--gold); font-size: 16px; font-weight: 400; }
 .otherServiceLink:hover span { color: var(--gold); }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useSite } from '../../context/SiteContext';
-import { Container } from '../ui';
+import { Container, cx } from '../ui';
 import s from './layout.module.css';
 
 const COMPANY_LINKS = [
@@ -90,7 +90,9 @@ export default function Footer() {
         <div className={s.footerGrid}>
           <div>
             <Link to="/" className={s.footerLogo} aria-label="Swiss Tour & Transfer - home">
-              <img src="/brand-logo.png" alt="" className={s.footerLogoArtwork} loading="lazy" />
+              {/* Same pair as the header: one mark per theme. */}
+              <img src="/brand-logo.png" alt="" className={cx(s.footerLogoArtwork, s.logoDark)} loading="lazy" />
+              <img src="/brand-logo-light.png" alt="" className={cx(s.footerLogoArtwork, s.logoOnLight)} loading="lazy" />
             </Link>
 
             <p className={s.footerBrandText}>
@@ -169,12 +171,6 @@ export default function Footer() {
               </a>
             </span>
           </div>
-
-          <nav className={s.footerLegal} aria-label="Legal">
-            <Link to="/privacy">Privacy</Link>
-            <Link to="/terms">Terms</Link>
-            <Link to="/impressum">Impressum</Link>
-          </nav>
         </Container>
       </div>
     </footer>

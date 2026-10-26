@@ -93,7 +93,7 @@ export default function CityPage() {
             <div className={s.sticky}>
               <Card pad>
                 <h2 className={s.blockHeading}>Book in {city.name}</h2>
-                <p style={{ fontSize: 14.5, marginBottom: 20 }}>
+                <p style={{ fontSize: 16, marginBottom: 20 }}>
                   Tell us your pickup point and time. We confirm the vehicle, the chauffeur and a
                   fixed price, usually within {settings.reply_time_minutes || '10'} minutes.
                 </p>

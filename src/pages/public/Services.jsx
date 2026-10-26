@@ -69,7 +69,7 @@ export default function Services() {
                       </h2>
                       <p className={s.serviceTileText}>{service.short_description}</p>
                       {service.price_text && (
-                        <p style={{ fontSize: 12, color: 'var(--gold)' }}>{service.price_text}</p>
+                        <p style={{ fontSize: 14, color: 'var(--gold)' }}>{service.price_text}</p>
                       )}
                       <div className={s.serviceTileFoot}>
                         <Button to={`/services/${service.slug}`} variant="outline" size="sm">

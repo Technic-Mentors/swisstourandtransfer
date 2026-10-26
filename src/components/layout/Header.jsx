@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useSite } from '../../context/SiteContext';
 import WhatsAppButton from '../ui/WhatsAppButton';
 import { Container, cx } from '../ui';
+import usePublicTheme from '../../hooks/usePublicTheme';
 import s from './layout.module.css';
 
 const NAV = [
@@ -18,8 +19,27 @@ const NAV = [
 function Logo({ onClick }) {
   return (
     <Link to="/" className={s.logo} onClick={onClick} aria-label="Swiss Tour & Transfer - home">
-      <img src="/brand-logo.png" alt="" className={s.logoArtwork} />
+      {/* Both marks ship; CSS shows the one that suits the theme's background. */}
+      <img src="/brand-logo.png" alt="" className={cx(s.logoArtwork, s.logoDark)} />
+      <img src="/brand-logo-light.png" alt="" className={cx(s.logoArtwork, s.logoOnLight)} />
     </Link>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="4.2" />
+      <path d="M12 2.4v2.4M12 19.2v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.4 12h2.4M19.2 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z" />
+    </svg>
   );
 }
 
@@ -66,6 +86,7 @@ export default function Header() {
   }, [open]);
 
   const phone = settings.phone;
+  const { isLight, toggle } = usePublicTheme();
 
   return (
     <>
@@ -94,6 +115,16 @@ export default function Header() {
                   {phone}
                 </a>
               )}
+
+              <button
+                type="button"
+                className={s.themeToggle}
+                onClick={toggle}
+                aria-label={isLight ? 'Switch to dark theme' : 'Switch to light theme'}
+                title={isLight ? 'Dark theme' : 'Light theme'}
+              >
+                {isLight ? <MoonIcon /> : <SunIcon />}
+              </button>
 
               <WhatsAppButton variant="gold" size="sm" pageType="header" className={s.headerCta}>
                 Book via WhatsApp

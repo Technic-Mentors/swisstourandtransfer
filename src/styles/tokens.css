@@ -139,9 +139,11 @@
   --chart-secondary: #4fd1c5;
 
   /* ---- Type ---- */
-  --font-display: 'Cinzel', 'Times New Roman', serif;
-  --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* One family across the whole site: geometric, high-contrast, readable. */
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --font-body: var(--font-sans);
 
   --tracking-wide: 0.32em;
   --tracking-mid: 0.18em;
@@ -307,39 +309,50 @@ body[data-public-theme='dark'] {
   --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
-/* Public light theme. Scoped to body so it never alters admin palette tokens. */
+/* Public light theme — the default. Cream paper, near-black type and the
+   Swiss red from the logo in place of the dark theme's gold. Scoped to body so
+   it never alters the admin palette tokens. */
 body[data-public-theme='light'] {
   color-scheme: light;
 
-  --navy: #f4f7fc;
-  --navy-deep: #eaf0fa;
+  /* Surfaces: warm paper, with white reserved for cards that must lift.
+     The page tone is the hero photograph's own studio backdrop, so the
+     picture meets the page with no seam. */
+  --navy: #f6f0e2;
+  --navy-deep: #efeade;
   --navy-card: #ffffff;
-  --navy-soft: #e2eaf7;
-  --navy-raised: #d3def0;
+  --navy-soft: #f1ece1;
+  --navy-raised: #e8e1d3;
 
-  --border: #d6dfed;
-  --border-light: #bdcbe0;
-  --border-strong: #91a6c8;
+  --border: #e4ded2;
+  --border-light: #d6cec0;
+  --border-strong: #b9b0a0;
 
-  --gold: #9a7133;
-  --gold-bright: #7a5c25;
-  --gold-dim: #7a5c25;
-  --gold-dark: #5b421d;
-  --gold-on: #1a1305;
-  --gold-wash: rgba(210, 173, 110, 0.08);
-  --gold-line: rgba(154, 113, 51, 0.24);
+  /* The accent keeps the --gold-* names so every existing rule follows along. */
+  --gold: #e11d2a;
+  --gold-bright: #f0323f;
+  --gold-dim: #c8101c;
+  --gold-dark: #a50e18;
+  --gold-on: #ffffff;
+  --gold-wash: rgba(225, 29, 42, 0.07);
+  --gold-line: rgba(225, 29, 42, 0.26);
 
-  --cream: #172554;
+  /* --cream is the heading colour, so on paper it becomes the darkest ink. */
+  --cream: #15171c;
   --white: #ffffff;
-  --text: #172554;
-  --text-muted: #33466f;
-  --text-dim: #526487;
-  --text-faint: #68799a;
-  --swiss-red: #dc2626;
+  --text: #15171c;
+  --text-muted: #434953;
+  --text-dim: #5a606b;
+  --text-faint: #777d89;
 
-  --shadow-sm: 0 2px 10px rgba(23, 37, 84, 0.06);
-  --shadow: 0 12px 34px rgba(23, 37, 84, 0.1);
-  --shadow-lg: 0 24px 60px rgba(23, 37, 84, 0.14);
+  --swiss-red: #e11d2a;
+
+  --shadow-sm: 0 2px 10px rgba(26, 22, 16, 0.05);
+  --shadow: 0 12px 34px rgba(26, 22, 16, 0.09);
+  --shadow-lg: 0 24px 60px rgba(26, 22, 16, 0.13);
+  --shadow-gold: 0 10px 30px rgba(225, 29, 42, 0.2);
+
+
 }
 
 

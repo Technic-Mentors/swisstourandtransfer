@@ -553,14 +553,14 @@ export default function Dashboard() {
                 <XAxis
                   dataKey="date"
                   tickFormatter={fmtDay}
-                  tick={{ fill: 'var(--admin-text-faint)', fontSize: 11 }}
+                  tick={{ fill: 'var(--admin-text-faint)', fontSize: 13 }}
                   axisLine={{ stroke: 'var(--admin-border)' }}
                   tickLine={false}
                   minTickGap={28}
                 />
                 <YAxis
                   allowDecimals={false}
-                  tick={{ fill: 'var(--admin-text-faint)', fontSize: 11 }}
+                  tick={{ fill: 'var(--admin-text-faint)', fontSize: 13 }}
                   axisLine={false}
                   tickLine={false}
                   width={28}
@@ -571,7 +571,7 @@ export default function Dashboard() {
                     border: `1px solid ${isLight ? '#e4ded1' : '#2a3a4e'}`,
                     borderRadius: 10,
                     color: isLight ? '#1d2733' : '#e6ecf4',
-                    fontSize: 13,
+                    fontSize: 15,
                     boxShadow: isLight ? '0 8px 24px rgba(38,30,15,.14)' : 'none',
                   }}
                   labelStyle={{ color: colours.primary, marginBottom: 4 }}

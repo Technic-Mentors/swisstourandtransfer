@@ -103,6 +103,9 @@ export default function Home() {
       />
       <div className={home_s.homeFlow}>
         {home.sections.map((key) => {
+          // The hero no longer carries the booking bar, and the homepage does
+          // not show it as a section of its own either; "Book your ride" sends
+          // people to the booking page instead.
           if (key === 'quick_booking' && home.sections.includes('hero')) return null;
           const render = SECTION_COMPONENTS[key];
           if (!render) return null;

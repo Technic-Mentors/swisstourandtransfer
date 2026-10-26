@@ -60,7 +60,7 @@ export default function Book() {
               <a
                 href="#enquiry"
                 style={{
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: 700,
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',

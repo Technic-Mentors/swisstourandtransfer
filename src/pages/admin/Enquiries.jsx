@@ -629,13 +629,13 @@ export default function Enquiries() {
                 </h3>
 
                 {activityLoading ? (
-                  <div style={{ fontSize: 13, color: 'var(--admin-text-muted)' }}>Loading…</div>
+                  <div style={{ fontSize: 15, color: 'var(--admin-text-muted)' }}>Loading…</div>
                 ) : activityError ? (
-                  <div role="alert" style={{ fontSize: 13, color: 'var(--admin-red)' }}>
+                  <div role="alert" style={{ fontSize: 15, color: 'var(--admin-red)' }}>
                     Could not load activity: {activityError}
                   </div>
                 ) : activity.length === 0 ? (
-                  <div style={{ fontSize: 13, color: 'var(--admin-text-muted)' }}>No activity yet.</div>
+                  <div style={{ fontSize: 15, color: 'var(--admin-text-muted)' }}>No activity yet.</div>
                 ) : (
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
                     {activity.map((a) => (
@@ -645,10 +645,10 @@ export default function Enquiries() {
                           background: activityDotColor(a.action),
                         }} />
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: 13, color: 'var(--admin-text)' }}>
+                          <div style={{ fontSize: 15, color: 'var(--admin-text)' }}>
                             {activityText(a)}
                           </div>
-                          <div style={{ fontSize: 11, color: 'var(--admin-text-faint)', marginTop: 2 }}>
+                          <div style={{ fontSize: 13, color: 'var(--admin-text-faint)', marginTop: 2 }}>
                             {formatActivityTime(a.created_at)}
                             {a.actor_name ? ` · by ${a.actor_name}` : ''}
                           </div>
