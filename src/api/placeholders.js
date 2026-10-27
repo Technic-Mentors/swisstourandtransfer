@@ -14,9 +14,8 @@
 /* ------------------------------------------------------------- settings */
 
 export const settings = {
-  /* wa.me wants the country code with no + and no leading 00, so
-     0041 78 227 62 22 is stored as 41782276222. */
-  whatsapp_number: '41782276222',
+  /* wa.me wants the country code with no + and no leading 00. */
+  whatsapp_number: '41764650551',
   whatsapp_template_vehicle:
     'Hello, I would like to book the {vehicle}.\nPickup: \nDate: \nPassengers: ',
   whatsapp_template_general: 'Hello, I would like to enquire about a chauffeur service.',
@@ -27,15 +26,14 @@ export const settings = {
 
   company_name: 'Swiss Tour & Transfer',
   tagline: 'Explore · Travel · Arrive',
-  /* Shown as written; tel: links strip the spaces, so this dials as
-     +41782276222 from anywhere. */
-  phone: '+41 78 227 62 22',
-  email: 'info@swisstourtransfer.ch',
-  address: 'Am Luchsgraben 168051 Zurich Switzerland ',
+  /* Shown as written; tel: links strip the spaces. */
+  phone: '+41 76 465 05 51',
+  email: 'info@swiss-transfers.com',
+  address: 'Ueberlandstrasse 391, 8051 Zurich, Switzerland',
   opening_hours: 'Open 24/7 ',
   maps_embed_url:
-    'https://www.google.com/maps?q=Bahnhofstrasse%201,%208001%20Z%C3%BCrich&output=embed',
-  maps_link: 'https://maps.google.com/?q=Bahnhofstrasse+1,+8001+Zurich',
+    'https://www.google.com/maps?q=Ueberlandstrasse%20391%2C%208051%20Zurich%2C%20Switzerland&output=embed',
+  maps_link: 'https://maps.google.com/?q=Ueberlandstrasse+391,+8051+Zurich,+Switzerland',
 
   social_instagram: 'https://instagram.com/',
   social_facebook: 'https://facebook.com/',
@@ -156,7 +154,7 @@ export const pageContent = {
   },
   impressum: {
     heading: 'Impressum',
-    body: 'Swiss Tour & Transfer\nAm Luchsgraben 16\n8051 Zurich\nSwitzerland\n\nPhone: +41 78 227 62 22\nEmail: info@swisstourtransfer.ch\n\n[Add your commercial register number (CHE-...), VAT number and the name of the person responsible for the content of this website.]',
+    body: 'Swiss Tour & Transfer\nUeberlandstrasse 391\n8051 Zurich\nSwitzerland\n\nPhone: +41 76 465 05 51\nEmail: info@swiss-transfers.com\nSupport: support@swiss-transfers.com\n\n[Add your commercial register number (CHE-...), VAT number and the name of the person responsible for the content of this website.]',
   },
 };
 
