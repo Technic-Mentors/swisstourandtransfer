@@ -1143,8 +1143,6 @@ body[data-public-theme='light'] .heroHeader .themeToggle:hover {
   }
 
   .footerLogoArtwork { width: 150px; height: 58px; }
-  /* Matches the doubled class the full-size rule uses, or that one wins. */
-  body[data-public-theme='light'] .footerLogoArtwork.logoOnLight.logoOnLight { width: 164px; height: 54px; }
 
   .footerBrandText {
     max-width: none;
@@ -1275,4 +1273,24 @@ body[data-public-theme='light'] .footerLogoArtwork.logoOnLight.logoOnLight {
   height: 74px;
   object-fit: contain;
   object-position: left center;
+}
+
+@media (max-width: 620px) {
+  body[data-public-theme='light'] .footerLogoArtwork.logoOnLight.logoOnLight {
+    width: 164px;
+    height: 54px;
+  }
+}
+
+
+/* ================= page transition ================= */
+.pageIn { animation: pageFadeIn .4s ease both; }
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pageIn { animation: none; }
 }

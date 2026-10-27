@@ -188,7 +188,11 @@ export default function PublicLayout() {
       </a>
       <AnnouncementBar />
       <Header />
-      <main id="main">
+      {/* Keyed on the path, so every route change replays the fade. Only
+          opacity moves: a transform here would become the containing block
+          for the page's own position: fixed pieces, such as the scroll
+          progress bar. */}
+      <main id="main" key={location.pathname} className={s.pageIn}>
         <Outlet />
       </main>
       <Footer />

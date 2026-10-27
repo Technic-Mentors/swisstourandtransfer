@@ -39,21 +39,27 @@ export function unspotlight(e) {
   e.currentTarget.style.setProperty('--ry', '0deg');
 }
 
-/** Thin gold progress bar at the top of the page. */
-function ScrollProgress() {
+/** Thin gold progress bar at the top of the page, with the car riding it. */
+export function ScrollProgress() {
   const bar = useRef(null);
 
   useEffect(() => {
-    const on = () => {
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
       const v = max > 0 ? h.scrollTop / max : 0;
       if (bar.current) bar.current.style.width = `${v * 100}%`;
     };
-    on();
+    const on = () => {
+      if (!frame) frame = window.requestAnimationFrame(paint);
+    };
+    paint();
     window.addEventListener('scroll', on, { passive: true });
     window.addEventListener('resize', on);
     return () => {
+      if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', on);
       window.removeEventListener('resize', on);
     };
@@ -107,14 +113,6 @@ const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
 }));
 
 /** Swept-wing jet silhouette, nose pointing right. */
-function JetIcon({ className }) {
-  return (
-    <svg className={className} viewBox="0 0 64 34" aria-hidden="true">
-      <path d="M64 17 54 13.8 36 13.8 20 2 15 2 27 14.4 12 14.4 4 8.5 1.5 8.5 7.5 15.2 1 15.8 1 18.2 7.5 18.8 1.5 25.5 4 25.5 12 19.6 27 19.6 15 32 20 32 36 20.2 54 20.2Z" />
-    </svg>
-  );
-}
-
 /** Long-wheelbase saloon in side view, nose pointing right. */
 export function CarIcon({ className }) {
   return (
@@ -126,33 +124,34 @@ export function CarIcon({ className }) {
   );
 }
 
-/* Two jets at different heights: the far one is smaller, dimmer and slower,
-   and its negative delay means it is already mid-flight on the first paint. */
-const JETS = [
-  { top: '15%', scale: 1, opacity: 1, dur: 26, delay: -4 },
-  { top: '36%', scale: 0.6, opacity: 0.45, dur: 36, delay: -21 },
-];
+/**
+ * The hero's moving air: two soft glows that lean towards the pointer, and
+ * falling snow in the ski season or rising embers otherwise.
+ * Purely decorative; it sits between the photograph and the copy.
+ */
+function HeroAtmosphere() {
+  const [season] = useState(heroSeason);
+  const winter = season === 'winter';
 
-/** Jets crossing the hero sky, each trailing a gold contrail. */
-function SkyJets() {
   return (
-    <div className={s.xJetSky} aria-hidden="true">
-      {JETS.map((jet, i) => (
-        <span
-          key={i}
-          className={s.xJet}
-          style={{
-            top: jet.top,
-            '--jet-scale': jet.scale,
-            '--jet-opacity': jet.opacity,
-            animationDuration: `${jet.dur}s`,
-            animationDelay: `${jet.delay}s`,
-          }}
-        >
-          <span className={s.xJetTrail} />
-          <JetIcon className={s.xJetIcon} />
-        </span>
-      ))}
+    <div className={s.heroAtmos} aria-hidden="true">
+      <div className={s.xAurora}>
+        <span className={cx(s.xOrb, s.xOrbA)} />
+        <span className={cx(s.xOrb, s.xOrbB)} />
+        {PARTICLES.map((p, i) => (
+          <span
+            key={i}
+            className={cx(s.xSpark, winter && s.xSnow)}
+            style={{
+              left: `${p.left}%`,
+              width: p.size,
+              height: p.size,
+              animationDuration: `${p.dur}s`,
+              animationDelay: `${p.delay}s`,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -222,6 +221,53 @@ export function reveal(el) {
   io.observe(el);
 }
 
+/* ------------------------------------------------------------- parallax */
+/* One scroll listener drives every parallax image on the page rather than one
+   per element. Each element is given `--px`, its drift in pixels, and the
+   stylesheet decides what to do with it. Elements that leave the document are
+   dropped on the next pass, so the ref callback needs no teardown. */
+
+const parallaxEls = new Set();
+let parallaxFrame = 0;
+
+function runParallax() {
+  parallaxFrame = 0;
+  const h = window.innerHeight || 1;
+
+  parallaxEls.forEach((el) => {
+    if (!el.isConnected) {
+      parallaxEls.delete(el);
+      return;
+    }
+
+    const r = el.getBoundingClientRect();
+    if (r.bottom < -200 || r.top > h + 200) return;
+
+    // +1 when the element is entering at the foot of the screen, -1 as it
+    // leaves at the top; the image drifts against that.
+    const centred = (r.top + r.height / 2 - h / 2) / h;
+    el.style.setProperty('--px', `${(centred * 26).toFixed(1)}px`);
+  });
+}
+
+function scheduleParallax() {
+  if (parallaxFrame) return;
+  parallaxFrame = requestAnimationFrame(runParallax);
+}
+
+/** Ref callback: the element's inner image drifts as the page scrolls. */
+export function parallax(el) {
+  if (!el) return;
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
+  if (!parallaxEls.size) {
+    window.addEventListener('scroll', scheduleParallax, { passive: true });
+    window.addEventListener('resize', scheduleParallax);
+  }
+  parallaxEls.add(el);
+  scheduleParallax();
+}
+
 /** Section header with an optional link on the right. */
 function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false, eyebrowClass, as: Tag = 'h2' }) {
   return (
@@ -246,10 +292,24 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 const HERO_ANGLES = [
   { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.' },
   { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.' },
+  { name: 'SUV', image: '/car-1.png', headline: 'Room for every journey,', accent: 'without compromise.', text: 'A premium fleet matched to your plans, passengers and luggage.' },
 ];
 
 /** The hero advances on its own; one angle every three seconds. */
 const HERO_INTERVAL = 3000;
+
+/* The glows follow the pointer through two custom properties set straight on
+   the section, so moving the mouse never re-renders the hero. */
+function heroPointer(e) {
+  const r = e.currentTarget.getBoundingClientRect();
+  e.currentTarget.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+  e.currentTarget.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+}
+
+function heroPointerOut(e) {
+  e.currentTarget.style.setProperty('--px', '0');
+  e.currentTarget.style.setProperty('--py', '0');
+}
 
 export function HeroSection({ content, allVehicles = [], cities = [], lists = {}, settings = {}, stats = {} }) {
   /* `leaving` is the slide on its way out, so only that one animates to the
@@ -301,8 +361,15 @@ export function HeroSection({ content, allVehicles = [], cities = [], lists = {}
     );
 
   return (
-    <section className={s.heroSection} aria-label="Premium chauffeur service">
+    <section
+      className={s.heroSection}
+      aria-label="Premium chauffeur service"
+      onMouseMove={heroPointer}
+      onMouseLeave={heroPointerOut}
+    >
       <div className={s.heroStage}>
+        <HeroAtmosphere />
+
         <div className={cx(s.heroContent, s.heroEnter)}>
           <span className={s.showcaseEyebrow}>Premium chauffeur service</span>
           <div className={s.heroCopyStack}>
@@ -648,23 +715,21 @@ export function ServicesSection({ content, services }) {
               onMouseMove={spotlight}
               onMouseLeave={unspotlight}
             >
-              <span className={s.serviceImage}>
+              <span ref={parallax} className={s.serviceImage}>
                 <img src={imageUrl(service.image)} onError={imageFallback} alt="" loading="lazy" width="520" height="250" />
                 <span className={s.serviceIcon}><ServiceIcon slug={service.slug} /></span>
               </span>
               <span className={s.serviceContent}>
-              <span className={s.serviceNum}>{String(i + 1).padStart(2, '0')}</span>
-              <h3 className={cx(s.serviceName, s.xItemTitle)}>{service.name}</h3>
-              <p className={cx(s.serviceDesc, s.xItemText)}>{service.short_description}</p>
-              <span className={s.serviceLink}>
-                Learn more →
-              </span>
-              <span className={s.serviceArrow} aria-hidden="true">→</span>
+                <span className={s.serviceNum}>{String(i + 1).padStart(2, '0')}</span>
+                <h3 className={cx(s.serviceName, s.xItemTitle)}>{service.name}</h3>
+                <p className={cx(s.serviceDesc, s.xItemText)}>{service.short_description}</p>
+                <span className={s.serviceLink}>
+                  Learn more →
+                </span>
+                <span className={s.serviceArrow} aria-hidden="true">→</span>
               </span>
             </Link>
           ))}
-
-    
         </div>
       </Container>
     </section>
@@ -883,58 +948,178 @@ export function ReviewsSection({ content, testimonials, stats }) {
 
 /* ---------------------------------------------------------------- gallery */
 
+const lineIcon = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
+
+function ExpandIcon() {
+  return (
+    <svg viewBox="0 0 24 24" {...lineIcon} aria-hidden="true">
+      <path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" />
+    </svg>
+  );
+}
+
+function ChevronIcon({ dir = 'right' }) {
+  return (
+    <svg viewBox="0 0 24 24" {...lineIcon} aria-hidden="true">
+      <path d={dir === 'left' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'} />
+    </svg>
+  );
+}
+
+/**
+ * An expanding photo strip. Every photo is a slim panel; the one under the
+ * pointer (or keyboard focus) opens wide, sharpens and shows its caption.
+ * On phones the strip becomes a swipeable carousel. Clicking any panel opens
+ * the lightbox at that photo.
+ */
 export function GallerySection({ content, photos }) {
   const [lightbox, setLightbox] = useState(-1);
+  const [active, setActive] = useState(0);
+  const stripRef = useRef(null);
+  const panels = useRef([]);
+
   if (!photos.length) return null;
 
-  const tiles = photos.slice(0, 6);
-  const items = tiles.map((photo, index) => ({
+  const tiles = photos.slice(0, 6).map((photo, index) => ({
+    id: photo.id ?? index,
     src: (index === 0 || index === 5)
       ? HERO_ANGLES[0].image
       : imageUrl(galleryImage(photo, index)),
     alt: photo.alt_text || photo.caption || 'Swiss Tour & Transfer',
-    caption: photo.caption || '',
+    caption: photo.caption || photo.alt_text || '',
   }));
+  const count = tiles.length;
+  const current = tiles[Math.min(active, count - 1)];
+
+  /* Only true on phones, where the strip scrolls sideways. */
+  const scrolls = () => {
+    const strip = stripRef.current;
+    return Boolean(strip && strip.scrollWidth > strip.clientWidth + 4);
+  };
+
+  const go = (to, focus = false) => {
+    const n = (to + count) % count;
+    setActive(n);
+    const panel = panels.current[n];
+    if (!panel) return;
+    if (focus) panel.focus({ preventScroll: true });
+    if (scrolls()) {
+      const strip = stripRef.current;
+      strip.scrollTo({
+        left: panel.offsetLeft - (strip.clientWidth - panel.offsetWidth) / 2,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  /* Keeps the counter honest while someone swipes on a phone. */
+  const onStripScroll = () => {
+    if (!scrolls()) return;
+    const strip = stripRef.current;
+    const first = panels.current[0];
+    if (!first) return;
+    const step = first.offsetWidth + 12;
+    const i = Math.min(Math.max(Math.round(strip.scrollLeft / step), 0), count - 1);
+    setActive((cur) => (cur === i ? cur : i));
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(active + 1, true); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(active - 1, true); }
+    if (e.key === 'Home') { e.preventDefault(); go(0, true); }
+    if (e.key === 'End') { e.preventDefault(); go(count - 1, true); }
+  };
+
+  const items = tiles.map(({ src, alt, caption }) => ({ src, alt, caption }));
 
   return (
-    <Section>
+    <Section className={s.gallery}>
       <Container>
         <HeadRow
           eyebrow={content.gallery_eyebrow}
           title={content.gallery_heading}
         />
 
-        <div ref={reveal} className={cx(s.galleryGrid, s.xStagger)}>
-          {tiles.map((photo, i) => (
-            <button
-              type="button"
-              key={photo.id}
-              className={cx(
-                s.galleryTile,
-                s.xZoom,
-                s.xClip,
-                s.xPhoto,
-                (i === 0 || i === 5) && s.galleryTileWide,
-              )}
-              onClick={() => setLightbox(i)}
-              aria-label={`Open photo ${i + 1}`}
-            >
-              <img
-                src={(i === 0 || i === 5)
-                  ? HERO_ANGLES[0].image
-                  : imageUrl(galleryImage(photo, i))}
-                onError={imageFallback}
-                alt={photo.alt_text || photo.caption || ''}
-                loading="lazy"
-                width="500"
-                height="320"
-              />
+        <div
+          ref={(el) => {
+            stripRef.current = el;
+            reveal(el);
+          }}
+          className={cx(s.galleryStrip, s.xStagger)}
+          onKeyDown={onKeyDown}
+          onScroll={onStripScroll}
+        >
+          {tiles.map((tile, i) => {
+            const isActive = i === active;
+            const label = tile.caption || tile.alt;
+
+            return (
+              <button
+                type="button"
+                key={tile.id}
+                ref={(el) => { panels.current[i] = el; }}
+                className={cx(s.galleryPanel, s.xClip, isActive && s.galleryPanelActive)}
+                style={{ '--panel-index': i }}
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                onClick={() => setLightbox(i)}
+                aria-label={`Open photo ${i + 1} of ${count}${label ? `: ${label}` : ''}`}
+                aria-current={isActive ? 'true' : undefined}
+                tabIndex={isActive ? 0 : -1}
+              >
+                <img
+                  src={tile.src}
+                  onError={imageFallback}
+                  alt=""
+                  loading="lazy"
+                  width="900"
+                  height="600"
+                />
+                <span className={s.galleryShade} aria-hidden="true" />
+                {label && <span className={s.galleryRail} aria-hidden="true">{label}</span>}
+                <span className={s.galleryInfo} aria-hidden="true">
+                  {label && <span className={s.galleryCaption}>{label}</span>}
+                  <span className={s.galleryOpen}>
+                    <ExpandIcon />
+                    View full size
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className={s.galleryFoot}>
+          <p className={s.galleryNow} aria-live="polite">{current?.caption}</p>
+
+          <div className={s.galleryControls}>
+            <span className={s.galleryDots} aria-hidden="true">
+              {tiles.map((tile, i) => (
+                <span key={tile.id} className={cx(s.galleryDot, i === active && s.galleryDotOn)} />
+              ))}
+            </span>
+            <span className={s.galleryCount}>
+              <strong>{String(active + 1).padStart(2, '0')}</strong> / {String(count).padStart(2, '0')}
+            </span>
+            <button type="button" className={s.galleryArrow} onClick={() => go(active - 1)} aria-label="Previous photo">
+              <ChevronIcon dir="left" />
             </button>
-          ))}
+            <button type="button" className={s.galleryArrow} onClick={() => go(active + 1)} aria-label="Next photo">
+              <ChevronIcon />
+            </button>
+          </div>
         </div>
 
         {lightbox >= 0 && (
-          <Lightbox items={items} index={lightbox} onIndexChange={setLightbox} onClose={() => setLightbox(-1)} />
+          <Lightbox
+            items={items}
+            index={lightbox}
+            onIndexChange={(i) => {
+              setLightbox(i);
+              setActive(i);
+            }}
+            onClose={() => setLightbox(-1)}
+          />
         )}
       </Container>
     </Section>

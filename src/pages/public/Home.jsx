@@ -16,6 +16,7 @@ import {
   HowItWorksSection,
   QuickBookingSection,
   ReviewsSection,
+  ScrollProgress,
   ServicesSection,
   TrustStrip,
   WhyChooseUsSection,
@@ -101,6 +102,11 @@ export default function Home() {
         path="/"
         jsonLd={[localBusiness(settings, reviews.stats), faqSchema(faqs.faqs)]}
       />
+
+      {/* Gold bar across the top of the window, with the car riding it as
+          the page scrolls. Fixed and decorative, so it sits outside the flow. */}
+      <ScrollProgress />
+
       <div className={home_s.homeFlow}>
         {home.sections.map((key) => {
           // The hero no longer carries the booking bar, and the homepage does

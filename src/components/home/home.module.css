@@ -6,11 +6,6 @@
 @keyframes xPulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--gold) 55%, transparent); } 100% { box-shadow: 0 0 0 9px transparent; } }
 @keyframes xDash { to { stroke-dashoffset: -44; } }
 @keyframes xDrift { to { transform: translateX(-50%); } }
-@keyframes xFly {
-  0%   { left: -14%; transform: translateY(0) rotate(-4deg); }
-  50%  { transform: translateY(-14px) rotate(-4deg); }
-  100% { left: 108%; transform: translateY(0) rotate(-4deg); }
-}
 @keyframes xPin { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3.2); opacity: 0; } }
 
 /* scroll reveal (class "xIn" is added by reveal() ref in sections.jsx) */
@@ -55,7 +50,6 @@
 .xMtnBackFill { fill: var(--gold-wash); }
 .xMtnFrontFill { fill: rgba(255, 255, 255, .10); }
 .xSnow { fill: rgba(255, 255, 255, .35); }
-.xPlane { position: absolute; top: 3%; left: -14%; width: 120px; height: auto; z-index: 2; animation: xFly 16s linear infinite; }
 .xRoad { position: absolute; left: 0; right: 0; bottom: -30px; width: 100%; height: auto; overflow: visible; z-index: 2; }
 .xRoadBase { fill: none; stroke: rgba(0, 0, 0, .38); stroke-width: 14; stroke-linecap: round; }
 .xRoadEdge { fill: none; stroke: rgba(255, 255, 255, .18); stroke-width: 16; stroke-linecap: round; }
@@ -90,10 +84,6 @@
 /* scroll progress road (top of page) */
 .xProgress { position: fixed; top: 0; left: 0; right: 0; height: 4px; z-index: 80; pointer-events: none; background: rgba(0, 0, 0, .12); }
 .xProgressBar { height: 100%; width: 0; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); }
-
-@media (max-width: 760px) {
-  .xPlane { width: 80px; }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .xReveal, .xStagger > *, .xHeroCopy > *, .xHeroArt { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
@@ -352,7 +342,6 @@
 }
 
 /* ============================================================ trust strip */
-/* A quiet single row with gold dot separators - not boxed cells. */
 /* A continuous slider, sitting tight between the sections it separates. */
 .trust {
   border-block: 1px solid var(--border);
@@ -803,6 +792,18 @@
   background: #12212a;
 }
 
+/* Scroll parallax: the photograph is a little taller than its frame and
+   drifts within it, which gives the row some depth as it passes. The scale
+   is what stops the drift exposing an edge. */
+.serviceImage img {
+  transform: translate3d(0, var(--px, 0px), 0) scale(1.12);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceImage img { transform: none; }
+}
+
 .serviceImage::after {
   content: '';
   position: absolute;
@@ -946,7 +947,6 @@
 }
 
 /* ========================================================== why choose us */
-/* A centred column with a rail that fills as the section scrolls past. */
 /* A centred column with a rail that fills as the section scrolls past. */
 .railWrap {
   position: relative;
@@ -1313,52 +1313,338 @@
   }
 }
 
-/* ================================================================ gallery */
-.galleryGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 200px;
-  gap: 14px;
-}
-
-.galleryTile {
+/* ================================================================ gallery
+   An expanding strip. Every photo is a slim, dimmed panel; the one under the
+   pointer or keyboard focus opens wide, sharpens and shows its caption. The
+   panels rise in one after another (the .xClip curtain) when the section is
+   scrolled to. On phones the strip turns into a swipeable carousel.        */
+.gallery {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--navy-soft);
-  padding: 0;
-  cursor: zoom-in;
 }
 
-.galleryTile img {
+.galleryStrip {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  height: clamp(380px, 56vh, 580px);
+  margin-top: 26px;
+}
+
+.galleryPanel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--navy-soft);
+  color: #fff;
+  text-align: left;
+  cursor: zoom-in;
+  isolation: isolate;
+  transition:
+    flex-grow .85s cubic-bezier(.22, 1, .36, 1),
+    border-color .45s ease,
+    box-shadow .45s ease;
+}
+
+.galleryPanelActive {
+  flex-grow: 4.4;
+  border-color: var(--gold-line);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .32);
+}
+
+.galleryPanel img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--t-slow) var(--ease);
+  transform: scale(1.16);
+  filter: saturate(.5) brightness(.6);
+  transition:
+    transform 1.4s cubic-bezier(.22, 1, .36, 1),
+    filter .8s ease;
 }
 
-.galleryTile:hover img {
-  transform: scale(1.07);
+.galleryPanel:hover img {
+  filter: saturate(.75) brightness(.75);
 }
 
-.galleryTileWide {
-  grid-column: span 2;
+.galleryPanelActive img,
+.galleryPanelActive:hover img {
+  transform: scale(1);
+  filter: none;
 }
 
-.galleryTileWide img {
-  object-fit: cover;
+.galleryPanelActive:hover img {
+  transform: scale(1.035);
 }
 
-.galleryTileWide:hover img {
-  transform: scale(1.02);
+.galleryShade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(5, 8, 12, 0) 42%, rgba(5, 8, 12, .84) 100%);
 }
 
-@media (max-width: 860px) {
-  .galleryGrid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 150px;
+/* A gold hairline draws across the top of the open panel. */
+.galleryPanel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .9s cubic-bezier(.22, 1, .36, 1) .2s;
+}
+
+.galleryPanelActive::after {
+  transform: scaleX(1);
+}
+
+/* Closed panels carry their caption up the side, read bottom to top. */
+.galleryRail {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  max-height: calc(100% - 44px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%) rotate(180deg);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .05em;
+  color: rgba(255, 255, 255, .8);
+  transition: opacity .35s ease;
+}
+
+.galleryPanelActive .galleryRail {
+  opacity: 0;
+}
+
+.galleryInfo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 26px 28px;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.galleryPanelActive .galleryInfo {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .5s ease .35s,
+    transform .65s cubic-bezier(.22, 1, .36, 1) .35s;
+}
+
+.galleryCaption {
+  max-width: 32ch;
+  font-family: var(--font-heading);
+  font-size: clamp(20px, 1.8vw, 28px);
+  line-height: 1.15;
+  color: #fff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .5);
+}
+
+.galleryOpen {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1px solid rgba(255, 255, 255, .42);
+  border-radius: 999px;
+  background: rgba(5, 8, 12, .35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  transition: background .3s ease, border-color .3s ease, color .3s ease;
+}
+
+.galleryOpen svg {
+  width: 15px;
+  height: 15px;
+}
+
+.galleryPanel:hover .galleryOpen {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--gold-on);
+}
+
+.galleryPanel:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Caption of the open photo, its position, and arrows to step through. */
+.galleryFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.galleryNow {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.galleryControls {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.galleryDots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.galleryDot {
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: width .5s cubic-bezier(.22, 1, .36, 1), background .5s ease;
+}
+
+.galleryDotOn {
+  width: 34px;
+  background: var(--gold);
+}
+
+.galleryCount {
+  font-size: 14px;
+  letter-spacing: .04em;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--text-muted);
+}
+
+.galleryCount strong {
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.galleryArrow {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--gold-line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold);
+  cursor: pointer;
+  transition: background .3s ease, color .3s ease, transform .2s ease;
+}
+
+.galleryArrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.galleryArrow:hover {
+  background: var(--gold);
+  color: var(--gold-on);
+}
+
+.galleryArrow:active {
+  transform: scale(.92);
+}
+
+.galleryArrow:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .galleryStrip { height: clamp(340px, 48vh, 460px); }
+  .galleryPanelActive { flex-grow: 3.2; }
+  .galleryInfo { padding: 20px; }
+}
+
+/* Phones: a swipeable carousel, every card open, snapping to the centre. */
+@media (max-width: 680px) {
+  .galleryStrip {
+    height: auto;
+    gap: 12px;
+    margin-inline: calc(-1 * var(--gutter, 20px));
+    padding-inline: var(--gutter, 20px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
   }
+
+  .galleryStrip::-webkit-scrollbar { display: none; }
+
+  .galleryPanel,
+  .galleryPanelActive {
+    flex: 0 0 82%;
+    aspect-ratio: 4 / 5;
+    scroll-snap-align: center;
+  }
+
+  .galleryPanel img,
+  .galleryPanel:hover img { transform: none; filter: none; }
+
+  .galleryPanel::after { transform: scaleX(1); }
+  .galleryRail { display: none; }
+
+  .galleryInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .galleryNow,
+  .galleryDots { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleryPanel,
+  .galleryPanel img,
+  .galleryPanel::after,
+  .galleryInfo,
+  .galleryPanelActive .galleryInfo,
+  .galleryDot {
+    transition: none !important;
+  }
+
+  .galleryPanelActive:hover img { transform: none; }
 }
 
 /* ==================================================================== faq */
@@ -1776,19 +2062,12 @@
   }
 }
 
-/* ============================================= planes, cars and journeys ==
-   Sky at the top of the page, road as you scroll: jets cross the hero, the
-   car rides the scroll bar, and "how it works" plays the whole handover -
-   the jet flies in and parks, then the car drives the guest onward.
+/* ==================================================== cars and journeys ==
+   A road as you scroll: the car rides the scroll bar, and "how it works"
+   plays the whole handover - the jet flies in and parks, then the car
+   drives the guest onward.
    All of it is decorative (aria-hidden, no pointer events) and animates
    only transform, opacity and stroke, so nothing touches layout.          */
-
-@keyframes xJetCross {
-  0%   { transform: translate3d(-34vw, 34px, 0) scale(var(--jet-scale, 1)); opacity: 0; }
-  12%  { opacity: var(--jet-opacity, 1); }
-  84%  { opacity: var(--jet-opacity, 1); }
-  100% { transform: translate3d(124vw, -40px, 0) scale(var(--jet-scale, 1)); opacity: 0; }
-}
 
 /* The jet flies the first 40% of the loop and then waits at the airport;
    the car leaves at 44% and arrives at 86%. Each vehicle paints its own
@@ -1830,32 +2109,6 @@
 }
 
 /* ---- hero sky ---- */
-.xJetSky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
-
-.xJet {
-  position: absolute;
-  left: 0;
-  display: flex;
-  align-items: center;
-  will-change: transform, opacity;
-  animation: xJetCross linear infinite;
-}
-
-.xJetTrail {
-  width: clamp(70px, 15vw, 210px);
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--gold) 38%, transparent));
-}
-
-.xJetIcon {
-  width: 46px;
-  height: auto;
-  margin-left: -1px;
-  fill: color-mix(in srgb, var(--gold-bright) 82%, transparent);
-  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, .45));
-}
-
 /* ---- the journey, above "how it works" ---- */
 .xTrip { max-width: 520px; margin: 2px auto 30px; }
 .xTripSvg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -1933,12 +2186,11 @@
 .xReveal.xIn .xMotorcade > *:nth-child(n+7) { animation-delay: .66s; }
 
 @media (max-width: 760px) {
-  .xJetIcon { width: 32px; }
   .xProgressCar { width: 24px; right: -2px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .xJetSky, .xProgressCar { display: none !important; }
+  .xProgressCar { display: none !important; }
 
   .xTrip.xIn .xTripArc,
   .xTrip.xIn .xTripRoad,
@@ -1955,10 +2207,8 @@
 }
 
 /* ============================================= home: featured vehicles ===
-   Six cars are fetched for this row. The shared grid is four wide, which
-   left a ragged 4 + 2, so the home page uses three across and shows all
-   six as two even rows. The class is doubled to out-weigh .grid from the
-   vehicles module without resorting to !important. */
+   The shared grid is four wide; the class is doubled to out-weigh .grid
+   from the vehicles module without resorting to !important. */
 
 .xHomeVehicles.xHomeVehicles {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2103,7 +2353,7 @@
 .homeFlow { overflow: visible; }
 
 /* Two-column hero: copy on the left, the vehicle panel on the right, booking
-   bar across the foot. The two angles trade places on a three-second timer —
+   bar across the foot. The angles trade places on a three-second timer —
    the active slide rests at 0, the one it replaced slides out left, and the
    waiting one parks off-screen right with no transition, so the wrap back to
    the first angle is never seen as a rewind. */
@@ -2290,10 +2540,33 @@
 .heroFleetButton { color: #fff; background: transparent; }
 .heroFleetButton:hover { color: #050506; background: #fff; border-color: #fff; }
 
+/* ------------------------------------------------- hero: moving air ------
+   Glows, embers or snow, and the jets sit between the photograph and the
+   copy: above the car so the jets cross it, below the text so it stays
+   crisp. The glows are moved to the copy side so they never tint the car. */
+.heroAtmos {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.heroContent { position: relative; z-index: 3; }
+.heroSlides { z-index: 1; }
+
+.heroAtmos .xOrb { opacity: .75; }
+.heroAtmos .xOrbA { right: auto; left: -6%; top: 4%; }
+.heroAtmos .xOrbB { right: auto; left: 24%; bottom: -8%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .heroAtmos .xSpark { display: none; }
+}
+
 
 /* ---------------------------------------------- hero on the light theme */
 /* The hero was built in fixed dark values rather than tokens, so every one of
-   them is restated here. `L` is shorthand for the light body in this block. */
+   them is restated here. */
 body[data-public-theme='light'] .heroSection,
 body[data-public-theme='light'] .heroStage,
 body[data-public-theme='light'] .heroSlides {
@@ -2338,14 +2611,13 @@ body[data-public-theme='light'] .heroFleetButton:hover {
   background: var(--cream);
 }
 
-
-
-
-
-
-
-
-
+/* On cream paper the glows are only a hint, and white snow would vanish, so
+   the flakes take a pale gold instead. */
+body[data-public-theme='light'] .heroAtmos .xOrb { opacity: .3; }
+body[data-public-theme='light'] .heroAtmos .xSnow {
+  background: color-mix(in srgb, var(--gold) 65%, #fff);
+  box-shadow: none;
+}
 
 /* The light theme runs its own first frame: a white car on a pale studio
    backdrop, which sits on cream without any frame around it. The slide's
@@ -2364,7 +2636,7 @@ body[data-public-theme='light'] .heroSlides {
   mask-composite: intersect;
 }
 
-/* Both angles are shot on the same cream backdrop as the page, so they meet
+/* All three angles are shot on the same cream backdrop as the page, so they meet
    it without an edge. The images are inline styles, hence the !important. */
 body[data-public-theme='light'] .heroSlide:first-child {
   background-image: url('/hero-light-1.png') !important;
@@ -2373,6 +2645,10 @@ body[data-public-theme='light'] .heroSlide:first-child {
 
 body[data-public-theme='light'] .heroSlide:nth-child(2) {
   background-image: url('/hero-light-2.png') !important;
+  background-position: center;
+}
+body[data-public-theme='light'] .heroSlide:nth-child(3) {
+  background-image: url('/hero-light-3.png') !important;
   background-position: center;
 }
 
@@ -2505,7 +2781,7 @@ body[data-public-theme='light'] .serviceIcon {
 
 body[data-public-theme='light'] .serviceShowcaseGrid .serviceNum { color: var(--gold); }
 
-/* Under the pointer the circle fills with red, so its figure turns white.
+/* Under the pointer the circle fills, so its figure turns light.
    This has to out-rank the rule above, which is why it is spelled out. */
 body[data-public-theme='light'] .serviceCell:hover .serviceNum,
 body[data-public-theme='light'] .serviceShowcaseGrid .serviceCell:hover .serviceNum {
@@ -2532,3 +2808,7 @@ body[data-public-theme='light'] .serviceFiller {
   border-color: var(--border);
   background: var(--navy-soft);
 }
+
+/* --- gallery: the strip's frame and controls on cream --- */
+body[data-public-theme='light'] .galleryPanel { box-shadow: var(--shadow-sm); }
+body[data-public-theme='light'] .galleryPanelActive { box-shadow: var(--shadow); }
