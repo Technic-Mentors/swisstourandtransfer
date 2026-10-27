@@ -1119,12 +1119,89 @@ body[data-public-theme='light'] .heroHeader .themeToggle:hover {
 }
 
 @media (max-width: 620px) {
-  .footer { padding-top: 28px; }
-  .footerGrid { grid-template-columns: 1fr 1fr; gap: 24px 0; }
-  .footerGrid > * { padding: 0 14px; border-left: 0; }
-  .footerGrid > :first-child { grid-column: 1 / -1; padding: 0; }
-  .footerGrid > :last-child { grid-column: 1 / -1; margin-top: 0; padding: 0; }
-  .footerBar .container { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .footer { padding-top: 20px; }
+
+  /* Compact footer: brand across the top, the two short link lists side by
+     side, then contact on its own full-width row. Each heading carries a
+     short accent rule, which is what gives the stack its structure once the
+     column borders are gone. */
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 18px;
+    padding-bottom: 14px;
+    align-items: start;
+  }
+
+  .footerGrid > * { padding: 0; border-left: 0; }
+  .footerGrid > :first-child { grid-column: 1 / -1; }
+
+  .footerGrid > :last-child {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footerLogoArtwork { width: 150px; height: 58px; }
+  /* Matches the doubled class the full-size rule uses, or that one wins. */
+  body[data-public-theme='light'] .footerLogoArtwork.logoOnLight.logoOnLight { width: 164px; height: 54px; }
+
+  .footerBrandText {
+    max-width: none;
+    margin-top: 8px;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .footerSocials { margin-top: 10px; gap: 8px; }
+  .socialLink { width: 32px; height: 32px; }
+  .socialLink svg { width: 15px; height: 15px; }
+
+  .footerTitle {
+    position: relative;
+    margin-bottom: 14px;
+    padding-bottom: 7px;
+    font-size: 11.5px;
+    letter-spacing: .18em;
+  }
+
+  .footerTitle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 26px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--gold);
+  }
+
+  .footerList { gap: 6px; }
+  .footerList a { font-size: 13.5px; }
+
+  .footerContact { gap: 7px; }
+  .footerContact a,
+  .footerContact span { gap: 9px; font-size: 13.5px; }
+  .footerContact svg { width: 14px; height: 14px; }
+
+  /* The closing line reads as one centred sentence rather than two ragged
+     left-aligned ones. */
+  .footerBar {
+    padding-block: 8px;
+    font-size: 11.5px;
+  }
+
+  .footerBar .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .footerAttribution {
+    justify-content: center;
+    text-align: center;
+    row-gap: 1px;
+  }
 }
 
 

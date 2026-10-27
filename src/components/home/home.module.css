@@ -2382,8 +2382,9 @@ body[data-public-theme='light'] .heroSlide:nth-child(2) {
   .heroSlides { min-height: clamp(280px, 40vh, 460px); }
 }
 
-/* Tablet and below: the two columns stack, artwork first. The hero stops
-   reserving a whole viewport here so nothing has to be squeezed to fit. */
+/* Tablet and below: the two columns stack, copy first so the headline is what
+   greets you, with the artwork beneath it. The hero stops reserving a whole
+   viewport here so nothing has to be squeezed to fit. */
 @media (max-width: 899px) {
   .heroStage {
     grid-template-columns: minmax(0, 1fr);
@@ -2393,8 +2394,14 @@ body[data-public-theme='light'] .heroSlide:nth-child(2) {
     --hero-pad: 20px;
     padding: 92px var(--hero-pad) 26px;
   }
-  .heroSlides { grid-area: 1 / 1; align-self: auto; min-height: 0; margin-inline: calc(-1 * var(--hero-pad)); aspect-ratio: 16 / 10; }
-  .heroContent { grid-area: 2 / 1; max-width: none; }
+  .heroContent { grid-area: 1 / 1; max-width: none; }
+  .heroSlides { grid-area: 2 / 1; align-self: auto; min-height: 0; margin-inline: calc(-1 * var(--hero-pad)); aspect-ratio: 16 / 10; }
+  /* The car sits right of centre in every one of these photographs, so the
+     crop is pulled that way: centring the frame would leave empty ground on
+     the left and cut the back of the car off on the right. */
+  .heroSlide,
+  body[data-public-theme='light'] .heroSlide:first-child,
+  body[data-public-theme='light'] .heroSlide:nth-child(2) { background-position: 85% center; }
   .heroCopyStack { margin-top: 12px; }
   .showcaseTitle { font-size: clamp(2.1rem, 5.2vw, 3rem); }
   .heroSubtext { margin-top: 12px; font-size: 16px; }
