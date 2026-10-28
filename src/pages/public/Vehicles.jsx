@@ -11,9 +11,7 @@ import { reveal } from '../../components/home/sections';
 import hs from '../../components/home/home.module.css';
 import vehicleStyles from '../../components/vehicles/vehicles.module.css';
 
-/**
- * The full vehicle listing. Called "Vehicles" throughout - never "Fleet".
- */
+/** The full fleet listing. */
 export default function Vehicles() {
   const { settings } = useSite();
   const [active, setActive] = useState('all');
@@ -46,25 +44,25 @@ export default function Vehicles() {
   return (
     <>
       <Seo
-        title="Our Vehicles — Chauffeur-Driven Mercedes, SUVs & Vans"
-        description="Browse our chauffeur-driven vehicles in Switzerland: Mercedes S-Class and E-Class, V-Class vans, Range Rover SUVs, Sprinter minibuses and the Maybach. Book any vehicle via WhatsApp."
+        title="Our Fleet — Chauffeur-Driven Mercedes, SUVs & Vans"
+        description="Browse our chauffeur-driven fleet in Switzerland: Mercedes S-Class and E-Class, V-Class vans, Range Rover SUVs, Sprinter minibuses and the Maybach. Book any vehicle via WhatsApp."
         path="/vehicles"
         jsonLd={[
           localBusiness(settings),
-          breadcrumbSchema([{ name: 'Vehicles', path: '/vehicles' }]),
+          breadcrumbSchema([{ name: 'Fleet', path: '/vehicles' }]),
         ]}
       />
 
       <PageHead
-        trail={[{ name: 'Vehicles' }]}
-        eyebrow="Our Vehicles"
-        title="Vehicles kept to Swiss standards"
+        trail={[{ name: 'Fleet' }]}
+        eyebrow="Our Fleet"
+        title="A fleet kept to Swiss standards"
         text="Every car is late model, immaculate and driven by a vetted professional chauffeur. Choose a vehicle and book it in one WhatsApp message."
       />
 
       <Section>
         <Container>
-          {loading && <Spinner label="Loading vehicles" />}
+          {loading && <Spinner label="Loading fleet" />}
           {error && <Alert tone="error">{error.message}</Alert>}
 
           {!loading && !error && (
@@ -96,7 +94,7 @@ export default function Vehicles() {
                   />
                 </>
               ) : (
-                <EmptyState title="No vehicles in this category">
+                <EmptyState title="No fleet vehicles in this category">
                   Try another category, or message us on WhatsApp and we will find the right car.
                 </EmptyState>
               )}

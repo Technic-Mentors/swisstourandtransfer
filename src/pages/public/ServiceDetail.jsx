@@ -8,6 +8,7 @@ import Seo from '../../components/seo/Seo';
 import { breadcrumbSchema, serviceSchema } from '../../components/seo/schemas';
 import { PageHead } from '../../components/layout/PublicLayout';
 import { Alert, Button, Container, Lightbox, Section, SectionHeading, Spinner } from '../../components/ui';
+import FeatureIcon from '../../components/ui/FeatureIcon';
 import WhatsAppButton from '../../components/ui/WhatsAppButton';
 import { VehicleGrid } from '../../components/vehicles';
 import vehicleStyles from '../../components/vehicles/vehicles.module.css';
@@ -15,7 +16,6 @@ import NotFound from './NotFound';
 import hs from '../../components/home/home.module.css';
 import s from './pages.module.css';
 
-const CheckIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 const ServiceMetaIcon = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 8v4l3 2" /></svg>;
 
 export default function ServiceDetail() {
@@ -50,7 +50,7 @@ export default function ServiceDetail() {
             {servicePhoto >= 0 && <Lightbox items={servicePhotoItems} index={servicePhoto} onIndexChange={setServicePhoto} onClose={() => setServicePhoto(-1)} />}
 
             <div className={s.prose}>{(service.full_description || '').split('\n\n').filter(Boolean).map((para, i) => <p key={i}>{para}</p>)}</div>
-            {service.included?.length > 0 && <div className={s.serviceIncluded}><h2 className={s.blockHeading}>What is included</h2><div className={s.includedList}>{service.included.map((item) => <span className={s.includedItem} key={item}><CheckIcon />{item}</span>)}</div></div>}
+            {service.included?.length > 0 && <div className={s.serviceIncluded}><h2 className={s.blockHeading}>What is included</h2><div className={s.includedList}>{service.included.map((item) => <span className={s.includedItem} key={item}><FeatureIcon label={item} />{item}</span>)}</div></div>}
           </main>
 
           <aside className={s.sticky}>
@@ -67,6 +67,6 @@ export default function ServiceDetail() {
       </Container>
     </Section>
 
-    {vehicles?.length > 0 && <Section alt><Container><SectionHeading eyebrow="Vehicles" title="Cars we use for this service" /><VehicleGrid vehicles={vehicles} pageType="service-vehicles" className={vehicleStyles.pageGrid} /></Container></Section>}
+    {vehicles?.length > 0 && <Section alt><Container><SectionHeading eyebrow="Fleet" title="Cars we use for this service" /><VehicleGrid vehicles={vehicles} pageType="service-vehicles" className={vehicleStyles.pageGrid} /></Container></Section>}
   </>;
 }

@@ -492,6 +492,9 @@ body[data-public-theme] .galleryMain {
 }
 
 .specLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -576,3 +579,11 @@ body[data-public-theme='light'] .specLabel { color: var(--text-dim); }
 body[data-public-theme='light'] .specValue { color: var(--cream); }
 body[data-public-theme='light'] .priceValue { color: var(--gold); }
 body[data-public-theme='light'] .galleryCounter { background: rgba(21, 23, 28, .78); }
+
+/* The icon that opens each spec row. */
+.specIcon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--gold);
+}

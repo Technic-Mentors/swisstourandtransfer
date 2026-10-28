@@ -9,7 +9,7 @@ import s from './layout.module.css';
 const NAV = [
   // `end` so Home is only active on "/", not on every route beneath it.
   { to: '/', label: 'Home', end: true },
-  { to: '/vehicles', label: 'Vehicles' },
+  { to: '/vehicles', label: 'Fleet' },
   { to: '/services', label: 'Services' },
   { to: '/reviews', label: 'Reviews' },
   { to: '/about', label: 'About' },

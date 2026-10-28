@@ -585,7 +585,7 @@ export function CategoriesSection({ content, categories }) {
           eyebrow={content.categories_eyebrow}
           title={content.categories_heading}
           link="/vehicles"
-          linkLabel="All vehicles"
+          linkLabel="All fleet"
         />
 
         <div ref={reveal} className={cx(s.catGrid, s.xStagger)}>
@@ -650,7 +650,7 @@ export function FeaturedVehiclesSection({ content, vehicles }) {
           eyebrow={content.vehicles_eyebrow}
           title={content.vehicles_heading}
           link="/vehicles"
-          linkLabel="View all vehicles"
+          linkLabel="View our fleet"
         />
         <div ref={reveal} className={s.xReveal}>
           <VehicleGrid

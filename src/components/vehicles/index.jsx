@@ -4,6 +4,7 @@ import { imageFallback, imageUrl, vehicleImage } from '../../config';
 import { Button, Card, Lightbox, cx } from '../ui';
 import hs from '../home/home.module.css';
 import WhatsAppButton from '../ui/WhatsAppButton';
+import FeatureIcon from '../ui/FeatureIcon';
 import s from './vehicles.module.css';
 import detailStyles from '../../pages/public/pages.module.css';
 import { hoverGlowProps } from '../ui/hoverGlow';
@@ -123,7 +124,7 @@ export function VehicleGrid({ vehicles = [], pageType, className }) {
 
 export function CategoryPills({ categories = [], active = 'all', onChange }) {
   return (
-    <div className={s.pills} role="tablist" aria-label="Filter vehicles by category">
+    <div className={s.pills} role="tablist" aria-label="Filter fleet by category">
       <button
         type="button"
         role="tab"
@@ -131,7 +132,7 @@ export function CategoryPills({ categories = [], active = 'all', onChange }) {
         className={cx(s.pill, active === 'all' && s.pillActive)}
         onClick={() => onChange('all')}
       >
-        All vehicles
+        Entire fleet
       </button>
       {categories.map((category) => (
         <button
@@ -249,7 +250,10 @@ export function SpecTable({ specs = [] }) {
     <dl className={s.specs}>
       {specs.map((spec, i) => (
         <div className={s.specRow} key={spec.id ?? i}>
-          <dt className={s.specLabel}>{spec.spec_label}</dt>
+          <dt className={s.specLabel}>
+            <FeatureIcon label={spec.spec_label} className={s.specIcon} />
+            {spec.spec_label}
+          </dt>
           <dd className={s.specValue}>{spec.spec_value}</dd>
         </div>
       ))}

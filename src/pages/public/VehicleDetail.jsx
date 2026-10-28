@@ -10,6 +10,7 @@ import { PageHead } from '../../components/layout/PublicLayout';
 import { Alert, Button, Container, Section, SectionHeading, Spinner } from '../../components/ui';
 import WhatsAppButton from '../../components/ui/WhatsAppButton';
 import { SpecTable, VehicleGallery, VehicleGrid, priceLabel } from '../../components/vehicles';
+import FeatureIcon from '../../components/ui/FeatureIcon';
 import vehicleStyles from '../../components/vehicles/vehicles.module.css';
 import EnquiryForm from '../../components/forms/EnquiryForm';
 import NotFound from './NotFound';
@@ -82,15 +83,15 @@ export default function VehicleDetail() {
         jsonLd={[
           vehicleSchema(vehicle, settings),
           breadcrumbSchema([
-            { name: 'Vehicles', path: '/vehicles' },
+            { name: 'Fleet', path: '/vehicles' },
             { name: vehicle.name, path: `/vehicles/${vehicle.slug}` },
           ]),
         ]}
       />
 
       <PageHead
-        trail={[{ name: 'Vehicles', path: '/vehicles' }, { name: vehicle.name }]}
-        eyebrow="Chauffeur vehicle"
+        trail={[{ name: 'Fleet', path: '/vehicles' }, { name: vehicle.name }]}
+        eyebrow="Our fleet"
         title={vehicle.name}
         text={vehicle.tagline || description}
       />
@@ -102,7 +103,7 @@ export default function VehicleDetail() {
               <VehicleGallery photos={photos} name={vehicle.name} />
 
               <div className={s.detailAbout}>
-                <span className={s.vehicleAboutEyebrow}>About this vehicle</span>
+                <span className={s.vehicleAboutEyebrow}>About this car</span>
                 <h2 className={s.vehicleAboutTitle}>{vehicle.tagline || 'Comfort, privacy and confidence.'}</h2>
                 <div className={s.prose}>
                   {(vehicle.description || '').split('\n\n').map((para, i) => (
@@ -118,7 +119,7 @@ export default function VehicleDetail() {
                     <div className={s.includedList}>
                       {vehicle.ideal_for.map((item) => (
                         <span className={s.includedItem} key={item}>
-                          <CheckIcon />
+                          <FeatureIcon label={item} />
                           {item}
                         </span>
                       ))}
@@ -148,7 +149,7 @@ export default function VehicleDetail() {
             </main>
 
             <aside className={`${s.detailPanel} ${s.vehicleBookingPanel} ${s.sticky}`}>
-              <span className={s.serviceDetailEyebrow}>Book this vehicle</span>
+              <span className={s.serviceDetailEyebrow}>Book this car</span>
               <h1 className={s.vehicleBookingTitle}>{vehicle.name}</h1>
               <p className={s.vehicleBookingPrice}>{price.value}</p>
               <p className={s.vehicleBookingNote}>{price.note}</p>
@@ -210,7 +211,7 @@ export default function VehicleDetail() {
       {similar.length > 0 && (
         <Section alt>
           <Container>
-            <SectionHeading eyebrow="You may also like" title="Similar vehicles" />
+            <SectionHeading eyebrow="You may also like" title="More from our fleet" />
             <VehicleGrid vehicles={similar} pageType="vehicle-similar" className={vehicleStyles.pageGrid} />
           </Container>
         </Section>

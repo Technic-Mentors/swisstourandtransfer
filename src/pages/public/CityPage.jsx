@@ -51,7 +51,7 @@ export default function CityPage() {
         jsonLd={[
           citySchema(city, settings),
           breadcrumbSchema([
-            { name: 'Vehicles', path: '/vehicles' },
+            { name: 'Fleet', path: '/vehicles' },
             { name: city.name, path: `/chauffeur-service/${city.slug}` },
           ]),
         ]}
@@ -128,7 +128,7 @@ export default function CityPage() {
           <Container>
             <SectionHeading
               eyebrow="Available vehicles"
-              title={`Vehicles available in ${city.name}`}
+              title={`Our fleet in ${city.name}`}
               text="Every vehicle below can be booked for pickups in this city."
             />
             <VehicleGrid vehicles={vehicles} pageType="city-vehicles" className={vehicleStyles.pageGrid} />

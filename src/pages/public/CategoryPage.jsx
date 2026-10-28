@@ -44,14 +44,14 @@ export default function CategoryPage() {
         jsonLd={[
           localBusiness(settings),
           breadcrumbSchema([
-            { name: 'Vehicles', path: '/vehicles' },
+            { name: 'Fleet', path: '/vehicles' },
             { name: category.name, path: `/vehicles/category/${category.slug}` },
           ]),
         ]}
       />
 
       <PageHead
-        trail={[{ name: 'Vehicles', path: '/vehicles' }, { name: category.name }]}
+        trail={[{ name: 'Fleet', path: '/vehicles' }, { name: category.name }]}
         eyebrow="Vehicle category"
         title={category.name}
         text={category.description}

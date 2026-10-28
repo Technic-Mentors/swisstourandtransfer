@@ -91,13 +91,13 @@ export const homeContent = {
   trust_items:
     'Available 24/7, 365 days|Fixed, all-inclusive prices|Free flight tracking and waiting|Multilingual professional chauffeurs|Rated {rating} by {count} guests',
 
-  categories_eyebrow: 'VEHICLE CATEGORIES',
+  categories_eyebrow: 'FLEET CATEGORIES',
   categories_heading: 'The right car for every journey',
   categories_text:
     'From a discreet business saloon to a six-seat van for the whole family and their skis.',
 
-  vehicles_eyebrow: 'OUR VEHICLES',
-  vehicles_heading: 'Premium vehicles, immaculately kept',
+  vehicles_eyebrow: 'OUR FLEET',
+  vehicles_heading: 'A fleet kept immaculate',
   vehicles_text:
     'Every car is late model, immaculate and driven by a vetted professional chauffeur.',
 
@@ -108,7 +108,7 @@ export const homeContent = {
   why_eyebrow: 'WHY CHOOSE US',
   why_heading: 'Discretion, punctuality, comfort',
   why_items:
-    'Fixed prices|The price we quote is the price you pay. No surge, no detour charges, no surprises.||Flight tracking|We monitor your arrival and adjust the pickup time for delays at no extra cost.||Professional chauffeurs|Vetted, discreet and multilingual - English, German, French and Italian.||Immaculate vehicles|Late-model Mercedes vehicles, cleaned and checked before every single journey.||Always reachable|A real person answers on WhatsApp, day or night, 365 days a year.||Door to door|From your chalet to the terminal kerb, or the terminal kerb to your meeting.',
+    'Fixed prices|The price we quote is the price you pay. No surge, no detour charges, no surprises.||Flight tracking|We monitor your arrival and adjust the pickup time for delays at no extra cost.||Professional chauffeurs|Vetted, discreet and multilingual - English, German, French and Italian.||Immaculate fleet|Late-model Mercedes cars, cleaned and checked before every single journey.||Always reachable|A real person answers on WhatsApp, day or night, 365 days a year.||Door to door|From your chalet to the terminal kerb, or the terminal kerb to your meeting.',
 
   how_eyebrow: 'HOW BOOKING WORKS',
   how_heading: 'Three steps, one message',
@@ -119,7 +119,7 @@ export const homeContent = {
   reviews_heading: 'What our guests say',
 
   gallery_eyebrow: 'GALLERY',
-  gallery_heading: 'The vehicles, the roads, the moments',
+  gallery_heading: 'The fleet, the roads, the moments',
 
   faq_eyebrow: 'QUESTIONS',
   faq_heading: 'Frequently asked questions',

@@ -4,7 +4,7 @@ import { Container, cx } from '../ui';
 import s from './layout.module.css';
 
 const COMPANY_LINKS = [
-  { to: '/vehicles', label: 'Vehicles' },
+  { to: '/vehicles', label: 'Fleet' },
   { to: '/services', label: 'Services' },
   { to: '/reviews', label: 'Reviews' },
   { to: '/about', label: 'About us' },
