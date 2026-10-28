@@ -125,8 +125,8 @@ export default function Footer() {
             )}
           </div>
 
-          <nav aria-label="Company">
-            <h4 className={s.footerTitle}>Company</h4>
+          <nav aria-label="Explore">
+            <h4 className={s.footerTitle}>Explore</h4>
             <div className={s.footerList}>
               {COMPANY_LINKS.map((link) => (
                 <Link key={link.to} to={link.to}>

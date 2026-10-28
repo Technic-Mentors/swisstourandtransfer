@@ -96,7 +96,7 @@ export default function Header() {
             <Logo />
 
             <nav className={s.nav} aria-label="Main">
-              {NAV.filter((item) => location.pathname !== '/' || item.to !== '/reviews').map((item) => (
+              {NAV.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}

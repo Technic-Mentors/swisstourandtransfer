@@ -5,8 +5,7 @@ import { useSite } from '../../context/SiteContext';
 import Seo from '../../components/seo/Seo';
 import { aggregateRatingSchema, breadcrumbSchema, reviewSchema } from '../../components/seo/schemas';
 import { PageHead } from '../../components/layout/PublicLayout';
-import { Alert, Container, EmptyState, Rating, Section, Spinner, cx } from '../../components/ui';
-import WhatsAppButton from '../../components/ui/WhatsAppButton';
+import { Alert, Button, Container, EmptyState, Rating, Section, Spinner, cx } from '../../components/ui';
 import CountUp from '../../components/ui/CountUp';
 import { reveal } from '../../components/home/sections';
 import hs from '../../components/home/home.module.css';
@@ -141,9 +140,9 @@ export default function Reviews() {
 
                   <div className={s.scoreCta}>
                     <p className={s.scoreCtaText}>Ready for your own journey?</p>
-                    <WhatsAppButton pageType="reviews" size="sm">
-                      Book via WhatsApp
-                    </WhatsAppButton>
+                    <Button to="/book#enquiry" size="sm">
+                      Book Now
+                    </Button>
                   </div>
                 </div>
               )}
