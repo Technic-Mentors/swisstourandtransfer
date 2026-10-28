@@ -292,7 +292,6 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 const HERO_ANGLES = [
   { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.' },
   { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.' },
-  { name: 'SUV', image: '/car-1.png', headline: 'Room for every journey,', accent: 'without compromise.', text: 'A premium fleet matched to your plans, passengers and luggage.' },
 ];
 
 /** The hero advances on its own; one angle every three seconds. */
@@ -318,12 +317,33 @@ export function HeroSection({ content, allVehicles = [], cities = [], lists = {}
   const [slide, setSlide] = useState({ index: 0, leaving: -1 });
   const activeIndex = slide.index;
 
+  const stackRef = useRef(null);
+  const copyRefs = useRef([]);
+
   useEffect(() => {
     HERO_ANGLES.forEach(({ image }) => {
       const preload = new window.Image();
       preload.src = image;
     });
   }, []);
+
+  /* The copies share one grid cell, so the stack would otherwise stand as
+     tall as the longest angle and leave dead space under the shorter ones.
+     It is told the height of whichever copy is showing instead, and the
+     observer keeps that right when the text rewraps. */
+  useEffect(() => {
+    const stack = stackRef.current;
+    const active = copyRefs.current[slide.index];
+    if (!stack || !active) return undefined;
+
+    const sync = () => stack.style.setProperty('--copy-h', `${active.offsetHeight}px`);
+    sync();
+
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(sync);
+    observer.observe(active);
+    return () => observer.disconnect();
+  }, [slide.index]);
 
   /* Keyed on the active slide, so picking an angle by hand also buys it a
      full three seconds before the hero moves on. */
@@ -372,14 +392,19 @@ export function HeroSection({ content, allVehicles = [], cities = [], lists = {}
 
         <div className={cx(s.heroContent, s.heroEnter)}>
           <span className={s.showcaseEyebrow}>Premium chauffeur service</span>
-          <div className={s.heroCopyStack}>
+          <div ref={stackRef} className={s.heroCopyStack}>
             {HERO_ANGLES.map((angle, index) => {
               const Headline = index === 0 ? 'h1' : 'h2';
               const stateClass = index === activeIndex
                 ? s.heroCopyActive
                 : index === slide.leaving ? s.heroCopyOut : null;
               return (
-                <div key={angle.name} className={cx(s.heroCopy, stateClass)} aria-hidden={index !== activeIndex}>
+                <div
+                  key={angle.name}
+                  ref={(el) => { copyRefs.current[index] = el; }}
+                  className={cx(s.heroCopy, stateClass)}
+                  aria-hidden={index !== activeIndex}
+                >
                   <Headline className={s.showcaseTitle}>
                     <span className={s.heroLineMask}><span className={s.heroLine}>{angle.headline}</span></span>
                     <span className={s.heroLineMask}><span className={cx(s.heroLine, s.heroAccent)}>{angle.accent}</span></span>

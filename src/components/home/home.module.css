@@ -2422,14 +2422,21 @@
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
-/* Every angle's copy shares one grid cell, so the stack is exactly as tall as
-   the longest of them at any width. `clip` on the one axis keeps the waiting
-   copy — parked 64px to the right — from widening the page, while leaving the
-   headline free to run tall. */
-.heroCopyStack { display: grid; margin-top: 18px; overflow-x: clip; }
+/* Every angle's copy shares one grid cell. The height comes from whichever
+   copy is showing — see the effect in sections.jsx — and eases between them,
+   so a short angle leaves no gap under it. `clip` keeps the waiting copy,
+   parked 64px to the right and possibly taller, from showing or widening
+   the page. */
+.heroCopyStack {
+  display: grid;
+  height: var(--copy-h, auto);
+  margin-top: 18px;
+  overflow: clip;
+  transition: height .45s cubic-bezier(.22, 1, .36, 1);
+}
 /* The outgoing copy clears out before the incoming one fades up, otherwise
    two headlines sit on top of each other mid-swap and neither can be read. */
-.heroCopy { grid-area: 1 / 1; opacity: 0; transform: translateX(64px); pointer-events: none; }
+.heroCopy { grid-area: 1 / 1; align-self: start; opacity: 0; transform: translateX(64px); pointer-events: none; }
 .heroCopyActive { opacity: 1; transform: translateX(0); pointer-events: auto; transition: opacity .42s ease .3s, transform .6s cubic-bezier(.22,1,.36,1) .3s; }
 .heroCopyOut { opacity: 0; transform: translateX(-56px); transition: opacity .26s ease, transform .5s cubic-bezier(.22,1,.36,1); }
 .showcaseTitle { margin: 0; color: #fff; font-family: var(--font-heading); font-size: clamp(2.3rem, 3.6vw, 3.7rem); font-weight: 700; line-height: 1.06; letter-spacing: -.01em; text-transform: none; }
@@ -2625,7 +2632,7 @@ body[data-public-theme='light'] .heroSlides {
   mask-composite: intersect;
 }
 
-/* All three angles are shot on the same cream backdrop as the page, so they meet
+/* Both angles are shot on the same cream backdrop as the page, so they meet
    it without an edge. The images are inline styles, hence the !important. */
 body[data-public-theme='light'] .heroSlide:first-child {
   background-image: url('/hero-light-1.png') !important;
@@ -2634,10 +2641,6 @@ body[data-public-theme='light'] .heroSlide:first-child {
 
 body[data-public-theme='light'] .heroSlide:nth-child(2) {
   background-image: url('/hero-light-2.png') !important;
-  background-position: center;
-}
-body[data-public-theme='light'] .heroSlide:nth-child(3) {
-  background-image: url('/hero-light-3.png') !important;
   background-position: center;
 }
 
@@ -2699,6 +2702,7 @@ body[data-public-theme='light'] .heroSlide:nth-child(3) {
 
 @media (prefers-reduced-motion: reduce) {
   .heroSlide, .heroCopy, .heroLine, .heroSubtext, .heroBookButton, .heroFleetButton { transition: none !important; }
+  .heroCopyStack { transition: none; }
   .heroEnter > *,
   .heroStat,
   .heroStatValue,
