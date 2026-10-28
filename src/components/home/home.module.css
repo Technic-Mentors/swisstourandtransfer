@@ -2644,6 +2644,11 @@ body[data-public-theme='light'] .heroSlide:nth-child(2) {
   background-position: center;
 }
 
+body[data-public-theme='light'] .heroSlide:nth-child(n + 3),
+body[data-public-theme='light'] .heroCopy:nth-child(n + 3) {
+  display: none;
+}
+
 /* Laptops: the columns even out so the copy keeps a sensible measure. */
 @media (max-width: 1200px) {
   .heroStage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px 36px; }
