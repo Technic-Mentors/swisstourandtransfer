@@ -15,7 +15,7 @@
 
 export const settings = {
   /* wa.me wants the country code with no + and no leading 00. */
-  whatsapp_number: '41764650551',
+  whatsapp_number: '41782276222',
   whatsapp_template_vehicle:
     'Hello, I would like to book the {vehicle}.\nPickup: \nDate: \nPassengers: ',
   whatsapp_template_general: 'Hello, I would like to enquire about a chauffeur service.',
@@ -27,13 +27,16 @@ export const settings = {
   company_name: 'Swiss Tour & Transfer',
   tagline: 'Explore · Travel · Arrive',
   /* Shown as written; tel: links strip the spaces. */
-  phone: '+41 76 465 05 51',
-  email: 'info@swiss-transfers.com',
-  address: 'Ueberlandstrasse 391, 8051 Zurich, Switzerland',
-  opening_hours: 'Open 24/7 ',
+  phone: '+41 78 227 62 22',
+  email: 'support@swisstourtransfer.com',
+  /* Kept on two lines, the way it is printed; anything machine-read turns
+     the break back into a comma. */
+  address: 'Am Luchsgraben 16\n8051 Zurich, Switzerland',
+  registration_number: 'CHE-240.981.004',
+  opening_hours: 'Open 24/7',
   maps_embed_url:
-    'https://www.google.com/maps?q=Ueberlandstrasse%20391%2C%208051%20Zurich%2C%20Switzerland&output=embed',
-  maps_link: 'https://maps.google.com/?q=Ueberlandstrasse+391,+8051+Zurich,+Switzerland',
+    'https://www.google.com/maps?q=Am%20Luchsgraben%2016%2C%208051%20Zurich%2C%20Switzerland&output=embed',
+  maps_link: 'https://maps.google.com/?q=Am+Luchsgraben+16,+8051+Zurich,+Switzerland',
 
   social_instagram: 'https://instagram.com/',
   social_facebook: 'https://facebook.com/',
@@ -154,7 +157,7 @@ export const pageContent = {
   },
   impressum: {
     heading: 'Impressum',
-    body: 'Swiss Tour & Transfer\nUeberlandstrasse 391\n8051 Zurich\nSwitzerland\n\nPhone: +41 76 465 05 51\nEmail: info@swiss-transfers.com\nSupport: support@swiss-transfers.com\n\n[Add your commercial register number (CHE-...), VAT number and the name of the person responsible for the content of this website.]',
+    body: 'Swiss Tour & Transfer\nAm Luchsgraben 16\n8051 Zurich\nSwitzerland\n\nPhone: +41 78 227 62 22\nEmail: support@swisstourtransfer.com\n\n[Add your commercial register number (CHE-...), VAT number and the name of the person responsible for the content of this website.]',
   },
 };
 
@@ -245,7 +248,7 @@ export const vehicles = [
     sort_order: 1,
     category_name: 'Comfort',
     category_slug: 'comfort',
-    cover_image: '/images/vehicles/toyota-prius.jfif',
+    cover_image: '/images/vehicles/toyota-prius.png',
   },
   {
     id: 2,
@@ -289,7 +292,7 @@ export const vehicles = [
     sort_order: 3,
     category_name: 'First Class',
     category_slug: 'first-class',
-    cover_image: '/images/vehicles/mercedes-benz-sclass.jpg',
+    cover_image: '/images/vehicles/mercedes-benz-sclass.png',
   },
   {
     id: 4,
@@ -363,7 +366,7 @@ export const services = [
       'Luggage assistance',
       'Child seats on request',
     ],
-    image: '/images/vehicles/mercedes-benz-vclass.webp',
+    image: '/airport-transfer.png',
     icon: null,
     price_text: 'Fixed price per journey',
     sort_order: 1,
@@ -383,14 +386,14 @@ export const services = [
       'Itinerary changes on the day',
       'Minimum three hours',
     ],
-    image: '/images/vehicles/mercedes-benz-eclass.webp',
+    image: '/hourly-chauffeur.png',
     icon: null,
     price_text: 'Hourly rate, minimum 3 hours',
     sort_order: 2,
   },
   {
     id: 3,
-    name: 'City-to-City',
+    name: 'Private Transfers',
     slug: 'city-to-city',
     short_description: 'Door-to-door across Switzerland and on to Milan, Munich and Lyon.',
     full_description:
@@ -403,7 +406,7 @@ export const services = [
       'Wi-Fi on board',
       'Snow tyres and chains in winter',
     ],
-    image: '/images/vehicles/toyota-prius.jfif',
+    image: '/private-transfers.png',
     icon: null,
     price_text: 'Fixed price per route',
     sort_order: 3,
@@ -423,7 +426,7 @@ export const services = [
       'Wi-Fi and charging at every seat',
       'Priority booking for account holders',
     ],
-    image: '/images/vehicles/mercedes-benz-vclass.webp',
+    image: '/business-travel.png',
     icon: null,
     price_text: 'Corporate rates on account',
     sort_order: 4,
@@ -443,7 +446,7 @@ export const services = [
       'Branded or unmarked vehicles',
       'Overnight and standby cover',
     ],
-    image: '/images/vehicles/mercedes-benz-sclass.jpg',
+    image: '/event-transfers.png',
     icon: null,
     price_text: 'Quoted per event',
     sort_order: 5,
@@ -463,7 +466,7 @@ export const services = [
       'Guest shuttle vehicles',
       'Red carpet available',
     ],
-    image: '/images/vehicles/mercedes-benz-eclass.webp',
+    image: '/wedding.png',
     icon: null,
     price_text: 'Wedding packages on request',
     sort_order: 6,
@@ -483,7 +486,7 @@ export const services = [
       'Flight tracking on arrival day',
       'Heated vehicle waiting for you',
     ],
-    image: '/images/vehicles/mercedes-benz-vclass.webp',
+    image: '/ski-transfer.png',
     icon: null,
     price_text: 'Fixed price per transfer',
     sort_order: 7,
@@ -563,7 +566,7 @@ export const albums = [
 ];
 
 const PHOTO_CAPTIONS = [
-  [1, 'S-Class waiting at the kerb'],
+  [1, 'E-Class waiting at the kerb'],
   [1, 'V-Class loaded for a ski week'],
   [2, 'Rear cabin, ready for a call'],
   [2, 'Executive seating in the Maybach'],
@@ -629,7 +632,7 @@ export const testimonials = [
     id: 3,
     customer_name: 'Antoine R.',
     country: 'France',
-    service_label: 'City-to-city · Basel',
+    service_label: 'Private transfers · Basel',
     rating: 5,
     review_text:
       'Booked on WhatsApp in about two minutes and had a fixed price straight back. The drive from Basel to Lucerne was comfortable and quiet, and the price was exactly what was quoted.',

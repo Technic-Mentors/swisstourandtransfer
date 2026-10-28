@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 const KEY = 'public-theme';
-const DEFAULT = 'light';
+const DEFAULT = 'dark';
 
 function stored() {
   try {

@@ -108,7 +108,7 @@ export default function Contact() {
 
             <div className={s.contactFormCard}>
               <div className={s.contactFormHead}>
-                <span className={s.contactFormEyebrow}>Enquiry form</span>
+                <span className={s.contactFormEyebrow}>Book Online</span>
                 <h2 className={s.contactFormTitle}>Send us your details</h2>
               </div>
               <EnquiryForm vehicles={vehicles} />

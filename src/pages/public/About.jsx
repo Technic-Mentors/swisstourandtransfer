@@ -79,44 +79,51 @@ export default function About() {
 
           {!loading && !error && (
             <>
-              {/* Only the photo the admin actually uploaded - this page says
-                  who we are, so it must not fall back to a stock car. */}
-              {content.image && (
-                <img
-                  className={cx(s.aboutImage, s.aboutImageIn)}
-                  src={uploadUrl(content.image)}
-                  alt="Swiss Tour & Transfer chauffeurs and vehicles"
-                  width="1200"
-                  height="514"
-                />
-              )}
-
-              {/* One centred column: the text still reads left to right. */}
-              <div ref={reveal} className={cx(s.aboutBody, hs.xReveal)}>
-                {(content.body || '').split('\n\n').map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-
-              {/* The stat cells carry their own staggered entrance, so the
-                  row only needs to fade in as one when it is scrolled to. */}
-              {stats.length > 0 && (
-                <div ref={reveal} className={cx(s.statRow, hs.xReveal)}>
-                  {stats.map(([value, label], index) => (
-                    <div
-                      className={s.statCell}
-                      key={label || value}
-                      style={{ '--stat-index': index }}
-                    >
-                      <span className={s.statRail} aria-hidden="true" />
-                      <div className={s.statValue}>
-                        <CountUp raw={value} />
-                      </div>
-                      <span className={s.statLabel}>{label}</span>
-                    </div>
+              {/* Story on the left, the figures that back it on the right.
+                  A single centred column left the page empty down both
+                  sides on anything wider than a laptop. */}
+              <div className={s.aboutIntro}>
+                <div ref={reveal} className={cx(s.aboutBody, hs.xReveal)}>
+                  {(content.body || '').split('\n\n').map((para, i) => (
+                    <p key={i}>{para}</p>
                   ))}
                 </div>
-              )}
+
+                <div className={s.aboutAside}>
+                  {/* Only the photo the admin actually uploaded - this page
+                      says who we are, so it must not fall back to a stock
+                      car. Without one the figures take the whole column. */}
+                  {content.image && (
+                    <img
+                      className={cx(s.aboutImage, s.aboutImageIn)}
+                      src={uploadUrl(content.image)}
+                      alt="Swiss Tour & Transfer chauffeurs and vehicles"
+                      width="1200"
+                      height="514"
+                    />
+                  )}
+
+                  {/* The stat cells carry their own staggered entrance, so
+                      the block only needs to fade in as one. */}
+                  {stats.length > 0 && (
+                    <div ref={reveal} className={cx(s.statRow, hs.xReveal)}>
+                      {stats.map(([value, label], index) => (
+                        <div
+                          className={s.statCell}
+                          key={label || value}
+                          style={{ '--stat-index': index }}
+                        >
+                          <span className={s.statRail} aria-hidden="true" />
+                          <div className={s.statValue}>
+                            <CountUp raw={value} />
+                          </div>
+                          <span className={s.statLabel}>{label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {values.length > 0 && (
                 <div className={s.aboutBlock}>

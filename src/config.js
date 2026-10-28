@@ -75,16 +75,41 @@ export function categoryImage(category) {
 }
 
 /** Local gallery photo for captions without a real uploaded gallery image. */
-export function galleryImage(photo, index = 0) {
-  const caption = `${photo?.caption || ''} ${photo?.alt_text || ''}`.toLowerCase();
-  if (caption.includes('maybach')) return '/2027-mercedes-maybach-s-680.jpg';
-  if (caption.includes('s-class')) return '/Mercedes-Benz S-Class.jfif';
-  if (caption.includes('v-class')) return '/Mercedes-Benz V-Class.jfif';
-  if (caption.includes('sprinter')) return '/Mercedes-Benz Sprinter.jpg';
-  if (caption.includes('range rover') || caption.includes('suv')) return '/Range Rover.jfif';
 
+/** Local gallery photo for captions without an uploaded gallery image. */
+export function galleryImage(photo, index = 0) {
   const existing = String(photo?.file_path || '').trim();
-  if (existing && !/placeholder-car\.jpg(?:$|[?#])/i.test(existing)) return existing;
+
+  // Prefer a real uploaded image.
+  if (existing && !/placeholder-car\.jpg(?:$|[?#])/i.test(existing)) {
+    return imageUrl(existing);
+  }
+
+  const caption =
+    `${photo?.caption || ''} ${photo?.alt_text || ''}`.toLowerCase();
+
+  // Select a local image based on the gallery caption.
+  if (caption.includes('maybach')) {
+    return '/2027-mercedes-maybach-s-680.jpg';
+  }
+
+  if (caption.includes('s-class')) {
+    return '/images/vehicles/mercedes-benz-sclass.png';
+  }
+
+  if (caption.includes('v-class')) {
+    return '/images/vehicles/mercedes-benz-vclass.webp';
+  }
+
+  if (caption.includes('sprinter')) {
+    return '/Mercedes-Benz Sprinter.jpg';
+  }
+
+  if (caption.includes('range rover') || caption.includes('suv')) {
+    return '/Range Rover.jfif';
+  }
+
+  // Fallback images for all other gallery captions.
   const localPhotos = [
     '/Mercedes-Benz S-Class.jfif',
     '/Mercedes-Benz V-Class.jfif',
@@ -92,19 +117,26 @@ export function galleryImage(photo, index = 0) {
     '/Mercedes-Benz Sprinter.jpg',
     '/Range Rover.jfif',
   ];
+
   return localPhotos[index % localPhotos.length];
 }
+
 
 /**
  * Local public photo for a service with no uploaded image of its own.
  *
  * Same bundled photos the vehicle, category and gallery helpers draw on, so
  * the whole site stays on one set of images while it runs without a backend.
- * Note the ski test runs before the airport one: "ski transfers" contains
- * "transfer" too, and would otherwise be matched as an airport job.
+ *
+ * A picture chosen for the service always wins. Only when none is set does
+ * the name decide, and the ski test runs before the airport one because
+ * "ski transfers" contains "transfer" and would otherwise look like an
+ * airport job.
  */
 export function serviceImage(service, index = 0) {
-  if (service?.image?.startsWith('/images/vehicles/')) return service?.image;
+  const chosen = String(service?.image || '').trim();
+  if (chosen && !/placeholder-car\.jpg(?:$|[?#])/i.test(chosen)) return chosen;
+
   const identity = `${service?.slug || ''} ${service?.name || ''}`.toLowerCase();
 
   if (identity.includes('wedding')) return '/2027-mercedes-maybach-s-680.jpg';
@@ -112,13 +144,12 @@ export function serviceImage(service, index = 0) {
   if (identity.includes('event') || identity.includes('wef') || identity.includes('group')) {
     return '/Mercedes-Benz Sprinter.jpg';
   }
-  if (identity.includes('airport') || identity.includes('transfer')) return '/Mercedes-Benz V-Class.jfif';
+  // `transfer` on its own is too broad - it also catches "Private
+  // Transfers", which is a different service with its own photo.
+  if (identity.includes('airport')) return '/airport-transfer.png';
   if (identity.includes('business') || identity.includes('hourly') || identity.includes('corporate')) {
     return '/Mercedes-Benz S-Class.jfif';
   }
-
-  const existing = String(service?.image || '').trim();
-  if (existing && !/placeholder-car.jpg(?:$|[?#])/i.test(existing)) return existing;
 
   // Anything unmatched still gets a photo, and a different one each time.
   const localPhotos = [
@@ -171,6 +202,9 @@ export default {
   uploadUrl,
   imageUrl,
   imageFallback,
+  vehicleImage,
+  categoryImage,
+  galleryImage,
   serviceImage,
   siteUrl,
   BRAND,

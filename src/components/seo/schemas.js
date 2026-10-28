@@ -46,7 +46,7 @@ export function localBusiness(settings = {}, stats = {}) {
   if (settings.address) {
     schema.address = {
       '@type': 'PostalAddress',
-      streetAddress: settings.address,
+      streetAddress: String(settings.address).replace(/\n+/g, ', '),
       addressCountry: 'CH',
     };
   }

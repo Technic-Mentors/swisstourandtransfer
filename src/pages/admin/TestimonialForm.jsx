@@ -36,7 +36,7 @@ const BLANK = {
 const SERVICES = [
   'Airport transfer',
   'Business travel',
-  'City-to-city',
+  'Private transfers',
   'Wedding',
   'Ski transfer',
   'Events / WEF',

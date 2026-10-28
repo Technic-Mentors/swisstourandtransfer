@@ -715,7 +715,7 @@ export function ServicesSection({ content, services }) {
               onMouseMove={spotlight}
               onMouseLeave={unspotlight}
             >
-              <span ref={parallax} className={s.serviceImage}>
+              <span className={s.serviceImage}>
                 <img src={imageUrl(service.image)} onError={imageFallback} alt="" loading="lazy" width="520" height="250" />
                 <span className={s.serviceIcon}><ServiceIcon slug={service.slug} /></span>
               </span>

@@ -67,13 +67,21 @@
   background: rgba(10, 18, 30, 0.86);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-  transition: background var(--t) var(--ease), border-color var(--t) var(--ease);
+  /* No rule under the bar, on any page: the homepage never had one and the
+     bar already separates itself from the content by its own colour. */
+  border-bottom: 0;
+  transition: background var(--t) var(--ease);
 }
 
 .headerScrolled {
   background: rgba(10, 18, 30, 0.97);
-  border-bottom-color: var(--border-light);
+}
+
+/* The dark mark carries a solid black background of its own, so the bar is
+   black too rather than the old navy tint, and the two meet invisibly. */
+body[data-public-theme='dark'] .header,
+body[data-public-theme='dark'] .headerScrolled {
+  background: #000;
 }
 
 body[data-public-theme='light'] .header {
@@ -104,13 +112,15 @@ body[data-public-theme='light'] .headerScrolled {
   color: var(--cream);
 }
 
+/* The mark is 3:1. `cover` in a narrower box clipped the end off the
+   wordmark, so the box matches the artwork and the whole thing is fitted. */
 .logoArtwork {
   display: block;
-  width: 184px;
-  height: 72px;
+  width: 213px;
+  height: 71px;
   flex: none;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .logoLight {
@@ -130,8 +140,8 @@ body[data-public-theme='light'] .logoDark.logoDark { display: none; }
 
 body[data-public-theme='light'] .logoOnLight.logoOnLight {
   display: block;
-  width: 212px;
-  height: 70px;
+  width: 214px;
+  height: 72px;
   object-fit: contain;
   object-position: left center;
 }
@@ -140,13 +150,11 @@ body[data-public-theme='light'] .logoOnLight.logoOnLight {
   body[data-public-theme='light'] .logoOnLight.logoOnLight { width: 152px; height: 50px; }
 }
 
-body[data-public-theme='light'] .headerInner {
-  min-height: 88px;
-}
+
 
 @media (max-width: 560px) {
   .logoArtwork {
-    width: 132px;
+    width: 156px;
     height: 52px;
   }
 
@@ -227,8 +235,30 @@ body[data-public-theme='light'] .headerInner {
   color: var(--gold);
 }
 
+/* The header action is a plain link now, so it carries the button styling
+   itself rather than inheriting it from the WhatsApp button. */
 .headerCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
   border-radius: 6px;
+  border: 1px solid var(--gold);
+  background: var(--gold);
+  color: var(--gold-on);
+  font-weight: 700;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  transition: background var(--t) var(--ease), border-color var(--t) var(--ease),
+    box-shadow var(--t) var(--ease), transform var(--t) var(--ease);
+}
+
+.headerCta:hover {
+  border-color: var(--gold-bright);
+  background: var(--gold-bright);
+  color: var(--gold-on);
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-1px);
 }
 
 .themeToggle {
@@ -796,8 +826,7 @@ body[data-public-theme='light'] .headerInner {
 /* Shared moonlit retreat photograph behind every public-page banner. */
 .pageHead {
   position: relative;
-  border-top: 3px solid var(--gold);
-  padding-top: 8px;
+  padding-top: 11px;
   padding-bottom: 46px;
   text-align: center;
   border-bottom: 1px solid var(--border);
@@ -942,22 +971,76 @@ body[data-public-theme='light'] .pageHeadText {
 /* Slim transparent homepage navigation with an outlined booking action. */
 .header.heroHeader,
 :global(body[data-public-theme='light']) .header.heroHeader { margin-bottom: -92px; background: linear-gradient(180deg,rgba(0,6,9,.85),rgba(0,6,9,.1)); border: 0; backdrop-filter: none; }
+
+/* Solid black, but it still sits over the hero: the picture's top edge is
+   masked away there anyway, so the overlap costs nothing and the hero keeps
+   the same top padding as in the light theme. */
+body[data-public-theme='dark'] .header.heroHeader,
+body[data-public-theme='dark'] .header.heroHeader.headerScrolled {
+  background: #000;
+}
 .heroHeader .headerInner,
 :global(body[data-public-theme='light']) .heroHeader .headerInner { min-height: 92px; gap: 20px; }
 .header.heroHeader.headerScrolled,
 :global(body[data-public-theme='light']) .header.heroHeader.headerScrolled { background: rgba(4,13,18,.97); }
-.heroHeader .logoArtwork { width: 184px; height: 72px; }
+.heroHeader .logoArtwork { width: 213px; height: 71px; }
 body[data-public-theme='light'] .heroHeader .logoOnLight.logoOnLight { width: 214px; height: 72px; }
 .heroHeader .nav { gap: 25px; }
 .heroHeader .navLink { font-size: 13px; letter-spacing: 0; font-weight: 400; }
 .heroHeader .phone { font-size: 12px; font-weight: 400; }
 .heroHeader .actions { gap: 20px; }
-.heroHeader .headerCta { background: linear-gradient(110deg, #25d366, #0fb36a); border: 1px solid #25d366; color: #062314; box-shadow: 0 5px 16px rgba(37,211,102,.2); border-radius: 4px; font-size: 12px; padding: 9px 12px; min-height: 34px; text-transform: uppercase; }
-.heroHeader .headerCta:hover { background: linear-gradient(110deg, #2be174, #0ca961); border-color: #2be174; color: #041b0e; box-shadow: 0 7px 20px rgba(37,211,102,.3); }
+.heroHeader .headerCta { border-radius: 4px; font-size: 12px; padding: 9px 12px; min-height: 34px; text-transform: uppercase; }
 .heroHeader .themeToggle { width: 29px; height: 29px; border-radius: 50%; border-color: #ffffff26; background: #0003; }
 .heroHeader .themeToggle svg { width: 16px; height: 16px; }
+
+/* ---------------------------------------------------------------------
+   The homepage header was tuned compact; every other page used the older,
+   looser measurements. These are the same figures with the `.heroHeader`
+   qualifier dropped, so one bar is shared across the site. Only spacing
+   lives here - the hero's transparency and its light-on-dark colours stay
+   scoped to `.heroHeader` above.
+   --------------------------------------------------------------------- */
+.headerInner { min-height: 92px; gap: 20px; }
+.nav { gap: 25px; }
+.navLink { font-size: 13px; letter-spacing: 0; font-weight: 400; }
+.phone { font-size: 12px; font-weight: 400; }
+.actions { gap: 20px; }
+.headerCta { border-radius: 4px; font-size: 12px; padding: 9px 12px; min-height: 34px; text-transform: uppercase; }
+.themeToggle { width: 29px; height: 29px; border-radius: 50%; }
+.themeToggle svg { width: 16px; height: 16px; }
+
+@media (min-width: 960px) {
+  /* The bar runs the full width of the window rather than stopping at the
+     page container, so the logo sits in the corner on every page. */
+  .header > div { max-width: none; padding-inline: 3.6vw; }
+  .navLink { font-size: clamp(12px, .95vw, 16px); }
+  .phone { font-size: clamp(12px, .9vw, 16px); }
+  .headerCta { font-size: clamp(12px, .92vw, 16px); font-weight: 400; letter-spacing: 0; }
+}
+
+@media (min-width: 960px) and (max-width: 1200px) {
+  .nav { gap: 16px; }
+  .headerInner { gap: 14px; }
+  .actions { gap: 12px; }
+}
+
+@media (min-width: 960px) and (max-width: 1024px) {
+  .nav { display: flex; gap: 17px; }
+  .phone { display: flex; }
+  .burger { display: none; }
+  .headerInner { gap: 14px; }
+  .actions { gap: 12px; }
+}
+
+@media (max-width: 560px) {
+  .headerCta { font-size: 12px; padding: 8px; }
+  .actions { gap: 8px; }
+  .logo { gap: 0; }
+  .headerInner { min-height: 72px; gap: 8px; }
+}
+
 @media (min-width: 960px) and (max-width: 1200px) { .heroHeader .nav { gap: 16px; } .heroHeader .headerInner { gap: 14px; } .heroHeader .actions { gap: 12px; } }
-@media (max-width: 560px) { .heroHeader .headerCta { font-size: 12px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoArtwork { width: 132px; height: 52px; } body[data-public-theme='light'] .heroHeader .logoOnLight.logoOnLight { width: 150px; height: 50px; } .heroHeader .logo { gap: 0; } .heroHeader .headerInner { min-height: 72px; gap: 8px; } }
+@media (max-width: 560px) { .heroHeader .headerCta { font-size: 12px; padding: 8px; } .heroHeader .actions { gap: 8px; } .heroHeader .logoArtwork { width: 156px; height: 52px; } body[data-public-theme='light'] .heroHeader .logoOnLight.logoOnLight { width: 150px; height: 50px; } .heroHeader .logo { gap: 0; } .heroHeader .headerInner { min-height: 72px; gap: 8px; } }
 @media (min-width: 960px) and (max-width: 1024px) {
   .heroHeader .nav { display: flex; gap: 17px; }
   .heroHeader .phone { display: flex; }
@@ -973,14 +1056,14 @@ body[data-public-theme='light'] .heroHeader .logoOnLight.logoOnLight { width: 21
 }
 
 /* The homepage header floats over a dark hero in the dark theme; on paper it
-   has to become a light bar instead, or it reads as a black band. */
+   is a solid white bar, the same as every other page. */
 body[data-public-theme='light'] .header.heroHeader {
-  background: linear-gradient(180deg, var(--navy) 55%, rgba(246, 242, 234, 0));
+  background: #fff;
   border-bottom-color: transparent;
 }
 
 body[data-public-theme='light'] .header.heroHeader.headerScrolled {
-  background: rgba(246, 242, 234, .97);
+  background: #fff;
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1044,11 +1127,11 @@ body[data-public-theme='light'] .heroHeader .themeToggle:hover {
 
 .footerLogoArtwork {
   display: block;
-  width: 200px;
-  height: 76px;
+  width: 219px;
+  height: 73px;
   flex: none;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .footerBrandText {
@@ -1142,7 +1225,7 @@ body[data-public-theme='light'] .heroHeader .themeToggle:hover {
     border-top: 1px solid var(--border);
   }
 
-  .footerLogoArtwork { width: 150px; height: 58px; }
+  .footerLogoArtwork { width: 165px; height: 55px; }
 
   .footerBrandText {
     max-width: none;
@@ -1294,3 +1377,7 @@ body[data-public-theme='light'] .footerLogoArtwork.logoOnLight.logoOnLight {
 @media (prefers-reduced-motion: reduce) {
   .pageIn { animation: none; }
 }
+
+
+/* The address is stored with a line break, which is how it is printed. */
+.footerAddress { white-space: pre-line; }

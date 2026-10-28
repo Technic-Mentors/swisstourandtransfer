@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { galleryImage, imageFallback, imageUrl, serviceImage } from '../../config';
+import { imageFallback, imageUrl, serviceImage } from '../../config';
 import { publicApi } from '../../api/resources';
 import useFetch from '../../hooks/useFetch';
 import { useSite } from '../../context/SiteContext';
@@ -23,18 +23,16 @@ export default function ServiceDetail() {
   const { settings } = useSite();
   const load = useCallback(() => publicApi.service(slug), [slug]);
   const { data, loading, error } = useFetch(load, [slug]);
-  const [lightbox, setLightbox] = useState(-1);
   const [servicePhoto, setServicePhoto] = useState(-1);
 
   if (loading) return <Spinner label="Loading service" />;
   if (error?.status === 404) return <NotFound />;
   if (error) return <Container><div style={{ padding: '80px 0' }}><Alert tone="error">{error.message}</Alert></div></Container>;
 
-  const { service, otherServices, vehicles, photos = [] } = data;
+  const { service, otherServices, vehicles } = data;
   const servicePhotos = service.photos?.length ? service.photos : [{ id: 'placeholder', file_path: '', alt_text: service.name }];
   const gallerySlots = Array.from({ length: Math.max(5, servicePhotos.length) }, (_, i) => servicePhotos[i % servicePhotos.length]);
   const servicePhotoItems = servicePhotos.map((photo, i) => ({ src: imageUrl(photo.file_path || serviceImage(service, i)), alt: photo.alt_text || service.name, caption: '' }));
-  const lightboxItems = photos.map((photo, i) => ({ src: imageUrl(galleryImage(photo, i)), alt: photo.alt_text || photo.caption || service.name, caption: photo.caption || '' }));
 
   return <>
     <Seo title={`${service.name} in Switzerland`} description={service.short_description || `${service.name} with a professional chauffeur across Switzerland. Fixed prices, 24/7 availability and WhatsApp booking.`} path={`/services/${service.slug}`} image={serviceImage(service)} jsonLd={[serviceSchema(service, settings), breadcrumbSchema([{ name: 'Services', path: '/services' }, { name: service.name, path: `/services/${service.slug}` }])]} />
@@ -70,6 +68,5 @@ export default function ServiceDetail() {
     </Section>
 
     {vehicles?.length > 0 && <Section alt><Container><SectionHeading eyebrow="Vehicles" title="Cars we use for this service" /><VehicleGrid vehicles={vehicles} pageType="service-vehicles" className={vehicleStyles.pageGrid} /></Container></Section>}
-    {photos.length > 0 && <Section><Container><SectionHeading eyebrow="Gallery" title="From our journeys" text="A look at the cars, the chauffeurs and the places we drive to every week." /><div className={hs.galleryGrid}>{photos.slice(0, 6).map((photo, i) => <button type="button" key={photo.id} className={`${hs.galleryTile} ${i === 0 || i === 5 ? hs.galleryTileWide : ''}`} onClick={() => setLightbox(i)} aria-label={photo.caption || `Open photo ${i + 1}`}><img src={imageUrl(galleryImage(photo, i))} onError={imageFallback} alt={photo.alt_text || photo.caption || ''} loading="lazy" width="500" height="320" /></button>)}</div>{lightbox >= 0 && <Lightbox items={lightboxItems} index={lightbox} onIndexChange={setLightbox} onClose={() => setLightbox(-1)} />}</Container></Section>}
   </>;
 }

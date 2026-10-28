@@ -72,6 +72,8 @@ function ContactIcon({ type }) {
     email: <path d="M3 5h18v14H3zM3 6l9 7 9-7" />,
     pin: <><path d="M20 10c0 5.5-8 11-8 11S4 15.5 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></>,
     hours: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
+    company: <><path d="M4 21V5l8-2v18" /><path d="M12 9h8v12" /><path d="M2 21h20" /></>,
+    registration: <><path d="M5 3h9l5 5v13H5z" /><path d="M14 3v5h5" /><path d="M9 13h6M9 17h4" /></>,
   };
   return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[type]}</svg>;
 }
@@ -80,8 +82,10 @@ export default function Footer() {
   const { settings, socials } = useSite();
   const year = new Date().getFullYear();
   const phone = settings.phone;
-  const mapUrl = settings.address
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`
+  // The address is stored over two lines; a map query wants one.
+  const addressOneLine = String(settings.address || '').replace(/\n+/g, ', ');
+  const mapUrl = addressOneLine
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressOneLine)}`
     : '';
 
   return (
@@ -146,9 +150,20 @@ export default function Footer() {
           <div>
             <h4 className={s.footerTitle}>Contact</h4>
             <address className={s.footerContact} style={{ fontStyle: 'normal' }}>
-              {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}><ContactIcon type="phone" />{phone}</a>}
-              {settings.email && <a href={`mailto:${settings.email}`}><ContactIcon type="email" />{settings.email}</a>}
-              {settings.address && <a href={mapUrl} target="_blank" rel="noopener noreferrer"><ContactIcon type="pin" />{settings.address}</a>}
+              {settings.company_name && (
+                <span><ContactIcon type="company" />{settings.company_name}</span>
+              )}
+              {settings.address && (
+                <a href={mapUrl} target="_blank" rel="noopener noreferrer">
+                  <ContactIcon type="pin" />
+                  <span className={s.footerAddress}>{settings.address}</span>
+                </a>
+              )}
+              {settings.registration_number && (
+                <span><ContactIcon type="registration" />Registration #: {settings.registration_number}</span>
+              )}
+              {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}><ContactIcon type="phone" />Phone: {phone}</a>}
+              {settings.email && <a href={`mailto:${settings.email}`}><ContactIcon type="email" />Email: {settings.email}</a>}
               {settings.opening_hours && <span><ContactIcon type="hours" />{settings.opening_hours}</span>}
             </address>
           </div>

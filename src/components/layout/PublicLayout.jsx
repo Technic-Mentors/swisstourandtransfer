@@ -178,7 +178,19 @@ export default function PublicLayout() {
 
   // Every navigation starts at the top of the new page.
   useEffect(() => {
-    if (!location.hash) window.scrollTo(0, 0);
+    if (!location.hash) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    /* A client-side navigation does not honour the anchor the way a fresh
+       page load does, so the target is brought into view by hand. The frame
+       of delay lets the new route paint first. */
+    const id = location.hash.slice(1);
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+    return () => cancelAnimationFrame(frame);
   }, [location.pathname, location.hash]);
 
   return (

@@ -1272,18 +1272,33 @@ body[data-public-theme='light'] .map {
 .aboutImage {
   display: block;
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto 28px;
-  aspect-ratio: 21 / 9;
+  margin: 0;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: var(--radius-xl);
   border: 1px solid var(--border);
 }
 
-/* A centred column. The paragraphs stay left-aligned so they read normally. */
+/* Two columns: the story reads down the left, the figures sit to its right.
+   `align-items: start` keeps the aside at the top rather than stretching it. */
+.aboutIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+.aboutAside {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .aboutIntro { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+}
+
 .aboutBody {
-  max-width: 740px;
-  margin-inline: auto;
   font-size: 16px;
   line-height: 1.7;
   color: var(--text-muted);
@@ -1486,12 +1501,16 @@ body[data-public-theme='light'] .map {
 }
 
 /* ---- stats ---- */
+/* Two by two inside the aside, rather than one wide row under the text. */
 .statRow {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  max-width: 940px;
-  margin: 30px auto 0;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .statRow { grid-template-columns: minmax(0, 1fr); }
 }
 
 .statCell {
@@ -1894,3 +1913,7 @@ body[data-public-theme='light'] .map {
     animation: none;
   }
 }
+
+
+/* Same two-line address as the footer prints. */
+.contactValue { white-space: pre-line; }

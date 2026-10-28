@@ -51,7 +51,7 @@ export default function Book() {
             </Card>
 
             <Card className={s.bookOption}>
-              <Badge tone="neutral">Enquiry form</Badge>
+              <Badge tone="neutral">Book Online</Badge>
               <h2 className={s.bookOptionTitle}>Send your details by form</h2>
               <p className={s.bookOptionText}>
                 Fill in the form below and we reply by email or phone within about {minutes} minutes.
@@ -72,7 +72,7 @@ export default function Book() {
           </div>
 
           <div id="enquiry">
-            <SectionHeading eyebrow="Enquiry form" title="Tell us about your journey" as="h2" />
+            <SectionHeading eyebrow="Book Online" title="Tell us about your journey" as="h2" />
             <Card pad>
               <EnquiryForm vehicles={vehicles} />
             </Card>

@@ -126,9 +126,11 @@ export default function Header() {
                 {isLight ? <MoonIcon /> : <SunIcon />}
               </button>
 
-              <WhatsAppButton variant="gold" size="sm" pageType="header" className={s.headerCta}>
-                Book via WhatsApp
-              </WhatsAppButton>
+              {/* Straight to the form, which hands the details to WhatsApp
+                  once they are filled in. */}
+              <Link to="/book#enquiry" className={s.headerCta}>
+                Book Online
+              </Link>
 
               <button
                 type="button"

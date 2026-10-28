@@ -10,7 +10,7 @@ import s from './forms.module.css';
 const SERVICE_TYPES = [
   'Airport transfer',
   'Hourly chauffeur',
-  'City-to-city',
+  'Private transfers',
   'Business travel',
   'Event / WEF',
   'Wedding',
@@ -383,7 +383,7 @@ export default function EnquiryForm({
         </p>
         <Button type="submit" disabled={submitting}>
           {sendTo === 'whatsapp'
-            ? 'Send on WhatsApp'
+            ? 'Book Now'
             : submitting
               ? 'Sending…'
               : 'Send enquiry'}

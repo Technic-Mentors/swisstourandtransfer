@@ -787,21 +787,9 @@
 .serviceImage {
   position: relative;
   display: block;
-  height: 108px;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
   background: #12212a;
-}
-
-/* Scroll parallax: the photograph is a little taller than its frame and
-   drifts within it, which gives the row some depth as it passes. The scale
-   is what stops the drift exposing an edge. */
-.serviceImage img {
-  transform: translate3d(0, var(--px, 0px), 0) scale(1.12);
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .serviceImage img { transform: none; }
 }
 
 .serviceImage::after {
@@ -816,11 +804,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform .55s var(--ease);
+  object-position: center;
+  transition: scale .55s var(--ease);
 }
 
 .serviceCell:hover .serviceImage img {
-  transform: scale(1.08);
+  scale: 1.2;
 }
 
 .serviceIcon {
@@ -943,7 +932,7 @@
   .servicesHead { grid-template-columns: 1fr; gap: 16px; }
   .servicesHead p { margin: 0; }
   .serviceShowcaseGrid { grid-template-columns: 1fr; }
-  .serviceImage { height: 145px; }
+  /* The aspect ratio carries the height at every width. */
 }
 
 /* ========================================================== why choose us */

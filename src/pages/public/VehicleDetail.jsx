@@ -180,7 +180,7 @@ export default function VehicleDetail() {
                       </Button>
                     )}
                     <Button variant="outline" size="sm" href="#enquiry">
-                      Enquiry form
+                      Book Online
                     </Button>
                   </div>
                 </div>
