@@ -290,10 +290,28 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 /* ------------------------------------------------------------------- hero */
 
 const HERO_ANGLES = [
-  { name: 'Rear', image: '/car-3.png', headline: 'Always on time,', accent: 'every time.', text: 'Flight tracking and 24/7 dispatch, so you never wait.' },
-  { name: 'Detail', image: '/car-4.png', headline: 'Made for those who', accent: 'notice details.', text: 'Hand-picked vehicles, professional drivers, zero compromise.' },
+  {
+    name: 'Rear',
+    image: '/car-3.png',
+    headline: 'Always on time,',
+    accent: 'every time.',
+    text: 'Flight tracking and 24/7 dispatch, so you never wait.',
+  },
+  {
+    name: 'Detail',
+    image: '/car-4.png',
+    headline: 'Made for those who',
+    accent: 'notice details.',
+    text: 'Hand-picked vehicles, professional drivers, zero compromise.',
+  },
+  {
+    name: 'Journey',
+    image: '/slider3.png',
+    headline: 'Every journey,',
+    accent: 'a first-class experience.',
+    text: 'Discover Switzerland in comfort with private transfers and tailored chauffeur services.',
+  },
 ];
-
 /** The hero advances on its own; one angle every three seconds. */
 const HERO_INTERVAL = 3000;
 
@@ -603,64 +621,64 @@ export function CategoriesSection({ content, categories }) {
     },
   ];
 
-  return (
-    <Section id="categories">
-      <Container>
-        <HeadRow
-          eyebrow={content.categories_eyebrow}
-          title={content.categories_heading}
-          link="/vehicles"
-          linkLabel="All fleet"
-        />
+  // return (
+  //   <Section id="categories">
+  //     <Container>
+  //       <HeadRow
+  //         eyebrow={content.categories_eyebrow}
+  //         title={content.categories_heading}
+  //         link="/vehicles"
+  //         linkLabel="All fleet"
+  //       />
 
-        <div ref={reveal} className={cx(s.catGrid, s.xStagger)}>
-          {cards.map((category) => {
-            // The category's own photo, a vehicle from it, or - when the
-            // database has neither - the placeholder car from /public.
-            const cover = categoryImage(category) || category.image || category.sample_image;
+  //       <div ref={reveal} className={cx(s.catGrid, s.xStagger)}>
+  //         {cards.map((category) => {
+  //           // The category's own photo, a vehicle from it, or - when the
+  //           // database has neither - the placeholder car from /public.
+  //           const cover = categoryImage(category) || category.image || category.sample_image;
 
-            return (
-              <Link
-                key={category.id}
-                to={category.path || `/vehicles/category/${category.slug}`}
-                className={cx(s.catCard, s.xLift, s.xSpot, s.xGloss, s.xTilt)}
-                onMouseMove={spotlight}
-                onMouseLeave={unspotlight}
-              >
-                <span className={cx(s.catMedia, s.xPhoto)}>
-                  <img
-                    src={imageUrl(cover)}
-                    hidden={!cover}
-                    onError={imageFallback}
-                    alt=""
-                    loading="lazy"
-                    width="280"
-                    height="170"
-                  />
-                </span>
+  //           return (
+  //             <Link
+  //               key={category.id}
+  //               to={category.path || `/vehicles/category/${category.slug}`}
+  //               className={cx(s.catCard, s.xLift, s.xSpot, s.xGloss, s.xTilt)}
+  //               onMouseMove={spotlight}
+  //               onMouseLeave={unspotlight}
+  //             >
+  //               <span className={cx(s.catMedia, s.xPhoto)}>
+  //                 <img
+  //                   src={imageUrl(cover)}
+  //                   hidden={!cover}
+  //                   onError={imageFallback}
+  //                   alt=""
+  //                   loading="lazy"
+  //                   width="280"
+  //                   height="170"
+  //                 />
+  //               </span>
 
-                <span className={s.catBody}>
-                  <span className={s.catName}>{category.name}</span>
-                  {category.examples && <span className={s.catExamples}>{category.examples}</span>}
-                  <span className={s.catFooter}>
-                    <span className={s.catMeta} title={guestLabel(category)}>
-                      <CategoryMetaIcon type="passengers" />
-                      {category.max_passengers || '—'}
-                    </span>
-                    <span className={s.catMeta} title={`${category.vehicle_count || 0} vehicles`}>
-                      <CategoryMetaIcon type="luggage" />
-                      {category.vehicle_count || '—'}
-                    </span>
-                    <span className={s.catArrow} aria-hidden="true">→</span>
-                  </span>
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </Container>
-    </Section>
-  );
+  //               <span className={s.catBody}>
+  //                 <span className={s.catName}>{category.name}</span>
+  //                 {category.examples && <span className={s.catExamples}>{category.examples}</span>}
+  //                 <span className={s.catFooter}>
+  //                   <span className={s.catMeta} title={guestLabel(category)}>
+  //                     <CategoryMetaIcon type="passengers" />
+  //                     {category.max_passengers || '—'}
+  //                   </span>
+  //                   <span className={s.catMeta} title={`${category.vehicle_count || 0} vehicles`}>
+  //                     <CategoryMetaIcon type="luggage" />
+  //                     {category.vehicle_count || '—'}
+  //                   </span>
+  //                   <span className={s.catArrow} aria-hidden="true">→</span>
+  //                 </span>
+  //               </span>
+  //             </Link>
+  //           );
+  //         })}
+  //       </div>
+  //     </Container>
+  //   </Section>
+  // );
 }
 
 /* ------------------------------------------------------- featured vehicles */

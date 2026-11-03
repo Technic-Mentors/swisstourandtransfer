@@ -91,10 +91,10 @@ export const homeContent = {
   trust_items:
     'Available 24/7, 365 days|Fixed, all-inclusive prices|Free flight tracking and waiting|Multilingual professional chauffeurs|Rated {rating} by {count} guests',
 
-  categories_eyebrow: 'FLEET CATEGORIES',
-  categories_heading: 'The right car for every journey',
-  categories_text:
-    'From a discreet business saloon to a six-seat van for the whole family and their skis.',
+  // categories_eyebrow: 'FLEET CATEGORIES',
+  // categories_heading: 'The right car for every journey',
+  // categories_text:
+  //   'From a discreet business saloon to a six-seat van for the whole family and their skis.',
 
   vehicles_eyebrow: 'OUR FLEET',
   vehicles_heading: 'A fleet kept immaculate',
@@ -290,9 +290,9 @@ export const vehicles = [
     whatsapp_template: null,
     is_featured: 1,
     sort_order: 3,
-    category_name: 'First Class',
-    category_slug: 'first-class',
-    cover_image: '/images/vehicles/mercedes-benz-sclass.png',
+    category_name: 'Premium',
+    category_slug: 'premium',
+    cover_image: '/images/vehicles/mercedes-benz-sclass.jpg',
   },
   {
     id: 4,
@@ -312,8 +312,8 @@ export const vehicles = [
     whatsapp_template: null,
     is_featured: 1,
     sort_order: 4,
-    category_name: 'Premium',
-    category_slug: 'premium',
+    category_name: 'Executive',
+    category_slug: 'executive',
     cover_image: '/images/vehicles/mercedes-benz-vclass.webp',
   },
 ];
@@ -431,66 +431,71 @@ export const services = [
     price_text: 'Corporate rates on account',
     sort_order: 4,
   },
-  {
-    id: 5,
-    name: 'Events & WEF',
-    slug: 'events-and-wef',
-    short_description: 'Vehicle coordination for WEF Davos, Art Basel and galas.',
-    full_description:
-      'Event transport is a logistics problem before it is a driving one. We plan arrival windows, stage vehicles near the venue, and run a single point of contact who knows where every car is.\n\nWe have operated at WEF Davos, Art Basel, the Montreux Jazz Festival, Geneva Motor Show and private galas. For WEF specifically, our chauffeurs are briefed on the access zones and the security procedures.',
-    included: [
-      'Single coordinator for every vehicle',
-      'Vehicles staged near the venue',
-      'Access and security briefing',
-      'Real-time schedule changes',
-      'Branded or unmarked vehicles',
-      'Overnight and standby cover',
-    ],
-    image: '/event-transfers.png',
-    icon: null,
-    price_text: 'Quoted per event',
-    sort_order: 5,
-  },
-  {
-    id: 6,
-    name: 'Weddings',
-    slug: 'weddings',
-    short_description: 'Prestige cars, ribbons and a chauffeur for your day.',
-    full_description:
-      'One car for the couple, more for the party, and a chauffeur who has done this often enough to stay invisible until the moment he is needed.\n\nWe decorate the car to your colours, arrive early for photographs, and keep to a timeline agreed in advance with you or your planner. A second vehicle can shuttle guests between the ceremony and the reception.',
-    included: [
-      'Decorated car in your colours',
-      'Early arrival for photographs',
-      'Timeline agreed in advance',
-      'Champagne on ice on request',
-      'Guest shuttle vehicles',
-      'Red carpet available',
-    ],
-    image: '/wedding.png',
-    icon: null,
-    price_text: 'Wedding packages on request',
-    sort_order: 6,
-  },
-  {
-    id: 7,
-    name: 'Ski Transfers',
-    slug: 'ski-transfers',
-    short_description: 'St. Moritz, Zermatt, Verbier, Gstaad, Davos and more.',
-    full_description:
-      'Alpine transfers from November to April, in vehicles equipped for the conditions rather than merely permitted in them. Snow tyres as standard, chains carried, and chauffeurs who drive these passes every week of the season.\n\nSki and board carriage is included, and we collect at the chalet door wherever the road allows. For Zermatt we drive to the Tasch terminal and see you onto the shuttle with your luggage.',
-    included: [
-      'Snow tyres and chains as standard',
-      'Ski and snowboard carriage included',
-      'Chalet door collection',
-      'Experienced alpine chauffeurs',
-      'Flight tracking on arrival day',
-      'Heated vehicle waiting for you',
-    ],
-    image: '/ski-transfer.png',
-    icon: null,
-    price_text: 'Fixed price per transfer',
-    sort_order: 7,
-  },
+
+ 
+
+{
+  id: 6,
+  name: 'Day Tours',
+  slug: 'day-tours',
+  short_description: 'Discover Switzerland with private tours and a professional chauffeur.',
+  full_description:
+    'Explore Switzerland at your own pace with a private chauffeur and a premium vehicle tailored to your journey. From scenic mountain routes and picturesque lakeside towns to charming villages and iconic landmarks, enjoy a comfortable and personalised travel experience.\n\nPlan your day around the places you want to see, with flexible stops for sightseeing, photography, shopping, and dining. Whether you are discovering a new city or enjoying a countryside escape, your chauffeur ensures a smooth, relaxed journey from start to finish.',
+  included: [
+    'Private chauffeur and premium vehicle',
+    'Flexible sightseeing stops',
+    'Scenic routes across Switzerland',
+    'Convenient hotel pickup and drop-off',
+    'Time for photographs and exploration',
+    'Customised itineraries on request',
+  ],
+  image: '/wedding.png',
+  icon: null,
+  price_text: 'Day Tours Pricing on request',
+  sort_order: 6,
+},
+{
+  id: 7,
+  name: 'Ski Transfers',
+  slug: 'ski-transfers',
+  short_description: 'St. Moritz, Zermatt, Verbier, Gstaad, Davos and more.',
+  full_description:
+    'Alpine transfers from November to April, in vehicles equipped for the conditions rather than merely permitted in them. Snow tyres as standard, chains carried, and chauffeurs who drive these passes every week of the season.\n\nSki and board carriage is included, and we collect at the chalet door wherever the road allows. For Zermatt we drive to the Tasch terminal and see you onto the shuttle with your luggage.',
+  included: [
+    'Snow tyres and chains as standard',
+    'Ski and snowboard carriage included',
+    'Chalet door collection',
+    'Experienced alpine chauffeurs',
+    'Flight tracking on arrival day',
+    'Heated vehicle waiting for you',
+  ],
+  image: '/ski-transfer.png',
+  icon: null,
+  price_text: 'Fixed price per transfer',
+  sort_order: 7,
+},
+{
+  id: 8,
+  name: '4 Country Tours',
+  slug: 'four-country-tours',
+  short_description: 'Discover Switzerland, France, Italy and Germany in one private journey.',
+  full_description:
+    'Experience the best of four European countries with our private chauffeur tours across Switzerland, France, Italy and Germany. Discover beautiful cities, breathtaking Alpine landscapes, charming villages and iconic European attractions, all in the comfort of a premium vehicle.\n\nEnjoy a personalised itinerary with flexible sightseeing stops, cross-border travel and the freedom to explore each destination at your own pace. Whether planning a multi-country holiday, a scenic European road trip or a private getaway, our professional chauffeur makes your journey comfortable and memorable.',
+  included: [
+    'Private chauffeur and premium vehicle',
+    'Tours across Switzerland, France, Italy and Germany',
+    'Cross-border transportation',
+    'Customised multi-country itineraries',
+    'Scenic sightseeing stops',
+    'Hotel pickup and drop-off',
+    'Flexible travel schedules',
+    'Comfortable long-distance journeys',
+  ],
+  image: '/four-country-tours.png',
+  icon: null,
+  price_text: 'Quoted per journey',
+  sort_order: 8,
+},
 ];
 
 /* ----------------------------------------------------------------- cities */

@@ -160,7 +160,7 @@ export default function Footer() {
                 </a>
               )}
               {settings.registration_number && (
-                <span><ContactIcon type="registration" />Registration #: {settings.registration_number}</span>
+                <span><ContactIcon type="registration" />Reg #: {settings.registration_number}</span>
               )}
               {phone && <a href={`tel:${phone.replace(/\s/g, '')}`}><ContactIcon type="phone" /> {phone}</a>}
               {settings.email && <a href={`mailto:${settings.email}`}><ContactIcon type="email" /> {settings.email}</a>}
