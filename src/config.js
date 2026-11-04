@@ -98,7 +98,7 @@ export function galleryImage(photo, index = 0) {
   }
 
   if (caption.includes('v-class')) {
-    return '/images/vehicles/mercedes-benz-vclass.webp';
+    return '/images/vehicles/mercedes-benz-vclass.png';
   }
 
   if (caption.includes('sprinter')) {

@@ -2644,8 +2644,16 @@ body[data-public-theme='light'] .heroSlide:nth-child(2) {
   background-position: center;
 }
 
-body[data-public-theme='light'] .heroSlide:nth-child(n + 3),
-body[data-public-theme='light'] .heroCopy:nth-child(n + 3) {
+/* The third angle: a white V-Class on the same pale studio backdrop, so it
+   lands on cream like the other two. The car fills the frame squarely, so
+   this one stays centred at every width. */
+body[data-public-theme='light'] .heroSlide:nth-child(3) {
+  background-image: url('/slider-3-light.png') !important;
+  background-position: center;
+}
+
+body[data-public-theme='light'] .heroSlide:nth-child(n + 4),
+body[data-public-theme='light'] .heroCopy:nth-child(n + 4) {
   display: none;
 }
 
@@ -2675,6 +2683,8 @@ body[data-public-theme='light'] .heroCopy:nth-child(n + 3) {
   .heroSlide,
   body[data-public-theme='light'] .heroSlide:first-child,
   body[data-public-theme='light'] .heroSlide:nth-child(2) { background-position: 85% center; }
+  /* The V-Class is centred in its frame, so it keeps the centre crop. */
+  body[data-public-theme='light'] .heroSlide:nth-child(3) { background-position: center; }
   .heroCopyStack { margin-top: 12px; }
   .showcaseTitle { font-size: clamp(2.1rem, 5.2vw, 3rem); }
   .heroSubtext { margin-top: 12px; font-size: 16px; }

@@ -613,7 +613,7 @@ export function CategoriesSection({ content, categories }) {
     {
       id: 'e-class-business',
       name: 'E Class Business',
-      image: '/images/vehicles/mercedes-benz-eclass.webp',
+      image: '/images/vehicles/mercedes-benz-eclass.png',
       examples: 'Mercedes-Benz E-Class',
       max_passengers: 3,
       vehicle_count: 1,
@@ -728,14 +728,15 @@ export function ServicesSection({ content, services }) {
 
   const cards = [
     ...services,
-    {
-      id: 'events',
-      slug: 'events',
-      name: 'Events & WEF',
-      short_description: 'Vehicle coordination for conferences, galas and private events.',
-      image: '/alpine-tarmac-hero.png',
-      path: '/contact',
-    },
+    // "Events & WEF" card hidden for now.
+    // {
+    //   id: 'events',
+    //   slug: 'events',
+    //   name: 'Events & WEF',
+    //   short_description: 'Vehicle coordination for conferences, galas and private events.',
+    //   image: '/alpine-tarmac-hero.png',
+    //   path: '/contact',
+    // },
   ];
 
   return (

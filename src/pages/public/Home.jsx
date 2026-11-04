@@ -11,7 +11,7 @@ import {
   FaqSection,
   FeaturedVehiclesSection,
   FinalCtaSection,
-  GallerySection,
+  // GallerySection, // hidden on the homepage
   HeroSection,
   HowItWorksSection,
   QuickBookingSection,
@@ -32,7 +32,8 @@ const SECTION_COMPONENTS = {
   why_choose_us: (p) => <WhyChooseUsSection {...p} />,
   how_it_works: (p) => <HowItWorksSection {...p} />,
   reviews: (p) => <ReviewsSection {...p} />,
-  gallery: (p) => <GallerySection {...p} />,
+  // Gallery section hidden on the homepage (still live at /gallery).
+  // gallery: (p) => <GallerySection {...p} />,
   faq: (p) => <FaqSection {...p} />,
   final_cta: (p) => <FinalCtaSection {...p} />,
 };

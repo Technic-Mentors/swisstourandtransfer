@@ -28,7 +28,7 @@ export const settings = {
   tagline: 'Explore · Travel · Arrive',
   /* Shown as written; tel: links strip the spaces. */
   phone: '+41 78 227 62 22',
-  email: 'support@swisstourtransfer.com',
+  email: 'swisstourntransfers@gmail.com',
   /* Kept on two lines, the way it is printed; anything machine-read turns
      the break back into a comma. */
   address: 'Am Luchsgraben 16\n8051 Zurich, Switzerland',
@@ -157,7 +157,7 @@ export const pageContent = {
   },
   impressum: {
     heading: 'Impressum',
-    body: 'Swiss Tour & Transfer\nAm Luchsgraben 16\n8051 Zurich\nSwitzerland\n\nPhone: +41 78 227 62 22\nEmail: support@swisstourtransfer.com\n\n[Add your commercial register number (CHE-...), VAT number and the name of the person responsible for the content of this website.]',
+    body: 'Swiss Tour & Transfer\nAm Luchsgraben 16\n8051 Zurich\nSwitzerland\n\nPhone: +41 78 227 62 22\nEmail: swisstourntransfers@gmail.com\n\n[Add your commercial register number (CHE-...), VAT number and the name of the person responsible for the content of this website.]',
   },
 };
 
@@ -270,7 +270,7 @@ export const vehicles = [
     sort_order: 2,
     category_name: 'Business',
     category_slug: 'business',
-    cover_image: '/images/vehicles/mercedes-benz-eclass.webp',
+    cover_image: '/images/vehicles/mercedes-benz-eclass.png',
   },
   {
     id: 3,
@@ -292,7 +292,7 @@ export const vehicles = [
     sort_order: 3,
     category_name: 'Premium',
     category_slug: 'premium',
-    cover_image: '/images/vehicles/mercedes-benz-sclass.jpg',
+    cover_image: '/images/vehicles/mercedes-benz-sclass.png',
   },
   {
     id: 4,
@@ -314,7 +314,7 @@ export const vehicles = [
     sort_order: 4,
     category_name: 'Executive',
     category_slug: 'executive',
-    cover_image: '/images/vehicles/mercedes-benz-vclass.webp',
+    cover_image: '/images/vehicles/mercedes-benz-vclass.png',
   },
 ];
 

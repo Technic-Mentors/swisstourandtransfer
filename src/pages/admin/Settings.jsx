@@ -236,7 +236,7 @@ export default function Settings() {
                   type="email"
                   value={value('notification_email')}
                   onChange={set('notification_email')}
-                  placeholder="support@swiss-transfers.com"
+                  placeholder="swisstourntransfers@gmail.com"
                   hint="Leave empty to use the contact email address above."
                 />
 
