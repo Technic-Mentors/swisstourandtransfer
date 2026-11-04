@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { publicApi } from '../../api/resources';
+import { sendEnquiryEmail } from '../../api/email';
 import { useSite } from '../../context/SiteContext';
 import useWhatsApp from '../../hooks/useWhatsApp';
 import { Alert, Button, WhatsAppIcon } from '../ui';
@@ -114,7 +115,7 @@ export default function EnquiryForm({
     setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
   };
 
-  function validate() {
+  function validate(channel) {
     const next = {};
     if (!form.full_name.trim()) next.full_name = 'Please enter your name.';
     else if (form.full_name.trim().length > 160) next.full_name = 'Name must be 160 characters or fewer.';
@@ -135,7 +136,10 @@ export default function EnquiryForm({
     if (form.suitcases && (!/^\d+$/.test(form.suitcases) || Number(form.suitcases) > 60)) {
       next.suitcases = 'Enter a whole number from 0 to 60.';
     }
-    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) {
+    if (channel === 'email' && !form.email.trim()) {
+      /* The only way we can answer an emailed enquiry is by email back. */
+      next.email = 'We need your email address to reply to you.';
+    } else if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) {
       next.email = 'That email address does not look right.';
     } else if (form.email.length > 190) {
       next.email = 'Email must be 190 characters or fewer.';
@@ -145,15 +149,23 @@ export default function EnquiryForm({
     return Object.keys(next).length === 0;
   }
 
-  async function onSubmit(event) {
-    event.preventDefault();
+  /**
+   * One enquiry, sent through exactly one channel.
+   *
+   * The customer picks: WhatsApp opens a prefilled chat and nothing is
+   * emailed; email sends the same answers to the inbox and no chat opens.
+   * Never both at once.
+   *
+   * @param {'whatsapp'|'email'} channel
+   */
+  async function submitVia(channel) {
     setFailure('');
-    if (!validate()) return;
+    if (!validate(channel)) return;
 
     const vehicleName =
       vehicles.find((item) => String(item.id) === String(form.vehicle_id))?.name || '';
 
-    if (sendTo === 'whatsapp') {
+    if (channel === 'whatsapp') {
       /* Opened straight from the click, with no await in between, so the
          browser treats it as user-initiated rather than as a popup. The
          success panel repeats the link in case it is blocked anyway. */
@@ -168,12 +180,28 @@ export default function EnquiryForm({
 
     setSubmitting(true);
     try {
-      const payload = { ...form, source_page: location.pathname };
-      delete payload.consent;
-      if (!payload.vehicle_id) delete payload.vehicle_id;
+      /* Enquiries are stored as well wherever the backend is the configured
+         destination; otherwise the email is the whole record. */
+      if (sendTo === 'api') {
+        const payload = { ...form, source_page: location.pathname };
+        delete payload.consent;
+        if (!payload.vehicle_id) delete payload.vehicle_id;
+        await publicApi.createEnquiry(payload);
+      }
 
-      const data = await publicApi.createEnquiry(payload);
-      setResult(data);
+      const sent = await sendEnquiryEmail({
+        ...form,
+        form_type: 'Booking enquiry',
+        vehicle_name: vehicleName,
+        source_page: location.pathname,
+      });
+
+      if (!sent) {
+        setFailure('We could not send your enquiry just now. Please try WhatsApp instead.');
+        return;
+      }
+
+      setResult({ viaEmail: true });
     } catch (err) {
       setFailure(err.message || 'Something went wrong. Please try again or message us on WhatsApp.');
     } finally {
@@ -194,7 +222,9 @@ export default function EnquiryForm({
         <p>
           {result.viaWhatsApp
             ? `WhatsApp should have opened with your details filled in - press send there and we will reply within about ${minutes} minutes. If nothing opened, use the button below.`
-            : result.message || `We have received your enquiry and will reply within about ${minutes} minutes.`}
+            : result.viaEmail
+              ? `Your enquiry is on its way to our inbox. We will reply to you by email within about ${minutes} minutes.`
+              : result.message || `We have received your enquiry and will reply within about ${minutes} minutes.`}
         </p>
         <div className={s.successActions}>
           {result.whatsappUrl && (
@@ -221,7 +251,16 @@ export default function EnquiryForm({
   }
 
   return (
-    <form className={s.form} onSubmit={onSubmit} noValidate>
+    <form
+      className={s.form}
+      noValidate
+      onSubmit={(event) => {
+        /* Submitting the form - the email button, or Enter in a field -
+           is the email channel. WhatsApp has its own button. */
+        event.preventDefault();
+        submitVia('email');
+      }}
+    >
       {title && <h3>{title}</h3>}
 
       {failure && <Alert tone="error">{failure}</Alert>}
@@ -376,18 +415,25 @@ export default function EnquiryForm({
       </div>
 
       <div className={s.formActions}>
-        {/* Note first, action last: the primary button sits on the right. */}
+        {/* Note first, actions last: the two ways to send sit on the right. */}
         <p className={s.formNote}>
-          Prefer to chat? WhatsApp is usually faster — we reply in about{' '}
+          Choose how to send it — WhatsApp is usually faster, we reply in about{' '}
           {settings.reply_time_minutes || '10'} minutes, 24/7.
         </p>
-        <Button type="submit" disabled={submitting}>
-          {sendTo === 'whatsapp'
-            ? 'Book Now'
-            : submitting
-              ? 'Sending…'
-              : 'Send enquiry'}
-        </Button>
+        <div className={s.formChoice}>
+          <Button
+            type="button"
+            variant="whatsapp"
+            icon={<WhatsAppIcon />}
+            disabled={submitting}
+            onClick={() => submitVia('whatsapp')}
+          >
+            Book on WhatsApp
+          </Button>
+          <Button type="submit" disabled={submitting}>
+            {submitting ? 'Sending…' : 'Send by email'}
+          </Button>
+        </div>
       </div>
     </form>
   );

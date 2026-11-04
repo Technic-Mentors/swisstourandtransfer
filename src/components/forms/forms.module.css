@@ -154,6 +154,20 @@ input[type='time'].control {
   text-align: left;
 }
 
+/* The two ways to send an enquiry sit side by side; on a narrow screen they
+   stack and go full width rather than being squeezed onto one line. */
+.formChoice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 520px) {
+  .formChoice { width: 100%; }
+  .formChoice > * { flex: 1 1 100%; }
+}
+
 .success {
   scroll-margin-top: 100px;
   padding: 36px 28px;
