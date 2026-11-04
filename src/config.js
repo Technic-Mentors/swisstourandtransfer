@@ -140,13 +140,19 @@ export function serviceImage(service, index = 0) {
   const identity = `${service?.slug || ''} ${service?.name || ''}`.toLowerCase();
 
   if (identity.includes('wedding')) return '/2027-mercedes-maybach-s-680.jpg';
-  if (identity.includes('ski') || identity.includes('winter')) return '/Range Rover.jfif';
+  if (identity.includes('ski') || identity.includes('winter')) return '/ski-tours.png';
   if (identity.includes('event') || identity.includes('wef') || identity.includes('group')) {
     return '/Mercedes-Benz Sprinter.jpg';
   }
   // `transfer` on its own is too broad - it also catches "Private
   // Transfers", which is a different service with its own photo.
   if (identity.includes('airport')) return '/airport-transfer.png';
+  // Matched on the full phrase, not a bare `tour`: "Four Country Tours" is
+  // its own service and keeps its own photograph.
+  if (identity.includes('day tour') || identity.includes('day-tour')) return '/day-tours.png';
+  if (identity.includes('four country') || identity.includes('four-country')) {
+    return '/four-country-tours.png';
+  }
   if (identity.includes('business') || identity.includes('hourly') || identity.includes('corporate')) {
     return '/Mercedes-Benz S-Class.jfif';
   }
