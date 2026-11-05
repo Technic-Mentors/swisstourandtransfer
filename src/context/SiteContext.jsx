@@ -11,6 +11,10 @@ const SiteContext = createContext(null);
  */
 const FALLBACK = placeholderSettings;
 
+function whatsappDigits(value) {
+  return String(value || '').replace(/\D/g, '').replace(/^00/, '');
+}
+
 /**
  * Settings are needed by the header, footer, every WhatsApp button and the
  * announcement bar, so they are fetched once here and shared.
@@ -47,7 +51,7 @@ export function SiteProvider({ children }) {
       loading,
       get: (key, fallback = '') => settings[key] ?? fallback,
       flag,
-      whatsappNumber: String(settings.whatsapp_number || '').replace(/\D/g, ''),
+      whatsappNumber: whatsappDigits(settings.whatsapp_number),
       socials: [
         { name: 'Instagram', url: settings.social_instagram },
         { name: 'Facebook', url: settings.social_facebook },

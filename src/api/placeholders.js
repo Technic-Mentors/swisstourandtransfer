@@ -274,7 +274,7 @@ export const vehicles = [
   },
   {
     id: 3,
-    category_id: 3,
+    category_id: 4,
     name: 'Mercedes-Benz S-Class',
     slug: 'mercedes-s-class',
     tagline: 'The benchmark for executive comfort - whisper-quiet, spacious and discreet.',
@@ -296,7 +296,7 @@ export const vehicles = [
   },
   {
     id: 4,
-    category_id: 4,
+    category_id: 3,
     name: 'Mercedes-Benz V-Class',
     slug: 'mercedes-v-class',
     tagline: 'Seven seats, seven bags and a cabin you can hold a meeting in.',
@@ -313,7 +313,7 @@ export const vehicles = [
     is_featured: 1,
     sort_order: 4,
     category_name: 'Executive',
-    category_slug: 'executive',
+    category_slug: 'first-class',
     cover_image: '/images/vehicles/mercedes-benz-vclass.png',
   },
 ];
@@ -325,7 +325,7 @@ export const vehicles = [
 const CATEGORY_ROWS = [
   [1, 'Comfort', 'comfort', 'Comfortable, efficient cars for everyday transfers and city journeys.'],
   [2, 'Business', 'business', 'Executive saloons and vans for meetings, airport runs and group travel.'],
-  [3, 'First Class', 'first-class', 'Flagship saloons and the latest vans, for the journeys that matter most.'],
+  [3, 'Executive', 'first-class', 'Flagship saloons and the latest vans, for the journeys that matter most.'],
   [4, 'Premium', 'premium', 'Our top specification, including reclining VIP seating, for special occasions.'],
 ];
 
