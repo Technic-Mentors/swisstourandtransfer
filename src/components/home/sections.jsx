@@ -719,6 +719,7 @@ function ServiceIcon({ slug }) {
     weddings: <><circle cx="9" cy="12" r="4" /><circle cx="15" cy="12" r="4" /><path d="m10.5 11 3 2" /></>,
     'ski-transfers': <><path d="m5 20 7-15 7 15M3 20h18M9.5 13h5" /></>,
     events: <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4m8-4v4M4 10h16m-9 4h2m-2 3h2" /></>,
+    'events-and-wef': <><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M8 3v4m8-4v4M4 10h16m-9 4h2m-2 3h2" /></>,
   };
   return <svg viewBox="0 0 24 24" {...common} aria-hidden="true">{shapes[slug] || shapes.events}</svg>;
 }
@@ -726,18 +727,10 @@ function ServiceIcon({ slug }) {
 export function ServicesSection({ content, services }) {
   if (!services.length) return null;
 
-  const cards = [
-    ...services,
-    // "Events & WEF" card hidden for now.
-    // {
-    //   id: 'events',
-    //   slug: 'events',
-    //   name: 'Events & WEF',
-    //   short_description: 'Vehicle coordination for conferences, galas and private events.',
-    //   image: '/alpine-tarmac-hero.png',
-    //   path: '/contact',
-    // },
-  ];
+  // "Events & WEF" is a real service now, so it arrives with the rest and
+  // links to its own page rather than being pinned on here pointing at
+  // /contact.
+  const cards = services;
 
   return (
     <section id="services" className={s.servicesShowcase}>

@@ -41,7 +41,7 @@ export const settings = {
   social_instagram: 'https://instagram.com/',
   social_facebook: 'https://facebook.com/',
   social_linkedin: 'https://linkedin.com/',
-  social_tiktok: '',
+  social_tiktok: 'https://tiktok.com/',
 
   announcement_enabled: '0',
   announcement_link: '/offers',
@@ -431,9 +431,26 @@ export const services = [
     price_text: 'Corporate rates on account',
     sort_order: 4,
   },
-
- 
-
+  {
+    id: 5,
+    name: 'Events & WEF',
+    slug: 'events-and-wef',
+    short_description: 'Vehicle coordination for WEF Davos, Art Basel and galas.',
+    full_description:
+      'Event transport is a logistics problem before it is a driving one. We plan arrival windows, stage vehicles near the venue, and run a single point of contact who knows where every car is.\n\nWe have operated at WEF Davos, Art Basel, the Montreux Jazz Festival, Geneva Motor Show and private galas. For WEF specifically, our chauffeurs are briefed on the access zones and the security procedures, and convoys are planned around the week rather than the journey.',
+    included: [
+      'Single coordinator for every vehicle',
+      'Vehicles staged near the venue',
+      'WEF access and security briefing',
+      'Real-time schedule changes',
+      'Branded or unmarked vehicles',
+      'Overnight and standby cover',
+    ],
+    image: '/events.png',
+    icon: null,
+    price_text: 'Quoted per event',
+    sort_order: 5,
+  },
 {
   id: 6,
   name: 'Day Tours',

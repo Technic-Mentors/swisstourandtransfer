@@ -142,7 +142,7 @@ export function serviceImage(service, index = 0) {
   if (identity.includes('wedding')) return '/2027-mercedes-maybach-s-680.jpg';
   if (identity.includes('ski') || identity.includes('winter')) return '/ski-tours.png';
   if (identity.includes('event') || identity.includes('wef') || identity.includes('group')) {
-    return '/Mercedes-Benz Sprinter.jpg';
+    return '/events.png';
   }
   // `transfer` on its own is too broad - it also catches "Private
   // Transfers", which is a different service with its own photo.
