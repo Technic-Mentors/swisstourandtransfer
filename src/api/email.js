@@ -1,3 +1,5 @@
+import { normalizeWhatsAppNumber } from '../utils/phone';
+
 /**
  * Enquiry notification emails, sent straight from the browser through EmailJS.
  *
@@ -49,7 +51,8 @@ function when(value) {
  * @returns {Promise<boolean>} Whether it went out. Never rejects.
  */
 export async function sendEnquiryEmail(enquiry = {}) {
-  const digits = String(enquiry.phone ?? '').replace(/\D/g, '');
+  const digits = normalizeWhatsAppNumber(enquiry.phone);
+  const whatsappDigits = digits;
 
   const params = {
     form_type: text(enquiry.form_type || 'Booking enquiry'),
@@ -77,7 +80,7 @@ export async function sendEnquiryEmail(enquiry = {}) {
     page_url: typeof window === 'undefined' ? DASH : window.location.href,
     /* The quick bar collects no phone number, so the reply button in the
        email falls back to the inbox instead of a broken wa.me link. */
-    whatsapp_url: digits ? `https://wa.me/${digits}` : `mailto:${FALLBACK_REPLY_TO}`,
+    whatsapp_url: whatsappDigits ? `https://wa.me/${whatsappDigits}` : `mailto:${FALLBACK_REPLY_TO}`,
   };
 
   try {

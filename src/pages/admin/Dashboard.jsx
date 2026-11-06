@@ -10,6 +10,7 @@ import {
   YAxis,
 } from 'recharts';
 import { API_URL } from '../../config';
+import { normalizeWhatsAppNumber } from '../../utils/phone';
 import { admin } from '../../api/resources';
 import { getToken } from '../../api/client';
 import useFetch from '../../hooks/useFetch';
@@ -728,7 +729,7 @@ export default function Dashboard() {
                         <div className={s.actionCell}>
                           <a
                             className={s.iconBtn}
-                            href={`https://wa.me/${String(row.phone || '').replace(/\D/g, '')}`}
+                            href={`https://wa.me/${normalizeWhatsAppNumber(row.phone)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`Reply to ${row.full_name} on WhatsApp`}

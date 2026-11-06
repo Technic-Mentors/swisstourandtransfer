@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { publicApi } from '../../api/resources';
+import { normalizeWhatsAppNumber } from '../../utils/phone';
 import { sendEnquiryEmail } from '../../api/email';
 import { useSite } from '../../context/SiteContext';
 import useWhatsApp from '../../hooks/useWhatsApp';
@@ -124,7 +125,9 @@ export default function EnquiryForm({
     if (!form.dropoff.trim()) next.dropoff = 'Please enter a drop-off location.';
     else if (form.dropoff.trim().length > 255) next.dropoff = 'Drop-off must be 255 characters or fewer.';
     if (!form.phone.trim()) next.phone = 'We need a phone number to confirm your ride.';
-    else if (!/^\d{7,15}$/.test(form.phone)) next.phone = 'Enter 7 to 15 digits, including your country code.';
+    else if (!/^\d{7,15}$/.test(normalizeWhatsAppNumber(form.phone))) {
+      next.phone = 'Enter a valid number with its country code, for example +41 79 123 45 67.';
+    }
     if (form.travel_datetime) {
       const travelTime = new Date(form.travel_datetime).getTime();
       if (!Number.isFinite(travelTime)) next.travel_datetime = 'Enter a valid date and time.';
@@ -164,13 +167,14 @@ export default function EnquiryForm({
 
     const vehicleName =
       vehicles.find((item) => String(item.id) === String(form.vehicle_id))?.name || '';
+    const submittedForm = { ...form, phone: normalizeWhatsAppNumber(form.phone) };
 
     if (channel === 'whatsapp') {
       /* Opened straight from the click, with no await in between, so the
          browser treats it as user-initiated rather than as a popup. The
          success panel repeats the link in case it is blocked anyway. */
       const url = openWhatsApp({
-        custom: enquiryMessage(form, vehicleName),
+        custom: enquiryMessage(submittedForm, vehicleName),
         pageType: 'enquiry-form',
       });
       window.open(url, '_blank', 'noopener,noreferrer');
@@ -183,14 +187,14 @@ export default function EnquiryForm({
       /* Enquiries are stored as well wherever the backend is the configured
          destination; otherwise the email is the whole record. */
       if (sendTo === 'api') {
-        const payload = { ...form, source_page: location.pathname };
+        const payload = { ...submittedForm, source_page: location.pathname };
         delete payload.consent;
         if (!payload.vehicle_id) delete payload.vehicle_id;
         await publicApi.createEnquiry(payload);
       }
 
       const sent = await sendEnquiryEmail({
-        ...form,
+        ...submittedForm,
         form_type: 'Booking enquiry',
         vehicle_name: vehicleName,
         source_page: location.pathname,
@@ -378,8 +382,8 @@ export default function EnquiryForm({
           value={form.phone}
           onChange={set('phone')}
           error={errors.phone}
-          hint="Digits only, including your country code."
-          placeholder="41791234567"
+          hint="Swiss numbers: enter +41 or 0041; local numbers starting with 0 are converted automatically."
+          placeholder="+41 79 123 45 67"
           autoComplete="tel"
           inputMode="numeric"
           pattern="[0-9]*"

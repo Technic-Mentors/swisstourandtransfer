@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { publicApi } from '../api/resources';
 import { settings as placeholderSettings } from '../api/placeholders';
+import { normalizeWhatsAppNumber } from '../utils/phone';
 
 const SiteContext = createContext(null);
 
@@ -10,10 +11,6 @@ const SiteContext = createContext(null);
  * the very first paint and the live values replace them when they arrive.
  */
 const FALLBACK = placeholderSettings;
-
-function whatsappDigits(value) {
-  return String(value || '').replace(/\D/g, '').replace(/^00/, '');
-}
 
 /**
  * Settings are needed by the header, footer, every WhatsApp button and the
@@ -51,7 +48,7 @@ export function SiteProvider({ children }) {
       loading,
       get: (key, fallback = '') => settings[key] ?? fallback,
       flag,
-      whatsappNumber: whatsappDigits(settings.whatsapp_number),
+      whatsappNumber: normalizeWhatsAppNumber(settings.whatsapp_number),
       socials: [
         { name: 'Instagram', url: settings.social_instagram },
         { name: 'Facebook', url: settings.social_facebook },

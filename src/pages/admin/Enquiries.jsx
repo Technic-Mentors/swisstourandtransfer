@@ -2,6 +2,7 @@ import { useCallback, useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import { admin } from '../../api/resources';
+import { normalizeWhatsAppNumber } from '../../utils/phone';
 import useFetch from '../../hooks/useFetch';
 import useToast from '../../hooks/useToast';
 import Seo from '../../components/seo/Seo';
@@ -367,7 +368,7 @@ export default function Enquiries() {
 
           <a
             className={s.actionWhatsApp}
-            href={`https://wa.me/${String(row.phone || '').replace(/\D/g, '')}`}
+            href={`https://wa.me/${normalizeWhatsAppNumber(row.phone)}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Reply to ${row.full_name} on WhatsApp`}
@@ -488,7 +489,7 @@ export default function Enquiries() {
                     </button>
                     <a
                       className={s.enquiryCardWhatsApp}
-                      href={`https://wa.me/${String(row.phone || '').replace(/\D/g, '')}`}
+                      href={`https://wa.me/${normalizeWhatsAppNumber(row.phone)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => recordWhatsAppContact(row)}
@@ -675,7 +676,7 @@ export default function Enquiries() {
               </AdminButton>
               <a
                 className={s.enquiryCardWhatsApp}
-                href={`https://wa.me/${String(open.phone || '').replace(/\D/g, '')}`}
+                href={`https://wa.me/${normalizeWhatsAppNumber(open.phone)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => recordWhatsAppContact(open)}
