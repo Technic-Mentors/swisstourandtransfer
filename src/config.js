@@ -38,9 +38,11 @@ export function vehicleImage(vehicle) {
           ? '/Mercedes-Benz Sprinter.jpg'
           : identity.includes('range rover') || identity.includes('range-rover')
             ? '/Range Rover.jfif'
-            : identity.includes('toyota-prius') || identity.includes('e-class')
-              ? '/placeholder-car.jpg'
-            : null;
+            : identity.includes('toyota-prius') || identity.includes('prius')
+              ? '/images/vehicles/toyota-prius.png'
+              : identity.includes('e-class')
+                ? '/placeholder-car.jpg'
+                : null;
 
   // A bundled photo named for the vehicle is the intended cover, even when
   // the database still has an older uploaded cover for that vehicle.

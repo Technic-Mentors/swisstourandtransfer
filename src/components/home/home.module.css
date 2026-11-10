@@ -2394,6 +2394,11 @@
 .heroSlide { position: absolute; inset: 0; transform: translate3d(100%, 0, 0); background-position: 76% center; background-size: cover; background-repeat: no-repeat; }
 .heroSlideOut { transform: translate3d(-100%, 0, 0); transition: transform 1s cubic-bezier(.22,1,.36,1); }
 
+/* The WEF angle is the one photograph where the car fills its frame rather
+   than sitting right of centre, so the off-centre crop the others need would
+   cut its tail off. It stays centred on every theme and every width. */
+.heroSlide:first-child { background-position: center; }
+
 /* While an angle holds the stage it drifts almost imperceptibly closer, so the
    hero is never completely still between swaps. `scale` is its own property
    here, which leaves the sliding `transform` free to do its own work. */
@@ -2632,28 +2637,32 @@ body[data-public-theme='light'] .heroSlides {
   mask-composite: intersect;
 }
 
+/* The first angle is the WEF night shot. It has no pale twin, and the hero
+   panel is navy on this theme too, so it keeps its own image and the light
+   variants below follow their own angles down one place. */
+
 /* Both angles are shot on the same cream backdrop as the page, so they meet
    it without an edge. The images are inline styles, hence the !important. */
-body[data-public-theme='light'] .heroSlide:first-child {
+body[data-public-theme='light'] .heroSlide:nth-child(2) {
   background-image: url('/hero-light-1.png') !important;
   background-position: center;
 }
 
-body[data-public-theme='light'] .heroSlide:nth-child(2) {
+body[data-public-theme='light'] .heroSlide:nth-child(3) {
   background-image: url('/hero-light-2.png') !important;
   background-position: center;
 }
 
-/* The third angle: a white V-Class on the same pale studio backdrop, so it
+/* The fourth angle: a white V-Class on the same pale studio backdrop, so it
    lands on cream like the other two. The car fills the frame squarely, so
    this one stays centred at every width. */
-body[data-public-theme='light'] .heroSlide:nth-child(3) {
+body[data-public-theme='light'] .heroSlide:nth-child(4) {
   background-image: url('/slider-3-light.png') !important;
   background-position: center;
 }
 
-body[data-public-theme='light'] .heroSlide:nth-child(n + 4),
-body[data-public-theme='light'] .heroCopy:nth-child(n + 4) {
+body[data-public-theme='light'] .heroSlide:nth-child(n + 5),
+body[data-public-theme='light'] .heroCopy:nth-child(n + 5) {
   display: none;
 }
 
@@ -2681,10 +2690,10 @@ body[data-public-theme='light'] .heroCopy:nth-child(n + 4) {
      crop is pulled that way: centring the frame would leave empty ground on
      the left and cut the back of the car off on the right. */
   .heroSlide,
-  body[data-public-theme='light'] .heroSlide:first-child,
-  body[data-public-theme='light'] .heroSlide:nth-child(2) { background-position: 85% center; }
+  body[data-public-theme='light'] .heroSlide:nth-child(2),
+  body[data-public-theme='light'] .heroSlide:nth-child(3) { background-position: 85% center; }
   /* The V-Class is centred in its frame, so it keeps the centre crop. */
-  body[data-public-theme='light'] .heroSlide:nth-child(3) { background-position: center; }
+  body[data-public-theme='light'] .heroSlide:nth-child(4) { background-position: center; }
   .heroCopyStack { margin-top: 12px; }
   .showcaseTitle { font-size: clamp(2.1rem, 5.2vw, 3rem); }
   .heroSubtext { margin-top: 12px; font-size: 16px; }

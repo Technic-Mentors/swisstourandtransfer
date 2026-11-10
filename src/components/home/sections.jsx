@@ -291,6 +291,13 @@ function HeadRow({ eyebrow, title, link, linkLabel, wide = false, center = false
 
 const HERO_ANGLES = [
   {
+    name: 'WEF',
+    image: '/wef-davos-hero.png',
+    headline: 'WEF Davos 2027,',
+    accent: 'planned to the minute.',
+    text: 'Discreet, security-briefed chauffeurs for delegates, from the airport to every road into Davos.',
+  },
+  {
     name: 'Rear',
     image: '/car-3.png',
     headline: 'Always on time,',
@@ -1009,6 +1016,11 @@ function ChevronIcon({ dir = 'right' }) {
  * On phones the strip becomes a swipeable carousel. Clicking any panel opens
  * the lightbox at that photo.
  */
+/* Tiles one and six share one bundled car photograph - the hero's rear
+   angle. Named here rather than read out of HERO_ANGLES by position, so
+   adding an angle to the hero never silently changes the gallery. */
+const GALLERY_CAR_PHOTO = '/car-3.png';
+
 export function GallerySection({ content, photos }) {
   const [lightbox, setLightbox] = useState(-1);
   const [active, setActive] = useState(0);
@@ -1020,7 +1032,7 @@ export function GallerySection({ content, photos }) {
   const tiles = photos.slice(0, 6).map((photo, index) => ({
     id: photo.id ?? index,
     src: (index === 0 || index === 5)
-      ? HERO_ANGLES[0].image
+      ? GALLERY_CAR_PHOTO
       : imageUrl(galleryImage(photo, index)),
     alt: photo.alt_text || photo.caption || 'Swiss Tour & Transfer',
     caption: photo.caption || photo.alt_text || '',
